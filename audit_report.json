@@ -1,0 +1,52 @@
+{
+  "total": 78,
+  "byCategory": {
+    "acrylic-sheets": 20,
+    "advertisement-materials": 14,
+    "digital-printing-materials": 15,
+    "foam-sheets": 1,
+    "machines": 5,
+    "printers-supplies": 20,
+    "screens": 3
+  },
+  "anomalies": [
+    {
+      "id": "rjUlnNRPecJpvtSZ0AR4Hk",
+      "title": "3.2 Roll to Roll Printer",
+      "category": "machines",
+      "issues": [
+        "HTML artifact in spec: Max print heigh"
+      ]
+    },
+    {
+      "id": "rjUlnNRPecJpvtSZ0AQgFQ",
+      "title": "SESAME S2 2160 CNC router",
+      "category": "machines",
+      "issues": [
+        "HTML artifact in spec: Motor and Driver",
+        "HTML artifact in spec: Transmission"
+      ]
+    },
+    {
+      "id": "ATPlxTHamnhSxmcP0F6O2E",
+      "title": " UT-1290L",
+      "category": "machines",
+      "issues": [
+        "Title is ALL CAPS",
+        "HTML artifact in spec: Laser Tube Cooling Type",
+        "HTML artifact in spec: Repositioning Accuracy",
+        "HTML artifact in spec: Consuming Power",
+        "HTML artifact in spec: Overall dimensions & Weight"
+      ]
+    },
+    {
+      "id": "rjUlnNRPecJpvtSZ0AQdm8",
+      "title": "SPT Series",
+      "category": "screens",
+      "issues": [
+        "HTML artifact in spec: Max Power Consumption W",
+        "HTML artifact in spec: Avg Power Consumption W"
+      ]
+    }
+  ]
+}
