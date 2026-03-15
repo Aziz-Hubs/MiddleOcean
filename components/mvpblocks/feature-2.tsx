@@ -103,10 +103,10 @@ export default function FeatureSteps() {
                 key={index}
                 layout
                 className={cn(
-                  "group relative cursor-pointer overflow-hidden rounded-2xl border p-6 md:p-8 transition-all duration-500",
+                  "group relative cursor-pointer overflow-hidden rounded-2xl border p-6 md:p-8 transition-all duration-500 backdrop-blur-xl",
                   activeStep === index 
-                    ? "border-primary/50 bg-primary/5 shadow-[0_0_30px_rgba(var(--primary-rgb),0.1)]" 
-                    : "border-white/5 bg-white/5 hover:border-white/10"
+                    ? "bg-primary/10 border-primary/50 shadow-[inset_0_1px_0_rgba(var(--primary-rgb),0.3),0_0_30px_rgba(var(--primary-rgb),0.15)]" 
+                    : "bg-card/30 border-white/5 hover:border-white/15"
                 )}
                 onClick={() => handleStepChange(index)}
                 whileHover={{ scale: 1.01 }}
