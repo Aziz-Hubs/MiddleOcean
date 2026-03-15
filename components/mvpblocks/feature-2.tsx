@@ -112,7 +112,7 @@ export default function FeatureSteps() {
               >
                 {/* Rainbow Progress Bar */}
                 {activeStep === index && (
-                  <div className="absolute top-0 left-0 right-0 h-1 z-30 overflow-hidden">
+                  <div className="absolute top-0 left-0 right-0 h-1 z-30 overflow-hidden hidden md:block">
                     <motion.div
                       key={progressKey}
                       className="h-full bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500"
@@ -152,14 +152,16 @@ export default function FeatureSteps() {
                     <h3 className="mt-1 text-2xl font-black text-white">{item.title}</h3>
                     <AnimatePresence mode="wait">
                       {activeStep === index && (
-                        <motion.p
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="mt-4 text-lg font-medium leading-relaxed text-white/60"
-                        >
-                          {item.content}
-                        </motion.p>
+                        <div className="min-h-[120px] md:min-h-[100px] lg:min-h-[80px]">
+                          <motion.p
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="mt-4 text-lg font-medium leading-relaxed text-white/60"
+                          >
+                            {item.content}
+                          </motion.p>
+                        </div>
                       )}
                     </AnimatePresence>
                   </div>

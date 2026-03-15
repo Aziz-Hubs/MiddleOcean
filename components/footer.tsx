@@ -18,13 +18,13 @@ export function Footer() {
 	const tf = useTranslations("Footer"); // Same namespace but keep for consistency
 
 	return (
-		<footer className="w-full border-t bg-card pt-16 pb-8">
+		<footer className="w-full border-t border-border bg-background/95 backdrop-blur-sm pt-16 pb-8">
 			<div className="mx-auto max-w-7xl px-6">
-				<div className="grid grid-cols-1 gap-12 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 					{/* Brand Section */}
 					<div className="space-y-6">
 						<Link href="/">
-							<Logo className="h-6" />
+							<Logo className="h-6 w-32" />
 						</Link>
 						<p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
 							{t("description")}
@@ -59,26 +59,6 @@ export function Footer() {
 								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/about">{t("links.about")}</Link></li>
 								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/contact">{t("links.contact")}</Link></li>
 							</ul>
-						</div>
-					</div>
-
-					{/* Newsletter Section */}
-					<div className="space-y-6">
-						<div>
-							<h4 className="font-bold text-sm uppercase tracking-wider mb-2">{t("newsletterTitle")}</h4>
-							<p className="text-muted-foreground text-xs leading-relaxed">
-								{t("newsletterDescription")}
-							</p>
-						</div>
-						<div className="flex flex-col gap-2">
-							<Input 
-								type="email" 
-								placeholder={t("newsletterPlaceholder")}
-								className="bg-background"
-							/>
-							<Button className="w-full">
-								{t("newsletterButton")}
-							</Button>
 						</div>
 					</div>
 				</div>

@@ -9,6 +9,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { sanityClient } from "@/sanity/client";
+import { categoryQuery } from "@/sanity/queries";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const fontMono = Geist_Mono({
@@ -33,6 +35,9 @@ export default async function RootLayout({
 	// Providing all messages to the client side
 	const messages = await getMessages();
 
+	// Fetch categories for the navbar
+	const categories = await sanityClient.fetch(categoryQuery);
+
 	return (
 		<html
 			lang={locale}
@@ -44,7 +49,7 @@ export default async function RootLayout({
 				<NextIntlClientProvider messages={messages}>
 					<ThemeProvider>
 						<WebGLShader />
-						<Header />
+						<Header categories={categories} />
 						<main className="flex-1">
 							{children}
 						</main>

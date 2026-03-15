@@ -77,7 +77,7 @@ export default function AppHero() {
   return (
     <section 
       dir={isRtl ? "rtl" : "ltr"}
-      className="relative w-full min-h-screen flex flex-col items-center overflow-hidden pt-0"
+      className="relative w-full min-h-[80vh] flex flex-col items-center overflow-hidden pt-0"
     >
       <div className="flex flex-col w-full h-full">
         {/* Top Content Area */}
@@ -96,9 +96,9 @@ export default function AppHero() {
               {slides.map((slide, index) => (
                 <CarouselItem
                   key={index}
-                  className="h-full basis-full relative py-6 lg:py-12"
+                  className="h-full basis-full relative py-4 lg:py-8"
                 >
-                  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pt-12">
+                  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pt-24">
                     {/* Image/Graphic Column - Top on mobile, order handled by dir="rtl" on desktop */}
                     <div className={cn(
                       "relative aspect-square lg:aspect-auto h-[300px] lg:h-[600px] w-full flex items-center justify-center order-1 lg:order-2",
@@ -124,16 +124,16 @@ export default function AppHero() {
                         </motion.div>
                       </AnimatePresence>
                     </div>
-
+ 
                     {/* Text Column - Bottom on mobile, order handled by dir="rtl" on desktop */}
                     <div className={cn(
                       "flex flex-col z-20 order-2 lg:order-1 min-h-[400px] lg:min-h-[550px]",
-                      isRtl ? "text-right items-end" : "text-left items-start"
+                      isRtl ? "text-right items-start" : "text-left items-start"
                     )}>
                       {/* Main Text Content */}
                       <div className={cn(
                         "flex flex-col space-y-6 w-full",
-                        isRtl ? "items-end" : "items-start"
+                        isRtl ? "items-start" : "items-start"
                       )}>
                         <motion.span 
                           initial={{ opacity: 0, y: 10 }}
@@ -145,7 +145,7 @@ export default function AppHero() {
                         >
                           {slide.kicker}
                         </motion.span>
-
+ 
                         <motion.h1 
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -157,7 +157,7 @@ export default function AppHero() {
                         >
                           {slide.title}
                         </motion.h1>
-
+ 
                         <motion.p 
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -169,12 +169,15 @@ export default function AppHero() {
                         >
                           {slide.description}
                         </motion.p>
-
+ 
                         <motion.div 
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.3 }}
-                          className="flex flex-wrap gap-4 pt-4"
+                          className={cn(
+                            "flex flex-wrap gap-4 pt-4",
+                            isRtl ? "justify-start" : "justify-start"
+                          )}
                         >
                           <Link 
                             href={slide.primaryCta.href}
@@ -198,7 +201,7 @@ export default function AppHero() {
                           )}
                         </motion.div>
                       </div>
-
+ 
                       {/* Brands Section - Only on first slide, moved to bottom */}
                       {index === 0 && (
                         <motion.div
@@ -232,9 +235,9 @@ export default function AppHero() {
             </CarouselContent>
           </Carousel>
         </div>
-
+ 
         {/* Bottom Navigation Area */}
-        <div className="w-full relative z-20 pb-12 px-6">
+        <div className="w-full relative z-20 pb-4 px-6">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border-t border-border/50">
               {slides.map((slide, index) => {

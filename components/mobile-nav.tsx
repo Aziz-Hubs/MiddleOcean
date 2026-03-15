@@ -1,13 +1,18 @@
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Portal, PortalBackdrop } from "@/components/ui/portal";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { companyLinks, companyLinks2, productLinks } from "@/components/nav-links";
 import { LinkItem } from "@/components/sheard";
-import { XIcon, MenuIcon } from "lucide-react";
+import { XIcon, MenuIcon, Settings } from "lucide-react";
+import { SanityCategory } from "@/sanity/types";
+import { Link } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
-export function MobileNav() {
+export function MobileNav({ categories }: { categories: SanityCategory[] }) {
 	const [open, setOpen] = React.useState(false);
+	const locale = useLocale();
+	const isRtl = locale === "ar";
 
 	return (
 		<div className="md:hidden">
@@ -50,13 +55,27 @@ export function MobileNav() {
 						data-slot={open ? "open" : "closed"}
 					>
 						<div className="flex w-full flex-col gap-y-2">
-							<span className="text-sm">Product</span>
-							{productLinks.map((link) => (
-								<LinkItem
-									className="rounded-xl p-2 active:bg-muted dark:active:bg-muted/50"
-									key={`product-${link.label}`}
-									{...link}
-								/>
+							<span className="text-sm font-semibold mb-2">Product</span>
+							{categories.map((cat) => (
+								<Link
+									key={cat._id}
+									href={`/products?category=${cat.slug.current}`}
+									className="flex items-center gap-3 rounded-xl p-3 active:bg-muted dark:active:bg-muted/50 transition-colors"
+									onClick={() => setOpen(false)}
+								>
+									<div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+										{/* Icon mapping would be better but keeping it simple for now or using a generic one */}
+										<Settings className="size-5" />
+									</div>
+									<div className="flex flex-col">
+										<span className="font-medium">
+											{isRtl ? cat.title.ar : cat.title.en}
+										</span>
+										<span className="text-xs text-muted-foreground line-clamp-1">
+											{isRtl ? cat.description.ar : cat.description.en}
+										</span>
+									</div>
+								</Link>
 							))}
 							<span className="text-sm">Company</span>
 							{companyLinks.map((link) => (
@@ -75,10 +94,13 @@ export function MobileNav() {
 							))}
 						</div>
 						<div className="mt-5 flex flex-col gap-2">
-							<Button className="w-full" variant="outline">
-								Sign In
-							</Button>
-							<Button className="w-full">Get Started</Button>
+							<Link 
+								href="/contact" 
+								onClick={() => setOpen(false)}
+								className={cn(buttonVariants({ size: "lg" }), "w-full")}
+							>
+								{isRtl ? "تواصل معنا" : "Contact Us"}
+							</Link>
 						</div>
 					</div>
 				</Portal>
