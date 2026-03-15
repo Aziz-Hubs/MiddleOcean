@@ -53,7 +53,7 @@ export default async function RootLayout({
 						<main className="flex-1">
 							{children}
 						</main>
-						<Footer />
+						<Footer categories={categories} />
 					</ThemeProvider>
 				</NextIntlClientProvider>
 			</body>

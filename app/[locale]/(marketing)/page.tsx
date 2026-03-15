@@ -8,6 +8,7 @@ import FeatureSteps from "@/components/mvpblocks/feature-2"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { categoryQuery } from "@/sanity/queries"
 import { SanityCategory } from "@/sanity/types"
+import ContactUs1 from "@/components/contact-us-1"
 
 export default async function Home(props: {
   params: Promise<{ locale: string }>
@@ -33,6 +34,8 @@ export default async function Home(props: {
       <FeatureSteps />
       {/* Testimonials Section */}
       <TestimonialsSection />
+      {/* CTA Section */}
+      <ContactUs1 />
     </main>
   )
 }

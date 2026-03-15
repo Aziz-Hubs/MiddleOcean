@@ -1,6 +1,5 @@
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
-import { Logo } from "@/components/logo";
+import { useTranslations, useLocale } from "next-intl";
 import { 
 	InstagramIcon, 
 	TwitterIcon, 
@@ -12,21 +11,31 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SanityCategory } from "@/sanity/types";
 
-export function Footer() {
+export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 	const t = useTranslations("Footer");
-	const tf = useTranslations("Footer"); // Same namespace but keep for consistency
+	const tf = useTranslations("Footer"); // Keep for consistency
+	const locale = useLocale();
+	const isRtl = locale === "ar";
 
 	return (
-		<footer className="w-full border-t border-border bg-background/95 backdrop-blur-sm pt-16 pb-8">
+		<footer className="w-full border-t border-border bg-background/80 backdrop-blur-md pt-16 pb-8">
 			<div className="mx-auto max-w-7xl px-6">
 				<div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 					{/* Brand Section */}
 					<div className="space-y-6">
-						<Link href="/">
-							<Logo className="h-6 w-32" />
+						<Link href="/" className="flex items-center gap-2 group">
+							<img 
+								src="/logo.svg" 
+								alt="Middle Ocean Logo" 
+								className="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+							/>
+							<span className="text-xl font-bold tracking-tight">
+								{t("brand_first")} <span className="animate-rainbow bg-gradient-to-r from-[#ff0000] via-[#ff00ff] to-[#ff0000] bg-[length:200%_auto] bg-clip-text text-transparent">{t("brand_second")}</span>
+							</span>
 						</Link>
-						<p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+						<p className="text-muted-foreground text-sm leading-relaxed max-w-xs transition-opacity duration-300">
 							{t("description")}
 						</p>
 						<div className="flex gap-4">
@@ -47,10 +56,20 @@ export function Footer() {
 						<div className="space-y-4">
 							<h4 className="font-bold text-sm uppercase tracking-wider">{t("sections.products")}</h4>
 							<ul className="space-y-2">
-								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/products/printers">{t("links.printers")}</Link></li>
-								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/products/materials">{t("links.materials")}</Link></li>
-								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/products/displays">{t("links.displays")}</Link></li>
-								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/products/parts">{t("links.parts")}</Link></li>
+								{categories.length > 0 ? (
+									categories.map((cat) => (
+										<li key={cat._id}>
+											<Link 
+												className="text-muted-foreground hover:text-primary transition-colors text-sm" 
+												href={`/products?category=${cat.slug.current}`}
+											>
+												{isRtl ? cat.title.ar : cat.title.en}
+											</Link>
+										</li>
+									))
+								) : (
+									<li className="text-muted-foreground text-sm">No categories available</li>
+								)}
 							</ul>
 						</div>
 						<div className="space-y-4">

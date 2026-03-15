@@ -141,6 +141,8 @@
   },
   "Footer": {
     "description": "Your premier B2B partner for digital printing materials, specialized machinery, and premium advertising displays across the MENA region.",
+    "brand_first": "Middle",
+    "brand_second": "Ocean",
     "newsletterTitle": "Subscribe to our newsletter",
     "newsletterPlaceholder": "Enter your email",
     "newsletterButton": "Subscribe",
@@ -296,5 +298,18 @@
         "country": "🇯🇴 Tafila"
       }
     }
+  },
+  "CTA": {
+    "title": "Your Trusted Partner for Digital Printing",
+    "subtitle": "Empowering 2,000+ brands with innovative materials and reliable machinery. Join the Middle Ocean ecosystem today.",
+    "headquarters": "Headquarters",
+    "address": "Office 523, Akaria 2nd Building,\nOlaya St, Riyadh.",
+    "sales": "Direct Sales",
+    "email": "info@middleocean.com",
+    "support": "Support Line",
+    "phone": "+966 11 460 0000",
+    "getDirections": "Get Directions",
+    "cardTitle": "Scale with OceanJett",
+    "cardSubtitle": "Reliable, fast, and high-quality materials for your most ambitious projects."
   }
 }

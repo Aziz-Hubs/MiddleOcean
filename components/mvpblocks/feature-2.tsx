@@ -68,9 +68,12 @@ export default function FeatureSteps() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden py-24 px-6 md:px-12 lg:px-16 bg-transparent" dir={isRtl ? "rtl" : "ltr"}>
+    <section 
+      className="relative w-full overflow-hidden py-24 px-4 md:px-12 lg:px-16 bg-transparent min-h-[1100px] md:min-h-[900px] lg:min-h-[850px]" 
+      dir={isRtl ? "rtl" : "ltr"}
+    >
       <div className="mx-auto max-w-7xl">
-        <div className="mb-20 text-center">
+        <div className="mb-16 md:mb-24 text-center">
           <motion.h2 
             className="text-4xl font-black uppercase tracking-tighter text-white sm:text-5xl lg:text-7xl"
             initial={{ opacity: 0, y: 20 }}
@@ -80,7 +83,7 @@ export default function FeatureSteps() {
             {t("title")}
           </motion.h2>
           <motion.p 
-            className="mx-auto mt-4 max-w-2xl text-xl font-bold uppercase tracking-widest text-white/50"
+            className="mx-auto mt-4 max-w-2xl text-lg md:text-xl font-bold uppercase tracking-widest text-white/50"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -90,29 +93,30 @@ export default function FeatureSteps() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-center">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 items-start">
           <div className={cn(
             "space-y-4",
-            "order-1 lg:order-1"
+            "order-2 lg:order-1"
           )}>
             {steps.map((item, index) => (
               <motion.div
                 key={index}
+                layout
                 className={cn(
-                  "group relative cursor-pointer overflow-hidden rounded-2xl border p-8 transition-all duration-500",
+                  "group relative cursor-pointer overflow-hidden rounded-2xl border p-6 md:p-8 transition-all duration-500",
                   activeStep === index 
                     ? "border-primary/50 bg-primary/5 shadow-[0_0_30px_rgba(var(--primary-rgb),0.1)]" 
                     : "border-white/5 bg-white/5 hover:border-white/10"
                 )}
                 onClick={() => handleStepChange(index)}
-                whileHover={{ scale: 1.02 }}
-                initial={{ opacity: 0, x: isRtl ? 20 : -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                whileHover={{ scale: 1.01 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
                 {/* Rainbow Progress Bar */}
                 {activeStep === index && (
-                  <div className="absolute top-0 left-0 right-0 h-1 z-30 overflow-hidden hidden md:block">
+                  <div className="absolute top-0 left-0 right-0 h-1 z-30 overflow-hidden">
                     <motion.div
                       key={progressKey}
                       className="h-full bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500"
@@ -133,37 +137,36 @@ export default function FeatureSteps() {
                   </div>
                 )}
 
-                <div className="flex items-start gap-6 relative z-10">
+                <div className="flex items-start gap-4 md:gap-6 relative z-10">
                   <div className={cn(
-                    "flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br transition-all duration-500",
+                    "flex h-12 w-12 md:h-14 md:w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br transition-all duration-500",
                     activeStep === index 
                       ? "from-primary to-primary/60 text-white scale-110 rotate-3" 
                       : "from-white/10 to-white/5 text-white/30 group-hover:from-white/20 group-hover:text-white/50"
                   )}>
-                    <item.Icon className="h-7 w-7" />
+                    <item.Icon className="h-6 w-6 md:h-7 md:w-7" />
                   </div>
                   <div className={isRtl ? "text-right" : "text-left"}>
                     <span className={cn(
-                      "text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-500",
+                      "text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-500",
                       activeStep === index ? "text-primary" : "text-white/30"
                     )}>
                       {item.step}
                     </span>
-                    <h3 className="mt-1 text-2xl font-black text-white">{item.title}</h3>
-                    <AnimatePresence mode="wait">
-                      {activeStep === index && (
-                        <div className="min-h-[120px] md:min-h-[100px] lg:min-h-[80px]">
-                          <motion.p
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            className="mt-4 text-lg font-medium leading-relaxed text-white/60"
-                          >
-                            {item.content}
-                          </motion.p>
-                        </div>
+                    <h3 className="mt-1 text-xl md:text-2xl font-black text-white">{item.title}</h3>
+                    
+                    <div 
+                      className={cn(
+                        "grid transition-all duration-500 ease-in-out mt-0",
+                        activeStep === index ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 mt-0"
                       )}
-                    </AnimatePresence>
+                    >
+                      <div className="overflow-hidden">
+                        <p className="text-base md:text-lg font-medium leading-relaxed text-white/60">
+                          {item.content}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -171,8 +174,8 @@ export default function FeatureSteps() {
           </div>
 
           <div className={cn(
-            "relative aspect-square lg:aspect-auto h-full min-h-[500px] overflow-hidden rounded-3xl border border-white/10 bg-black/50 backdrop-blur-3xl",
-            "order-2 lg:order-2" 
+            "relative aspect-[16/10] lg:aspect-square h-full min-h-[250px] md:min-h-[400px] lg:min-h-[600px] overflow-hidden rounded-3xl border border-white/10 bg-black/50 backdrop-blur-3xl",
+            "order-1 lg:order-2" 
           )}>
             <AnimatePresence mode="wait">
               <motion.div

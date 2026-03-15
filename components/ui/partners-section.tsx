@@ -6,18 +6,18 @@ import { ThreeDImageRing } from "./three-d-image-ring"
 
 // Text placeholder images for partner logos — replace with real logos later
 const partnerImages = [
-  "https://placehold.co/400x220/transparent/38bdf8?text=OceanTeck&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=OceanJett&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=FLORA&font=montserrat",
-  "https://placehold.co/400x220/transparent/e2e8f0?text=HP&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=Epson&font=montserrat",
-  "https://placehold.co/400x220/transparent/e2e8f0?text=Roland&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=Mimaki&font=montserrat",
-  "https://placehold.co/400x220/transparent/e2e8f0?text=Canon&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=Konica&font=montserrat",
-  "https://placehold.co/400x220/transparent/e2e8f0?text=3M&font=montserrat",
-  "https://placehold.co/400x220/transparent/38bdf8?text=Avery&font=montserrat",
-  "https://placehold.co/400x220/transparent/e2e8f0?text=Oracal&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=OceanTeck&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=OceanJett&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=FLORA&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=HP&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Epson&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Roland&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Mimaki&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Canon&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Konica&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=3M&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Avery&font=montserrat",
+  "https://placehold.co/400x220/transparent/ffffff?text=Oracal&font=montserrat",
 ]
 
 export function PartnersSection() {

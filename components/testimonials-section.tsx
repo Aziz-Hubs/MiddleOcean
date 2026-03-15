@@ -1,10 +1,9 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/3d-testimonails";
-import { cn } from "@/lib/utils";
 
 interface Testimonial {
   name: string;
@@ -48,8 +47,7 @@ const TestimonialCard = ({
 
 export function TestimonialsSection() {
   const t = useTranslations("Testimonials");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
+
 
   const unsplashIds = [
     "i96BipVp0G8", "7v_2aL_M_Ac", "67nS5S538g4", "9V-YmN75mRA", "y_P5WkjK9V0",
@@ -99,12 +97,7 @@ export function TestimonialsSection() {
           className="relative flex h-[700px] w-full items-center justify-center overflow-hidden [perspective:1500px]"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          <div className={cn(
-            "flex h-full w-fit gap-8 transition-transform duration-500",
-            isRtl 
-              ? "[transform:rotateX(15deg)_rotateY(15deg)_translateX(20px)]" 
-              : "[transform:rotateX(15deg)_rotateY(-15deg)_translateX(-20px)]"
-          )}>
+          <div className="flex h-full w-fit gap-8 transition-transform duration-500 [transform:rotateX(15deg)_rotateY(-15deg)]">
             <Marquee vertical pauseOnHover repeat={4} className="[--duration:50s] [--gap:1.5rem]">
               {columns[0].map(({ key, ...review }) => (
                 <TestimonialCard key={key} {...review} />
@@ -130,8 +123,8 @@ export function TestimonialsSection() {
             </Marquee>
           </div>
           
-          <div className="pointer-events-none absolute inset-y-0 start-0 w-1/4 bg-gradient-to-r from-black via-black/40 to-transparent z-30" />
-          <div className="pointer-events-none absolute inset-y-0 end-0 w-1/4 bg-gradient-to-l from-black via-black/40 to-transparent z-30" />
+          <div className="pointer-events-none absolute inset-y-0 start-0 w-1/3 bg-gradient-to-r from-black via-black/60 to-transparent z-30" />
+          <div className="pointer-events-none absolute inset-y-0 end-0 w-1/3 bg-gradient-to-l from-black via-black/60 to-transparent z-30" />
         </div>
       </div>
     </section>

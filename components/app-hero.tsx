@@ -101,7 +101,7 @@ export default function AppHero() {
                   <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pt-24">
                     {/* Image/Graphic Column - Top on mobile, order handled by dir="rtl" on desktop */}
                     <div className={cn(
-                      "relative aspect-square lg:aspect-auto h-[300px] lg:h-[600px] w-full flex items-center justify-center order-1 lg:order-2",
+                      "hidden lg:flex relative aspect-square lg:aspect-auto lg:h-[600px] w-full items-center justify-center order-1 lg:order-2",
                     )}>
                       <AnimatePresence mode="wait">
                         <motion.div
@@ -139,7 +139,7 @@ export default function AppHero() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           className={cn(
-                            "text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase block",
+                            "text-primary font-bold tracking-[0.2em] text-xs sm:text-sm uppercase block text-shadow-sm",
                             isRtl ? "text-right" : "text-left"
                           )}
                         >
@@ -151,7 +151,7 @@ export default function AppHero() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.1 }}
                           className={cn(
-                            "text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-tight",
+                            "text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-tight text-shadow-sm",
                             isRtl ? "text-right" : "text-left"
                           )}
                         >
@@ -163,7 +163,7 @@ export default function AppHero() {
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 }}
                           className={cn(
-                            "text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl",
+                            "text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl text-shadow-sm",
                             isRtl ? "text-right" : "text-left"
                           )}
                         >
@@ -211,7 +211,7 @@ export default function AppHero() {
                           className="mt-auto pt-16 flex flex-col space-y-4 w-full"
                         >
                           <span className={cn(
-                            "text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50",
+                            "text-[10px] font-bold uppercase tracking-widest text-muted-foreground/50 text-shadow-sm",
                             isRtl ? "text-right" : "text-left"
                           )}>
                             {t("trustedBrands") || "Trusted by top brands"}
@@ -221,7 +221,7 @@ export default function AppHero() {
                             isRtl ? "justify-start" : "justify-start"
                           )}>
                             {["OceanTeck", "OceanJett", "FLORA", "HP", "Epson"].map((brand) => (
-                              <span key={brand} className="text-sm font-black tracking-tighter">
+                              <span key={brand} className="text-sm font-black tracking-tighter text-shadow-sm">
                                 {brand}
                               </span>
                             ))}
