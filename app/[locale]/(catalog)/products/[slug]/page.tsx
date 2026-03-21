@@ -71,11 +71,11 @@ export default async function CategoryPage(props: {
             <BreadcrumbSeparator>
               <ChevronIcon className="size-4 opacity-40" />
             </BreadcrumbSeparator>
-            <BreadcrumbItem>
               <BreadcrumbPage className="font-semibold text-foreground">
-                {category.title[locale as keyof typeof category.title]}
+                {typeof category.title === 'object' 
+                  ? category.title[locale as keyof typeof category.title] 
+                  : category.title}
               </BreadcrumbPage>
-            </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </StickyBreadcrumbContainer>

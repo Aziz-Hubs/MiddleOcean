@@ -82,7 +82,7 @@ export default async function ProductsPage(props: {
         description={pageDescription}
         className="-mt-[57px] relative z-10"
       />
-      <CategoriesMarquee categories={categories} />
+      {page === 1 && <CategoriesMarquee categories={categories} />}
 
       {/* Products Grid */}
       <div className="container mx-auto px-6 py-24 pb-12">
