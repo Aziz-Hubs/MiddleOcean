@@ -1,13 +1,13 @@
 {
-  "total": 78,
+  "total": 88,
   "byCategory": {
-    "acrylic-sheets": 20,
-    "advertisement-materials": 14,
+    "acrylic-sheets": 29,
+    "advertisement-materials": 11,
     "digital-printing-materials": 15,
     "foam-sheets": 1,
     "machines": 5,
-    "printers-supplies": 20,
-    "screens": 3
+    "printers-supplies": 21,
+    "screens": 6
   },
   "anomalies": [
     {
@@ -29,13 +29,13 @@
     },
     {
       "id": "ATPlxTHamnhSxmcP0F6O2E",
-      "title": " UT-1290L",
+      "title": "UT-1290L",
       "category": "machines",
       "issues": [
         "Title is ALL CAPS",
-        "HTML artifact in spec: Laser Tube Cooling Type",
-        "HTML artifact in spec: Repositioning Accuracy",
-        "HTML artifact in spec: Consuming Power",
+        "HTML artifact in spec: Laser T be Cooling Type",
+        "HTML artifact in spec: Repositioning  cc racy",
+        "HTML artifact in spec: Cons ming Power",
         "HTML artifact in spec: Overall dimensions & Weight"
       ]
     },
@@ -44,8 +44,8 @@
       "title": "SPT Series",
       "category": "screens",
       "issues": [
-        "HTML artifact in spec: Max Power Consumption W",
-        "HTML artifact in spec: Avg Power Consumption W"
+        "HTML artifact in spec: Max Power Cons mption W",
+        "HTML artifact in spec: vg Power Cons mption W"
       ]
     }
   ]

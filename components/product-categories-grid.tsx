@@ -83,7 +83,7 @@ function MobileCategoryCard({
 
   return (
     <Link
-      href={`/${locale}/products?category=${cat.slug.current}`}
+      href={`/${locale}/products/${cat.slug.current}`}
       className="group relative block h-full w-full overflow-hidden"
     >
       {/* Background photo */}
@@ -278,8 +278,16 @@ export function ProductCategoriesGrid({
                   description={description}
                   Icon={Icon}
                   className={className}
-                  href={`/${locale}/products?category=${cat.slug.current}`}
+                  href={`/${locale}/products/${cat.slug.current}`}
                   cta=""
+                  glowColor={
+                    cat.slug.current === "machines" ? "blue" :
+                    cat.slug.current === "acrylic-sheets" ? "purple" :
+                    cat.slug.current === "foam-sheets" ? "green" :
+                    cat.slug.current === "digital-printing-materials" ? "red" :
+                    cat.slug.current === "screens" ? "orange" :
+                    "cyan"
+                  }
                   background={
                     <div className="absolute inset-0 overflow-hidden">
                       <Image

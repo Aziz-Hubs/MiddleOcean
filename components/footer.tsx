@@ -61,7 +61,7 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 										<li key={cat._id}>
 											<Link 
 												className="text-muted-foreground hover:text-primary transition-colors text-sm" 
-												href={`/products?category=${cat.slug.current}`}
+												href={`/products/${cat.slug.current}`}
 											>
 												{isRtl ? cat.title.ar : cat.title.en}
 											</Link>

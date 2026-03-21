@@ -59,7 +59,7 @@ export function MobileNav({ categories }: { categories: SanityCategory[] }) {
 							{categories.map((cat) => (
 								<Link
 									key={cat._id}
-									href={`/products?category=${cat.slug.current}`}
+									href={`/products/${cat.slug.current}`}
 									className="flex items-center gap-3 rounded-xl p-3 active:bg-muted dark:active:bg-muted/50 transition-colors"
 									onClick={() => setOpen(false)}
 								>

@@ -72,7 +72,7 @@ export function DesktopNav({ categories }: { categories: SanityCategory[] }) {
                       render={(props) => (
                         <LinkItem
                           {...props}
-                          href={`/products?category=${cat.slug.current}`}
+                          href={`/products/${cat.slug.current}`}
                           label={isRtl ? cat.title.ar : cat.title.en}
                           description={
                             isRtl ? cat.description.ar : cat.description.en
