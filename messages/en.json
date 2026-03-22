@@ -49,7 +49,14 @@
         "title": "Printing Media",
         "description": "Vibrant and durable substrates"
       }
-    }
+    },
+    "legal": "Legal",
+    "cookies": "Cookies Policy",
+    "cookies_desc": "How we use cookies to improve your experience.",
+    "terms": "Terms of Service",
+    "terms_desc": "The rules and regulations for using our website.",
+    "privacy": "Privacy Policy",
+    "privacy_desc": "How we collect, use, and protect your data."
   },
   "Index": {
     "title": "Welcome to Middle Ocean",
@@ -143,6 +150,7 @@
     "description": "Your premier B2B partner for digital printing materials, specialized machinery, and premium advertising displays across the MENA region.",
     "brand_first": "Middle",
     "brand_second": "Ocean",
+    "language_toggle": "Switch to Arabic",
     "newsletterTitle": "Subscribe to our newsletter",
     "newsletterPlaceholder": "Enter your email",
     "newsletterButton": "Subscribe",

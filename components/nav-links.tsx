@@ -1,5 +1,5 @@
 import type { LinkItemType } from "@/components/sheard";
-import { GlobeIcon, LayersIcon, UserPlusIcon, BarChart3Icon, PlugIcon, CodeIcon, UsersIcon, StarIcon, HandshakeIcon, FileTextIcon, ShieldIcon, RotateCcwIcon, LeafIcon, HelpCircleIcon } from "lucide-react";
+import { GlobeIcon, LayersIcon, UserPlusIcon, BarChart3Icon, PlugIcon, CodeIcon, UsersIcon, StarIcon, HandshakeIcon, FileTextIcon, ShieldIcon, RotateCcwIcon, LeafIcon, HelpCircleIcon, CookieIcon, ShieldCheckIcon } from "lucide-react";
 
 export const productLinks: LinkItemType[] = [
 	{
@@ -128,5 +128,26 @@ export const companyLinks2: LinkItemType[] = [
 			<HelpCircleIcon
 			/>
 		),
+	},
+];
+
+export const legalLinks: LinkItemType[] = [
+	{
+		label: "cookies",
+		description: "cookies_desc",
+		href: "/legal/cookies-policy",
+		icon: <CookieIcon className="size-5" />,
+	},
+	{
+		label: "terms",
+		description: "terms_desc",
+		href: "/legal/terms-of-service",
+		icon: <FileTextIcon className="size-5" />,
+	},
+	{
+		label: "privacy",
+		description: "privacy_desc",
+		href: "/legal/privacy-policy",
+		icon: <ShieldCheckIcon className="size-5" />,
 	},
 ];

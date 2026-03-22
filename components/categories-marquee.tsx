@@ -68,7 +68,7 @@ export function CategoriesMarquee({ categories }: CategoriesMarqueeProps) {
                 key={category._id}
                 href={`/products/${category.slug.current}`}
                 className={cn(
-                  "group/card relative flex w-72 flex-col gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-5 transition-all hover:bg-white/[0.04] hover:border-white/10",
+                  "group/card relative flex w-72 flex-col gap-3 rounded-2xl border border-white/5 bg-white/[0.02] p-5 transition-all hover:bg-white/[0.04] hover:border-white/10 overflow-hidden",
                   isRtl ? "text-right" : "text-left"
                 )}
                 dir={isRtl ? "rtl" : "ltr"}
@@ -81,6 +81,13 @@ export function CategoriesMarquee({ categories }: CategoriesMarqueeProps) {
                     {name}
                   </h3>
                 </div>
+                {/* Rainbow Strip - Top of Card */}
+                <div 
+                    className={cn(
+                        "absolute top-0 h-0.5 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 transition-all duration-500 w-0 group-hover/card:w-full",
+                        isRtl ? "right-0" : "left-0"
+                    )} 
+                />
                 <p className="line-clamp-2 text-xs font-medium leading-relaxed text-zinc-500 transition-colors group-hover/card:text-zinc-400">
                   {description}
                 </p>

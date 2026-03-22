@@ -9,7 +9,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import { usePathname, useSearchParams } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import { Link, usePathname } from "@/i18n/routing"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 interface ProductPaginationProps {
   totalPages: number
@@ -105,8 +107,9 @@ export function ProductPagination({
               <PaginationLink
                 href={createPageURL(page)}
                 isActive={currentPage === page}
+                asChild
               >
-                {page}
+                <Link href={createPageURL(page)}>{page}</Link>
               </PaginationLink>
             )}
           </PaginationItem>
@@ -115,11 +118,16 @@ export function ProductPagination({
         <PaginationItem>
           <PaginationNext
             href={currentPage < totalPages ? createPageURL(currentPage + 1) : "#"}
-            text={t.next}
             className={
               currentPage >= totalPages ? "pointer-events-none opacity-50" : ""
             }
-          />
+            asChild
+          >
+            <Link href={currentPage < totalPages ? createPageURL(currentPage + 1) : "#"}>
+              <span className="hidden sm:block">{t.next}</span>
+              <ChevronRightIcon className="rtl:rotate-180" data-icon="inline-end" />
+            </Link>
+          </PaginationNext>
         </PaginationItem>
       </PaginationContent>
     </Pagination>

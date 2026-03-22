@@ -1,4 +1,6 @@
-import { Link } from "@/i18n/routing";
+"use client";
+
+import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations, useLocale } from "next-intl";
 import { 
 	InstagramIcon, 
@@ -7,24 +9,56 @@ import {
 	FacebookIcon,
 	MailIcon,
 	MapPinIcon,
-	PhoneIcon
+	PhoneIcon,
+	Languages
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SanityCategory } from "@/sanity/types";
+import { motion, Variants } from "framer-motion";
+
+const containerVariants: Variants = {
+	hidden: { opacity: 0 },
+	visible: {
+		opacity: 1,
+		transition: {
+			staggerChildren: 0.1,
+			delayChildren: 0.1,
+		},
+	},
+};
+
+const itemVariants: Variants = {
+	hidden: { opacity: 0, y: 20 },
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			duration: 0.5,
+			ease: "easeOut",
+		},
+	},
+};
 
 export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 	const t = useTranslations("Footer");
 	const tf = useTranslations("Footer"); // Keep for consistency
 	const locale = useLocale();
 	const isRtl = locale === "ar";
+	const pathname = usePathname();
 
 	return (
-		<footer className="w-full border-t border-border bg-background/80 backdrop-blur-md pt-16 pb-8">
-			<div className="mx-auto max-w-7xl px-6">
+		<footer className="w-full border-t border-border bg-background/80 backdrop-blur-md pt-16 pb-8 overflow-hidden">
+			<motion.div 
+				className="mx-auto max-w-7xl px-6"
+				variants={containerVariants}
+				initial="hidden"
+				whileInView="visible"
+				viewport={{ once: false, amount: 0.1 }}
+			>
 				<div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
 					{/* Brand Section */}
-					<div className="space-y-6">
+					<motion.div variants={itemVariants} className="space-y-6">
 						<Link href="/" className="flex items-center gap-2 group">
 							<img 
 								src="/logo.svg" 
@@ -48,12 +82,21 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 							<a href="#" className="text-muted-foreground hover:text-primary transition-colors">
 								<LinkedinIcon className="size-5" />
 							</a>
+							<div className="w-px h-4 bg-border my-auto mx-1" />
+							<Link
+								href={pathname}
+								locale={locale === "en" ? "ar" : "en"}
+								className="text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+								title={t("language_toggle")}
+							>
+								<Languages className="size-5" />
+							</Link>
 						</div>
-					</div>
+					</motion.div>
 
 					{/* Links Grid */}
 					<div className="grid grid-cols-2 gap-8 lg:col-span-2">
-						<div className="space-y-4">
+						<motion.div variants={itemVariants} className="space-y-4">
 							<h4 className="font-bold text-sm uppercase tracking-wider">{t("sections.products")}</h4>
 							<ul className="space-y-2">
 								{categories.length > 0 ? (
@@ -71,27 +114,30 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 									<li className="text-muted-foreground text-sm">No categories available</li>
 								)}
 							</ul>
-						</div>
-						<div className="space-y-4">
+						</motion.div>
+						<motion.div variants={itemVariants} className="space-y-4">
 							<h4 className="font-bold text-sm uppercase tracking-wider">{t("sections.company")}</h4>
 							<ul className="space-y-2">
 								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/about">{t("links.about")}</Link></li>
 								<li><Link className="text-muted-foreground hover:text-primary transition-colors text-sm" href="/contact">{t("links.contact")}</Link></li>
 							</ul>
-						</div>
+						</motion.div>
 					</div>
 				</div>
 
 				{/* Bottom Section */}
-				<div className="mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+				<motion.div 
+					variants={itemVariants}
+					className="mt-16 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground"
+				>
 					<p>{t("copyright", { year: new Date().getFullYear() })}</p>
 					<div className="flex gap-6">
 						<Link href="/privacy" className="hover:text-primary transition-colors">{t("links.privacy")}</Link>
 						<Link href="/terms" className="hover:text-primary transition-colors">{t("links.terms")}</Link>
 						<Link href="/cookies" className="hover:text-primary transition-colors">{t("links.cookies")}</Link>
 					</div>
-				</div>
-			</div>
+				</motion.div>
+			</motion.div>
 		</footer>
 	);
 }

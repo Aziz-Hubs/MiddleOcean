@@ -1,8 +1,9 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
+import { Slot } from "@radix-ui/react-slot"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -10,7 +11,7 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
       role="navigation"
       aria-label="pagination"
       data-slot="pagination"
-      className={cn("mx-auto flex w-full justify-center", className)}
+      className={cn("mx-auto flex w-full justify-center bg-zinc-900/40 backdrop-blur-sm py-4 rounded-2xl border border-white/5", className)}
       {...props}
     />
   )
@@ -35,6 +36,7 @@ function PaginationItem({ ...props }: React.ComponentProps<"li">) {
 
 type PaginationLinkProps = {
   isActive?: boolean
+  asChild?: boolean
 } & Pick<React.ComponentProps<typeof Button>, "size"> &
   React.ComponentProps<"a">
 
@@ -42,22 +44,25 @@ function PaginationLink({
   className,
   isActive,
   size = "icon",
+  asChild = false,
   ...props
 }: PaginationLinkProps) {
+  const Comp = asChild ? Slot : "a"
   return (
-    <Button
-      variant={isActive ? "outline" : "ghost"}
-      size={size}
-      className={cn(className)}
-      nativeButton={false}
-      render={
-        <a
-          aria-current={isActive ? "page" : undefined}
-          data-slot="pagination-link"
-          data-active={isActive}
-          {...props}
-        />
-      }
+    <Comp
+      aria-current={isActive ? "page" : undefined}
+      data-slot="pagination-link"
+      data-active={isActive}
+      className={cn(
+        buttonVariants({
+          variant: isActive ? "outline" : "ghost",
+          size,
+        }),
+        "text-foreground hover:text-white transition-colors",
+        isActive && "border-white/20 text-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]",
+        className
+      )}
+      {...props}
     />
   )
 }
@@ -65,17 +70,22 @@ function PaginationLink({
 function PaginationPrevious({
   className,
   text = "Previous",
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
       size="default"
-      className={cn("pl-2!", className)}
+      className={cn("!pl-2", className)}
       {...props}
     >
-      <ChevronLeftIcon data-icon="inline-start" />
-      <span className="hidden sm:block">{text}</span>
+      {children || (
+        <>
+          <ChevronLeftIcon className="rtl:rotate-180" data-icon="inline-start" />
+          <span className="hidden sm:block">{text}</span>
+        </>
+      )}
     </PaginationLink>
   )
 }
@@ -83,17 +93,22 @@ function PaginationPrevious({
 function PaginationNext({
   className,
   text = "Next",
+  children,
   ...props
 }: React.ComponentProps<typeof PaginationLink> & { text?: string }) {
   return (
     <PaginationLink
       aria-label="Go to next page"
       size="default"
-      className={cn("pr-2!", className)}
+      className={cn("!pr-2", className)}
       {...props}
     >
-      <span className="hidden sm:block">{text}</span>
-      <ChevronRightIcon data-icon="inline-end" />
+      {children || (
+        <>
+          <span className="hidden sm:block">{text}</span>
+          <ChevronRightIcon className="rtl:rotate-180" data-icon="inline-end" />
+        </>
+      )}
     </PaginationLink>
   )
 }

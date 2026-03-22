@@ -15,6 +15,7 @@ export const categoryBySlugQuery = `*[_type == "category" && slug.current == $sl
   slug,
   "image": image.asset->url
 }`;
+
 export const allProductsQuery = `*[_type == "product"] | order(_createdAt desc){
   _id,
   title,
@@ -24,11 +25,15 @@ export const allProductsQuery = `*[_type == "product"] | order(_createdAt desc){
     title,
     slug
   },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
+  },
   "imageUrl": media.thumbnail.asset->url,
   warrantyMonths
 }`;
 
-export const allProductsPagedQuery = `*[_type == "product"] | order(_createdAt desc) [$start...$end]{
+export const allProductsPagedQuery = `*[_type == "product"] | order(_createdAt desc, _id desc) [$start...$end]{
   _id,
   title,
   description,
@@ -36,6 +41,10 @@ export const allProductsPagedQuery = `*[_type == "product"] | order(_createdAt d
   category->{
     title,
     slug
+  },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
   },
   "imageUrl": media.thumbnail.asset->url,
   warrantyMonths
@@ -52,11 +61,15 @@ export const productsByCategoryQuery = `*[_type == "product" && category->slug.c
     title,
     slug
   },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
+  },
   "imageUrl": media.thumbnail.asset->url,
   warrantyMonths
 }`;
 
-export const productsByCategoryPagedQuery = `*[_type == "product" && category->slug.current == $slug] | order(_createdAt desc) [$start...$end]{
+export const productsByCategoryPagedQuery = `*[_type == "product" && category->slug.current == $slug] | order(_createdAt desc, _id desc) [$start...$end]{
   _id,
   title,
   description,
@@ -64,6 +77,10 @@ export const productsByCategoryPagedQuery = `*[_type == "product" && category->s
   category->{
     title,
     slug
+  },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
   },
   "imageUrl": media.thumbnail.asset->url,
   warrantyMonths

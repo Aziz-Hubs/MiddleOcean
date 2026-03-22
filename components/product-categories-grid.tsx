@@ -126,7 +126,7 @@ function MobileCategoryCard({
         </div>
 
         {/* Bottom — description */}
-        <p className="text-sm font-medium leading-relaxed text-white/55 max-w-[220px]">
+        <p className="text-base font-medium leading-relaxed text-white/55 max-w-[220px]">
           {description}
         </p>
       </div>

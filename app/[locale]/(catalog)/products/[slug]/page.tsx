@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { CategoryHero } from "@/components/category-hero"
 import { sanityClient } from "@/sanity/client"
-import { categoryBySlugQuery, productsByCategoryPagedQuery, productsByCategoryCountQuery } from "@/sanity/queries"
+import { categoryBySlugQuery, categoryQuery } from "@/sanity/queries"
 import { 
   Breadcrumb, 
   BreadcrumbItem, 
@@ -16,8 +16,10 @@ import { ChevronRight, ChevronLeft } from "lucide-react"
 import { SanityCategory } from "@/sanity/types"
 import ContactUs1 from "@/components/contact-us-1"
 import { StickyBreadcrumbContainer } from "@/components/sticky-breadcrumb-container"
-import InteractiveProductCard from "@/src/components/ui/interactive-product-card"
-import { ProductPagination } from "@/src/components/product-pagination"
+import { Suspense } from "react"
+import CategoryProductGridWrapper from "@/src/components/category-product-grid-wrapper"
+import { ProductGridSkeleton } from "@/src/components/product-grid-skeleton"
+import { CategoriesMarquee } from "@/components/categories-marquee"
 
 export default async function CategoryPage(props: {
   params: Promise<{ locale: string; slug: string }>
@@ -30,23 +32,16 @@ export default async function CategoryPage(props: {
 
   const page = Number(searchParams.page) || 1
   const limit = 12
-  const start = (page - 1) * limit
-  const end = start + limit
 
-  // Fetch category data from Sanity
-  const category: SanityCategory = await sanityClient.fetch(categoryBySlugQuery, { slug })
+  // Fetch data from Sanity
+  const [category, allCategories]: [SanityCategory, SanityCategory[]] = await Promise.all([
+    sanityClient.fetch(categoryBySlugQuery, { slug }),
+    sanityClient.fetch(categoryQuery)
+  ])
 
   if (!category) {
     notFound()
   }
-
-  // Fetch products for this category and total count
-  const [products, totalCount] = await Promise.all([
-    sanityClient.fetch(productsByCategoryPagedQuery, { slug, start, end }),
-    sanityClient.fetch(productsByCategoryCountQuery, { slug })
-  ])
-
-  const totalPages = Math.ceil(totalCount / limit)
 
   const ChevronIcon = isRtl ? ChevronLeft : ChevronRight
 
@@ -71,11 +66,13 @@ export default async function CategoryPage(props: {
             <BreadcrumbSeparator>
               <ChevronIcon className="size-4 opacity-40" />
             </BreadcrumbSeparator>
-              <BreadcrumbPage className="font-semibold text-foreground">
+            <BreadcrumbItem>
+              <BreadcrumbLink render={<Link href={`/products/${slug}`} />} className="font-semibold text-foreground">
                 {typeof category.title === 'object' 
                   ? category.title[locale as keyof typeof category.title] 
                   : category.title}
-              </BreadcrumbPage>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </StickyBreadcrumbContainer>
@@ -87,34 +84,19 @@ export default async function CategoryPage(props: {
         image={category.image} 
         className="-mt-[57px] relative z-10"
       />
+      <CategoriesMarquee categories={allCategories} />
 
-      {/* Products Grid */}
+      {/* Products Grid with Suspense */}
       <div className="container mx-auto px-6 py-24 pb-12">
-
-        {products.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {products.map((product: any) => (
-                <InteractiveProductCard key={product._id} product={product} />
-              ))}
-            </div>
-
-            <ProductPagination 
-              totalPages={totalPages}
-              currentPage={page}
-              locale={locale}
-            />
-          </>
-        ) : (
-          <div className="py-20 text-center">
-            <p className="text-lg text-zinc-400 font-light">
-              {isRtl 
-                ? `لا توجد منتجات حالياً في فئة ${category.title.ar}.`
-                : `No products found in ${category.title.en} category.`
-              }
-            </p>
-          </div>
-        )}
+        <Suspense fallback={<ProductGridSkeleton count={8} />}>
+          <CategoryProductGridWrapper 
+            slug={slug}
+            page={page}
+            limit={limit}
+            locale={locale}
+            categoryTitle={typeof category.title === 'object' ? category.title[locale as keyof typeof category.title] : category.title}
+          />
+        </Suspense>
       </div>
 
       {/* Contact Section */}

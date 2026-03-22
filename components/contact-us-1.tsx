@@ -126,7 +126,7 @@ export default function ContactUs1() {
                     <h3 className="text-3xl font-bold tracking-tight md:text-4xl mb-4 leading-tight text-white/95">
                       {t("cardTitle")}
                     </h3>
-                    <p className="text-white/40 text-base md:text-lg font-medium max-w-[300px] leading-relaxed">
+                    <p className="text-white/60 text-base md:text-lg font-medium max-w-[300px] leading-relaxed drop-shadow-md">
                       {t("cardSubtitle")}
                     </p>
                   </div>

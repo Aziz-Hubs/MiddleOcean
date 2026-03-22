@@ -194,7 +194,7 @@ export const BentoCard = ({
         "pointer-events-none absolute bottom-0 z-30 flex w-full translate-y-10 transform-gpu flex-row items-center p-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100",
       )}
     >
-      <p className="max-w-lg text-sm text-neutral-400 font-medium">
+      <p className="max-w-lg text-base text-neutral-400 font-medium">
         {description}
       </p>
     </div>

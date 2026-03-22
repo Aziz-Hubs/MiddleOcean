@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Eye, ChevronRight, ChevronLeft, ShieldCheck } from 'lucide-react';
+import { Eye, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
@@ -122,10 +122,6 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                 style={{ transform: "translateZ(100px)", transformStyle: "preserve-3d" }}
                 className="absolute inset-x-3 bottom-3 top-64 flex flex-col justify-between p-7 rounded-[1.8rem] bg-black border border-zinc-800 shadow-inner will-change-transform overflow-hidden"
             >
-                {/* Brand Logo in the Card (Top Right) */}
-                <div className="absolute top-6 right-7 opacity-20 hover:opacity-100 transition-opacity duration-500">
-                    <img src="/logo.svg" alt="Middle Ocean" className="h-4 w-auto grayscale brightness-200" />
-                </div>
 
                 {/* Background Decor */}
                 <div className="absolute top-0 right-0 h-40 w-40 bg-cyan-500/10 blur-[80px] rounded-full pointer-events-none" />
@@ -144,7 +140,7 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                             )}>
                                 {product.title[locale as 'en' | 'ar'] || product.title.en}
                             </span>
-                            <div className="w-0 h-0.5 mt-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 transition-all duration-500 group-hover/title:w-full" />
+                            <div className="w-full h-0.5 mt-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
                         </h3>
                     </Link>
 
@@ -164,8 +160,12 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                     className="mt-auto pt-4"
                 >
                     {warrantyText && (
-                        <div className="flex items-center gap-2.5 mb-5 text-[10px] font-black tracking-[0.2em] text-cyan-400/90 drop-shadow-[0_0_10px_rgba(34,211,238,0.2)]">
-                            <ShieldCheck className="w-4 h-4 stroke-[2.5]" />
+                        <div className="flex items-center gap-2.5 mb-5 text-[10px] font-black tracking-[0.2em] text-[#FFEC00]/90 drop-shadow-[0_0_10px_rgba(255,236,0,0.2)]">
+                            <img 
+                                src="/logo.svg" 
+                                alt="Logo" 
+                                className="w-5 h-auto brightness-0 invert-[.8] sepia-[1] saturate-[1000%] hue-rotate-[-10deg]" 
+                            />
                             <span className="uppercase">{warrantyText}</span>
                         </div>
                     )}

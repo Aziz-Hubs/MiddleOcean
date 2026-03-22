@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { useTranslations, useLocale } from "next-intl"
 import { Link } from "@/i18n/routing"
-import { companyLinks } from "./nav-links"
+import { companyLinks, legalLinks } from "./nav-links"
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -28,7 +28,7 @@ import {
   PenTool,
 } from "lucide-react"
 
-const iconMap: Record<string, React.ElementType> = {
+export const iconMap: Record<string, React.ElementType> = {
   Printer,
   Layers,
   Box,
@@ -45,7 +45,6 @@ export function DesktopNav({ categories }: { categories: SanityCategory[] }) {
   const locale = useLocale()
   const isRtl = locale === "ar"
 
-  console.log("Rendering DesktopNav with categories:", categories?.length)
 
   return (
     <NavigationMenu className="hidden md:flex">
@@ -97,6 +96,27 @@ export function DesktopNav({ categories }: { categories: SanityCategory[] }) {
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4">
               {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <NavigationMenuLink
+                    render={(props) => (
+                      <LinkItem
+                        {...props}
+                        {...link}
+                        label={t(link.label)}
+                        description={t(link.description || "")}
+                      />
+                    )}
+                  />
+                </li>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>{t("legal")}</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4">
+              {legalLinks.map((link) => (
                 <li key={link.label}>
                   <NavigationMenuLink
                     render={(props) => (
