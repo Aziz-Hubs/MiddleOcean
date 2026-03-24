@@ -1,0 +1,381 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "products_title": "Products",
+    "brands": "Brands",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "company": "Company",
+    "explore_all": "Explore Full Catalog",
+    "Website Builder": "Website Builder",
+    "Cloud Platform": "Cloud Platform",
+    "Team Collaboration": "Team Collaboration",
+    "Analytics": "Analytics",
+    "Integrations": "Integrations",
+    "API": "API",
+    "Create responsive websites with ease": "Create responsive websites with ease",
+    "Deploy and scale apps in the cloud": "Deploy and scale apps in the cloud",
+    "Tools to help your teams work better together": "Tools to help your teams work better together",
+    "Track and analyze your website traffic": "Track and analyze your website traffic",
+    "Connect your apps and services": "Connect your apps and services",
+    "Build custom integrations with our API": "Build custom integrations with our API",
+    "About Us": "About Us",
+    "Customer Stories": "Customer Stories",
+    "Partnerships": "Partnerships",
+    "Learn more about our story and team": "Learn more about our story and team",
+    "See how we've helped our clients succeed": "See how we've helped our clients succeed",
+    "Collaborate with us for mutual growth": "Collaborate with us for mutual growth",
+    "categories": {
+      "machinery": "Machinery",
+      "materials": "Materials"
+    },
+    "products": {
+      "printers": {
+        "title": "Wide-Format Printers",
+        "description": "High-speed production equipment"
+      },
+      "cnc": {
+        "title": "CNC Machines",
+        "description": "Precision cutting solutions"
+      },
+      "lasers": {
+        "title": "Laser Cutters",
+        "description": "Professional laser engraving"
+      },
+      "inks": {
+        "title": "Digital Inks",
+        "description": "Premium colors and durability"
+      },
+      "media": {
+        "title": "Printing Media",
+        "description": "Vibrant and durable substrates"
+      }
+    },
+    "legal": "Legal",
+    "cookies": "Cookies Policy",
+    "cookies_desc": "How we use cookies to improve your experience.",
+    "terms": "Terms of Service",
+    "terms_desc": "The rules and regulations for using our website.",
+    "privacy": "Privacy Policy",
+    "privacy_desc": "How we collect, use, and protect your data."
+  },
+  "Index": {
+    "title": "Welcome to Middle Ocean",
+    "subtitle": "Your premier B2B partner for digital printing materials, specialized machinery, and premium advertising displays across the MENA region.",
+    "trusted-partners": "Strategic Partners"
+  },
+  "Hero": {
+    "slide1_kicker": "THE COMPLETE ECOSYSTEM",
+    "slide1_title": "Digital Printing Ecosystem",
+    "slide1_navTitle": "Ecosystem",
+    "slide1_navDescription": "Machinery & raw materials",
+    "button_getQuote": "Get a Quote",
+    "button_browseMaterials": "Browse Materials",
+    "trustedBrands": "Trusted by top brands",
+    "slide2_kicker": "INNOVATIVE MACHINERY",
+    "slide2_title": "Precision engineered for scale",
+    "slide2_description": "Explore our diverse range of cutting-edge wide-format printers and finishing equipment designed to elevate your production speed and color accuracy.",
+    "slide2_navTitle": "Wide-Format Printers",
+    "slide2_navDescription": "High-speed, color-accurate production equipment",
+    "button_exploreProducts": "Explore Products",
+    "slide3_kicker": "PREMIUM MATERIALS",
+    "slide3_title": "Vibrant acrylics & foam sheets",
+    "slide3_description": "Supply your business with our top-tier CMYK glossy sheets, durable foam boards, and professional-grade advertising displays.",
+    "slide3_navTitle": "Premium Materials",
+    "slide3_navDescription": "Glossy acrylics, foam boards, and displays",
+    "button_shopAcrylics": "Shop Acrylics",
+    "button_shopFoam": "Shop Foam",
+    "slide4_kicker": "Comprehensive Support",
+    "slide4_title": "Regional expertise & logistics",
+    "slide4_description": "Our dedicated technical support team ensures your operations remain uninterrupted with efficient regional logistics.",
+    "slide4_navTitle": "Technical Support",
+    "slide4_navDescription": "Expert maintenance and efficient regional supply chain",
+    "slide5_kicker": "Display Solutions",
+    "slide5_title": "Professional advertising stands",
+    "slide5_description": "Transform any space with our premium range of indoor and outdoor display structures designed for maximum visibility.",
+    "slide5_navTitle": "Advertising Displays",
+    "slide5_navDescription": "Premium indoor and outdoor display solutions"
+  },
+  "Categories": {
+    "title": "Explore Our Products",
+    "subtitle": "Discover our comprehensive range of digital printing and advertising solutions.",
+    "learnMore": "Learn More",
+    "items": {
+      "printers": {
+        "name": "Printers",
+        "description": "Industrial wide-format printers for high-volume production and precision color."
+      },
+      "acrylic": {
+        "name": "Acrylic Sheets",
+        "description": "Premium glossy and matte acrylic sheets for professional signage and decoration."
+      },
+      "foam": {
+        "name": "Foam Sheets",
+        "description": "Durable and lightweight foam boards for architectural models and displays."
+      },
+      "media": {
+        "name": "Digital Media",
+        "description": "High-quality vinyl, films, and banners for all your digital printing needs."
+      },
+      "displays": {
+        "name": "Advertising Displays",
+        "description": "Sleek indoor and outdoor display structures designed for maximum audience impact."
+      },
+      "supplies": {
+        "name": "Printer Supplies",
+        "description": "Original inks and spare parts to maintain your equipment's peak performance."
+      },
+      "accessories": {
+        "name": "Accessories",
+        "description": "Specialized tools and finishing equipment for the perfect end-to-end workflow."
+      }
+    }
+  },
+  "Features": {
+    "title": "Why Choose Middle Ocean?",
+    "subtitle": "Discover the advantages of partnering with the MENA region's leading digital printing ecosystem.",
+    "step1": "Wide-Format Printers",
+    "title1": "Cutting-edge Machinery",
+    "content1": "High-precision printers and finishing equipment designed for high-volume production and exceptional color accuracy.",
+    "step2": "Premium Materials",
+    "title2": "Quality Printing Media",
+    "content2": "From vibrant acrylics to durable foam boards, we supply the materials that make your designs stand out.",
+    "step3": "CNC Machines",
+    "title3": "Precision CNC Cutting",
+    "content3": "State-of-the-art CNC routers for precise cutting and carving of diverse materials from acrylic to wood.",
+    "step4": "Laser Cutters",
+    "title4": "Professional Laser Solutions",
+    "content4": "High-speed laser engraving and cutting systems for intricate designs and clean edges on various substrates."
+  },
+  "Footer": {
+    "description": "Your premier B2B partner for digital printing materials, specialized machinery, and premium advertising displays across the MENA region.",
+    "brand_first": "Middle",
+    "brand_second": "Ocean",
+    "language_toggle": "Switch to Arabic",
+    "newsletterTitle": "Subscribe to our newsletter",
+    "newsletterPlaceholder": "Enter your email",
+    "newsletterButton": "Subscribe",
+    "newsletterDescription": "Get the latest updates, tutorials, and exclusive offers.",
+    "developerText": "Developer",
+    "copyright": "@ {year} Middle Ocean | All rights reserved",
+    "sections": {
+      "products": "Products",
+      "company": "Company",
+      "support": "Support",
+      "legal": "Legal"
+    },
+    "links": {
+      "printers": "Wide-Format Printers",
+      "materials": "Printing Materials",
+      "displays": "Advertising Displays",
+      "parts": "Spare Parts",
+      "about": "About Us",
+      "brands": "Brands",
+      "contact": "Contact Us",
+      "blog": "Blog",
+      "docs": "Documentation",
+      "techSupport": "Technical Support",
+      "logistics": "Logistics",
+      "faq": "FAQ",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy"
+    }
+  },
+  "Testimonials": {
+    "title": "Trusted by Print Professionals",
+    "subtitle": "Discover how businesses across the Middle East rely on our premium printing materials and machinery.",
+    "items": {
+      "item1": {
+        "name": "Ahmad Al-Majali",
+        "username": "@almajali_print",
+        "body": "The OceanJett adhesive vinyl is incredibly reliable for outdoor billboards.",
+        "country": "🇯🇴 Amman"
+      },
+      "item2": {
+        "name": "Lana Haddad",
+        "username": "@lana_haddad92",
+        "body": "Exceptional support and top-tier machinery. Best in Jordan.",
+        "country": "🇯🇴 Irbid"
+      },
+      "item3": {
+        "name": "Omar Qudah",
+        "username": "@qudah.signs",
+        "body": "Fast delivery and superior ink quality. Their printers are second to none.",
+        "country": "🇯🇴 Aqaba"
+      },
+      "item4": {
+        "name": "Noor Khasawneh",
+        "username": "@noor_khasawneh",
+        "body": "Their acrylic and foam sheets are of the highest grade. Perfect for signage.",
+        "country": "🇯🇴 Zarqa"
+      },
+      "item5": {
+        "name": "Zayd Shishani",
+        "username": "@zshishani_tech",
+        "body": "The technical support team in Salt is world-class. Keeps us running 24/7.",
+        "country": "🇯🇴 Salt"
+      },
+      "item6": {
+        "name": "Salma Toukan",
+        "username": "@salma.toukan",
+        "body": "Vibrant colors on the new Flora printers. Our clients are amazed.",
+        "country": "🇯🇴 Amman"
+      },
+      "item7": {
+        "name": "Faisal Al-Fayez",
+        "username": "@f_alfayez",
+        "body": "Highly durable materials that withstand the harsh desert sun.",
+        "country": "🇯🇴 Ma'an"
+      },
+      "item8": {
+        "name": "Rania Nabelsi",
+        "username": "@ranianabelsi",
+        "body": "Smooth workflow integration with their machinery solutions.",
+        "country": "🇯🇴 Madaba"
+      },
+      "item9": {
+        "name": "Hamza Tarawneh",
+        "username": "@h_tarawneh",
+        "body": "The best partner for large-scale advertising projects in the MENA region.",
+        "country": "🇯🇴 Karak"
+      },
+      "item10": {
+        "name": "Maya Jaber",
+        "username": "@jaber_designs",
+        "body": "Innovative printing media that changed how we do business.",
+        "country": "🇯🇴 Amman"
+      },
+      "item11": {
+        "name": "Kareem Sukkar",
+        "username": "@k_sukkar",
+        "body": "Excellent cost-per-print ratios with their premium ink supplies.",
+        "country": "🇯🇴 Jerash"
+      },
+      "item12": {
+        "name": "Hania Al-Zubi",
+        "username": "@hazubi_production",
+        "body": "Great range of advertising displays and hardware. Very professional.",
+        "country": "🇯🇴 Ajloun"
+      },
+      "item13": {
+        "name": "Sami Hourani",
+        "username": "@sami_hourani",
+        "body": "Reliable maintenance services. They never let our production stall.",
+        "country": "🇯🇴 Amman"
+      },
+      "item14": {
+        "name": "Zeina Dajani",
+        "username": "@zeinadajani",
+        "body": "OceanJett consumables are our go-to for all luxury wall coverings.",
+        "country": "🇯🇴 Amman"
+      },
+      "item15": {
+        "name": "Tarek Lughod",
+        "username": "@t.lughod",
+        "body": "Precision engineered machinery that delivers scale and speed.",
+        "country": "🇯🇴 Amman"
+      },
+      "item16": {
+        "name": "Layla Farhan",
+        "username": "@layla_printing",
+        "body": "Professional-grade materials that exceed international standards.",
+        "country": "🇯🇴 Mafraq"
+      },
+      "item17": {
+        "name": "Rami Qasem",
+        "username": "@qasem_ad",
+        "body": "Seamless logistics and delivery across all Jordanian governorates.",
+        "country": "🇯🇴 Amman"
+      },
+      "item18": {
+        "name": "Yasmeen Akroush",
+        "username": "@yakroush",
+        "body": "Superior script resistance on their specialized floor graphics.",
+        "country": "🇯🇴 Fuheis"
+      },
+      "item19": {
+        "name": "Bashar Adwan",
+        "username": "@badwan_press",
+        "body": "Their machinery training sessions were incredibly helpful for our staff.",
+        "country": "🇯🇴 Amman"
+      },
+      "item20": {
+        "name": "Farah Mahadeen",
+        "username": "@farah_mah",
+        "body": "Trusted partners for over 10 years. Always delivering quality.",
+        "country": "🇯🇴 Tafila"
+      }
+    }
+  },
+  "CTA": {
+    "title": "Your Trusted Partner for Digital Printing",
+    "subtitle": "Empowering 2,000+ brands with innovative materials and reliable machinery. Join the Middle Ocean ecosystem today.",
+    "headquarters": "Headquarters",
+    "sales": "Direct Sales",
+    "support": "Support Line",
+    "getDirections": "Get Directions",
+    "cardTitle": "Scale with Middle Ocean",
+    "cardSubtitle": "Reliable, fast, and high-quality materials for your most ambitious projects."
+  },
+  "ContactUs": {
+    "heroTitle": "Let’s Build Something Together",
+    "heroSubtitle": "Reach Out to Our Printing Experts for top-tier machinery and materials.",
+    "openNow": "We are Open",
+    "closedNow": "We are Closed",
+    "phone": "Phone",
+    "email": "Email",
+    "whatsapp": "WhatsApp",
+    "clickToCall": "Click to Call",
+    "clickToEmail": "Click to Email",
+    "clickToMessage": "Click to Message",
+    "clickToCopy": "Click to Copy",
+    "copied": "Copied!",
+    "address": "Address",
+    "getDirections": "Get Directions",
+    "socials": "Follow Us",
+    "faq": "Frequently Asked Questions",
+    "noData": "Contact information is currently unavailable."
+  },
+  "Legal": {
+    "tocTitle": "Table of Contents",
+    "lastUpdated": "Last Updated",
+    "readingTime": "{minutes} min read",
+    "plainEnglish": "In Plain English (TL;DR)",
+    "definitions": "Definitions",
+    "protectedTrademarks": "Protected Trademarks & Assets",
+    "trademarkDisclaimer": "All brand names, logos, and trademarks shown above are property of their respective owners and Middle Ocean.",
+    "searchPlaceholder": "Search terms, clauses, or keywords...",
+    "legalInquiry": "Legal Inquiry",
+    "downloadPDF": "Download PDF",
+    "noResults": "No matching terms found for \"{query}\"",
+    "technicalSpecs": "Technical Specifications Clause",
+    "technicalSpecsDesc": "Environmental factors such as ink type, media surface energy, ambient humidity (RH), and temperature significantly impact machine throughput and cure cycles. Published speeds are theoretical maxima achieved under controlled ISO 12640 conditions using Middle Ocean optimized media profiles.",
+    "notAnOffer": "Direct Sales & Quotations",
+    "notAnOfferDesc": "This website is a digital catalog. A signed Quote or Sales Order is required to form a binding contract."
+  },
+  "PrivacyPolicy": {
+    "pageTitle": "Privacy Policy",
+    "heroBadge": "We value your privacy by collecting less.",
+    "heroSubtitle": "Middle Ocean does not use automated forms to collect your personal or corporate data on this site. We prefer direct, secure conversations.",
+    "communicationTitle": "Secure Communication Channels",
+    "communicationSubtitle": "Since we prioritize your privacy, we handle data through direct, secure channels. Here is how your information is treated:",
+    "whatsapp": "WhatsApp",
+    "whatsappDesc": "Encrypted direct messaging for quick quotes and technical inquiries. Your phone number is only used for the intended business conversation.",
+    "email": "Direct Email",
+    "emailDesc": "Formal business correspondence. Your email and shared documents are stored in our secure corporate servers.",
+    "phone": "Voice Calls",
+    "phoneDesc": "Direct person-to-person consultation. We do not record calls without explicit verbal consent.",
+    "thirdPartyDisclaimer": "Note that when you click the WhatsApp link or open your email client, your data is governed by those respective platforms' privacy policies.",
+    "technicalDataTitle": "Technical Site Data",
+    "technicalDataDesc": "Even without forms, our web host automatically collects basic connection data (like IP addresses or browser types) to keep the site running. This information is only used for site security and basic performance monitoring, not for tracking individual users.",
+    "contactCTA": "Contact Our Team",
+    "trustBadgeAlt": "Privacy Shield"
+  },
+  "Reviews": {
+    "readMore": "Read More",
+    "readLess": "Read Less",
+    "fullReview": "Full Review",
+    "close": "Close"
+  }
+}
