@@ -58,7 +58,7 @@ function PaginationLink({
           variant: isActive ? "outline" : "ghost",
           size,
         }),
-        "text-foreground hover:text-white transition-colors",
+        "text-foreground hover:text-white transition-colors cursor-pointer",
         isActive && "border-white/20 text-white bg-white/10 shadow-[0_0_15px_rgba(255,255,255,0.1)]",
         className
       )}

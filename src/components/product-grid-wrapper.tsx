@@ -1,7 +1,7 @@
 import { sanityClient } from "@/sanity/client";
 import { allProductsPagedQuery, productsCountQuery } from "@/sanity/queries";
-import InteractiveProductCard from "@/src/components/ui/interactive-product-card";
-import { ProductPagination } from "@/src/components/product-pagination";
+import InteractiveProductCard from "@/components/ui/interactive-product-card";
+import { ProductPagination } from "@/components/product-pagination";
 
 interface ProductGridWrapperProps {
   page: number;
@@ -35,7 +35,7 @@ export default async function ProductGridWrapper({ page, limit, locale }: Produc
     <>
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {products.map((product: any) => (
-          <InteractiveProductCard key={product._id} product={product} />
+          <InteractiveProductCard key={product._id} product={product} source="products" />
         ))}
       </div>
       

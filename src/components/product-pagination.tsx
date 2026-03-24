@@ -96,7 +96,13 @@ export function ProductPagination({
             href={currentPage > 1 ? createPageURL(currentPage - 1) : "#"}
             text={t.previous}
             className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
-          />
+            asChild
+          >
+            <Link href={currentPage > 1 ? createPageURL(currentPage - 1) : "#"}>
+              <ChevronLeftIcon className="rtl:rotate-180" data-icon="inline-start" />
+              <span className="hidden sm:block">{t.previous}</span>
+            </Link>
+          </PaginationPrevious>
         </PaginationItem>
 
         {getPageNumbers().map((page, index) => (

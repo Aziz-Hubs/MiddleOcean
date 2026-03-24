@@ -6,6 +6,9 @@ import { Eye, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
+import { TEST_PRODUCT_IMAGES } from '@/lib/test-images';
+import Image from 'next/image';
+import { Logo } from '@/components/logo';
 
 interface ProductProps {
     product: {
@@ -19,9 +22,10 @@ interface ProductProps {
             slug: { current: string };
         };
     };
+    source?: "products" | "category";
 }
 
-const InteractiveProductCard = ({ product }: ProductProps) => {
+const InteractiveProductCard = ({ product, source = "products" }: ProductProps) => {
     const locale = useLocale();
     const t = useTranslations('Common');
     const isRtl = locale === 'ar';
@@ -54,9 +58,13 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
         y.set(0);
     };
 
-    const categoryTitle = product.category?.title[locale as 'en' | 'ar'] || product.category?.title.en;
+    const categoryRaw = product.category?.title;
+    const categoryTitle = typeof categoryRaw === 'string' ? categoryRaw : (categoryRaw?.[locale as 'en' | 'ar'] || categoryRaw?.en);
 
     const ChevronIcon = isRtl ? ChevronLeft : ChevronRight;
+    
+    const titleText = typeof product.title === 'string' ? product.title : (product.title?.[locale as 'en' | 'ar'] || product.title?.en);
+    const descText = typeof product.description === 'string' ? product.description : (product.description?.[locale as 'en' | 'ar'] || product.description?.en);
 
     // Warranty calculation
     const getWarrantyText = (months?: number) => {
@@ -95,10 +103,12 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                 style={{ transform: "translateZ(80px)" }}
                 className="relative h-64 w-full flex items-center justify-center will-change-transform bg-transparent p-4"
             >
-                {product.imageUrl ? (
-                    <img 
-                        src={product.imageUrl} 
-                        alt={product.title.en}
+                {product.imageUrl || TEST_PRODUCT_IMAGES[product.slug.current] ? (
+                    <Image 
+                        src={TEST_PRODUCT_IMAGES[product.slug.current] || product.imageUrl || '/placeholder.png'} 
+                        alt={titleText}
+                        width={400}
+                        height={400}
                         className="max-w-full max-h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 group-hover:scale-110"
                     />
                 ) : (
@@ -132,24 +142,24 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                     style={{ transform: "translateZ(60px)" }}
                     className="flex-1 space-y-4 flex flex-col will-change-transform overflow-hidden"
                 >
-                    <Link href={`/products/${product.slug.current}`} className="inline-block group/title">
+                    <Link href={`/products/${product.category?.slug.current || 'all'}/${product.slug.current}?source=${source}`} className="inline-block group/title">
                         <h3 className="transition-all duration-300">
                             <span className={cn(
                                 "text-xl font-black text-white line-clamp-3 leading-tight tracking-tight uppercase",
                                 locale === 'ar' && "font-arabic"
                             )}>
-                                {product.title[locale as 'en' | 'ar'] || product.title.en}
+                                {titleText}
                             </span>
                             <div className="w-full h-0.5 mt-2 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
                         </h3>
                     </Link>
 
-                    {product.description?.[locale as 'en' | 'ar'] && (
+                    {descText && (
                         <p className={cn(
                             "text-[11px] text-zinc-400 font-light line-clamp-4 leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity duration-300",
                             locale === 'ar' && "font-arabic"
                         )}>
-                            {product.description[locale as 'en' | 'ar']}
+                            {descText}
                         </p>
                     )}
                 </div>
@@ -161,9 +171,7 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                 >
                     {warrantyText && (
                         <div className="flex items-center gap-2.5 mb-5 text-[10px] font-black tracking-[0.2em] text-[#FFEC00]/90 drop-shadow-[0_0_10px_rgba(255,236,0,0.2)]">
-                            <img 
-                                src="/logo.svg" 
-                                alt="Logo" 
+                            <Logo 
                                 className="w-5 h-auto brightness-0 invert-[.8] sepia-[1] saturate-[1000%] hue-rotate-[-10deg]" 
                             />
                             <span className="uppercase">{warrantyText}</span>
@@ -172,7 +180,7 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
 
                     {/* Action - Wide Premium Button */}
                     <Link 
-                        href={`/products/${product.slug.current}`}
+                        href={`/products/${product.category?.slug.current || 'all'}/${product.slug.current}?source=${source}`}
                         className="group/btn relative w-full h-12 inline-flex items-center justify-center gap-4 rounded-full bg-zinc-900 border border-zinc-800 text-white text-[10px] font-black uppercase tracking-widest transition-all duration-500 overflow-hidden"
                     >
                         {/* Rainbow Background Layer */}
@@ -198,14 +206,7 @@ const InteractiveProductCard = ({ product }: ProductProps) => {
                         (values: any[]) => {
                              const [px, py] = values as [number, number];
                              return `radial-gradient(circle 500px at calc(50% + ${px * 120}%) calc(50% + ${py * 120}%), 
-                                rgba(255, 0, 0, 0.05) 0%, 
-                                rgba(255, 165, 0, 0.05) 15%, 
-                                rgba(255, 255, 0, 0.04) 30%, 
-                                rgba(0, 128, 0, 0.05) 45%, 
-                                rgba(0, 0, 255, 0.04) 60%, 
-                                rgba(75, 0, 130, 0.04) 75%, 
-                                rgba(238, 130, 238, 0.04) 90%, 
-                                transparent 100%)`
+                                radial-gradient(circle at center, rgba(255, 0, 0, 0.05) 0%, rgba(255, 165, 0, 0.05) 15%, rgba(255, 255, 0, 0.04) 30%, rgba(0, 128, 0, 0.05) 45%, rgba(0, 0, 255, 0.04) 60%, rgba(75, 0, 130, 0.04) 75%, rgba(238, 130, 238, 0.04) 90%, transparent 100%)`
                         }
                     ),
                 }}
