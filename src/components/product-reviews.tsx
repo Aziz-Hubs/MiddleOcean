@@ -170,14 +170,11 @@ function ReviewCard({ review, locale, isPlaceholder }: { review: Review; locale:
 
           <div className="relative flex-1 overflow-hidden">
             <blockquote className={cn(
-              "text-sm lg:text-base text-muted-foreground leading-relaxed font-light line-clamp-4",
+              "text-sm lg:text-base text-muted-foreground leading-relaxed font-light",
               locale === "ar" && "font-arabic text-right"
             )}>
-              &ldquo;{text}&rdquo;
+              &ldquo;{text.length > 160 ? text.substring(0, 160) + "..." : text}&rdquo;
             </blockquote>
-            {isLongText && (
-              <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-background/40 to-transparent pointer-events-none" />
-            )}
           </div>
           
           {isLongText && (
@@ -433,7 +430,7 @@ export function ProductReviews({ productId, locale, initialReviews, totalCount }
                   disabled={isLoading}
                   aria-current={currentPage === page ? "page" : undefined}
                   className={cn(
-                    "size-8 rounded-full text-xs font-bold transition-all flex items-center justify-center",
+                    "size-8 rounded-full text-xs font-bold transition-all flex items-center justify-center cursor-pointer",
                     currentPage === page
                       ? "bg-primary text-primary-foreground shadow-lg scale-110"
                       : "hover:bg-white/10 text-muted-foreground/60"

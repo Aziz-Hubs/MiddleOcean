@@ -1,14 +1,14 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
-import { Eye, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Search, ChevronRight, ChevronLeft } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
-import { TEST_PRODUCT_IMAGES } from '@/lib/test-images';
 import Image from 'next/image';
 import { Logo } from '@/components/logo';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ProductProps {
     product: {
@@ -26,6 +26,7 @@ interface ProductProps {
 }
 
 const InteractiveProductCard = ({ product, source = "products" }: ProductProps) => {
+    const [imageLoaded, setImageLoaded] = useState(false);
     const locale = useLocale();
     const t = useTranslations('Common');
     const isRtl = locale === 'ar';
@@ -103,17 +104,26 @@ const InteractiveProductCard = ({ product, source = "products" }: ProductProps) 
                 style={{ transform: "translateZ(80px)" }}
                 className="relative h-64 w-full flex items-center justify-center will-change-transform bg-transparent p-4"
             >
-                {product.imageUrl || TEST_PRODUCT_IMAGES[product.slug.current] ? (
-                    <Image 
-                        src={TEST_PRODUCT_IMAGES[product.slug.current] || product.imageUrl || '/placeholder.png'} 
-                        alt={titleText}
-                        width={400}
-                        height={400}
-                        className="max-w-full max-h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-transform duration-700 group-hover:scale-110"
-                    />
+                {product.imageUrl ? (
+                    <>
+                        {!imageLoaded && (
+                            <Skeleton className="absolute inset-0 w-full h-full rounded-[1.5rem] bg-zinc-800/50" />
+                        )}
+                        <Image 
+                            src={product.imageUrl} 
+                            alt={titleText}
+                            width={400}
+                            height={400}
+                            onLoad={() => setImageLoaded(true)}
+                            className={cn(
+                                "max-w-full max-h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-700",
+                                imageLoaded ? "opacity-100 scale-100 group-hover:scale-110" : "opacity-0 scale-95"
+                            )}
+                        />
+                    </>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                         <Eye className="w-16 h-16 text-zinc-700 opacity-20 animate-pulse" />
+                         <Search className="w-16 h-16 text-zinc-700 opacity-20 animate-pulse" />
                     </div>
                 )}
                 
