@@ -11,7 +11,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Link } from "@/i18n/routing"
-import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target, Search } from "lucide-react"
+import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target } from "lucide-react"
 import { PrintBrochureButton, RequestQuoteButton, StickyHeader } from "@/components/product-client-components"
 import { ProductReviews } from "@/components/product-reviews"
 import { ProductImage } from "@/components/product-image"
@@ -20,7 +20,7 @@ import { cn } from "@/lib/utils"
 import Image from "next/image"
 import type { Metadata } from "next"
 
-function resolveLocale(field: any, locale: string): string {
+function resolveLocale(field: Record<string, string> | string | undefined, locale: string): string {
   if (!field) return ""
   if (typeof field === "string") return field
   return field[locale] || field["en"] || ""
@@ -108,7 +108,7 @@ export default async function ProductPage(props: {
   const productDesc = resolveLocale(productData.description, locale)
   const categoryTitle = resolveLocale(productData.category?.title, locale) || category.replace(/-/g, ' ')
   const partNumber = `SKU-${productData._id.substring(0, 8).toUpperCase()}`
-  const brandFromSpec = productData.specifications?.find((s: any) => {
+  const brandFromSpec = productData.specifications?.find((s: { name: Record<string, string> | string; value: Record<string, string> | string }) => {
     const nameEn = resolveLocale(s.name, "en")?.toLowerCase()
     return nameEn === "brand"
   })
@@ -302,11 +302,11 @@ export default async function ProductPage(props: {
                   {productData.specifications && productData.specifications.length > 0 ? (
                     <div className="divide-y divide-border/20 print:divide-zinc-200">
                       {productData.specifications
-                        ?.filter((spec: any) => {
+                        ?.filter((spec: { name: Record<string, string> | string; value: Record<string, string> | string }) => {
                           const nameEn = resolveLocale(spec.name, "en")?.toLowerCase()
                           return nameEn !== "media thumbnail" && nameEn !== "thumbnail"
                         })
-                        .map((spec: any, idx: number) => {
+                        .map((spec: { name: Record<string, string> | string; value: Record<string, string> | string }, idx: number) => {
                           const specName = resolveLocale(spec.name, locale) || "Unknown"
                           const specValue = resolveLocale(spec.value, locale) || "N/A"
                           return (
@@ -344,11 +344,11 @@ export default async function ProductPage(props: {
               </h2>
               <div className="grid grid-cols-1 gap-2 border border-zinc-200 rounded-xl overflow-hidden bg-white">
                 {productData.specifications
-                  ?.filter((spec: any) => {
+                  ?.filter((spec: { name: Record<string, string> | string; value: Record<string, string> | string }) => {
                     const nameEn = resolveLocale(spec.name, "en")?.toLowerCase()
                     return nameEn !== "media thumbnail" && nameEn !== "thumbnail"
                   })
-                  .map((spec: any, idx: number) => {
+                  .map((spec: { name: Record<string, string> | string; value: Record<string, string> | string }, idx: number) => {
                     const specName = resolveLocale(spec.name, locale) || "Unknown"
                     const specValue = resolveLocale(spec.value, locale) || "N/A"
                     return (

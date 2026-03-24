@@ -38,7 +38,7 @@ const TestimonialCard = ({
           </div>
         </div>
         <blockquote className="mt-4 text-sm leading-relaxed text-gray-300 italic flex-grow overflow-hidden line-clamp-4">
-          "{body}"
+          &quot;{body}&quot;
         </blockquote>
       </CardContent>
     </Card>
@@ -101,25 +101,25 @@ export function TestimonialsSection() {
             style={{ transformStyle: 'preserve-3d' }}
           >
             <div className="flex h-full w-fit gap-8 [transform:rotateX(15deg)_rotateY(-15deg)]">
-              <Marquee vertical pauseOnHover repeat={4} className="[--duration:50s] [--gap:1.5rem]">
+              <Marquee vertical pauseOnHover className="[--duration:50s] [--gap:1.5rem]">
                 {columns[0].map(({ key, ...review }) => (
                   <TestimonialCard key={key} {...review} />
                 ))}
               </Marquee>
 
-              <Marquee vertical pauseOnHover reverse repeat={4} className="[--duration:40s] [--gap:1.5rem]">
+              <Marquee vertical pauseOnHover reverse className="[--duration:40s] [--gap:1.5rem]">
                 {columns[1].map(({ key, ...review }) => (
                   <TestimonialCard key={key} {...review} />
                 ))}
               </Marquee>
 
-              <Marquee vertical pauseOnHover repeat={4} className="[--duration:60s] [--gap:1.5rem]">
+              <Marquee vertical pauseOnHover className="[--duration:60s] [--gap:1.5rem]">
                 {columns[2].map(({ key, ...review }) => (
                   <TestimonialCard key={key} {...review} />
                 ))}
               </Marquee>
 
-              <Marquee vertical pauseOnHover reverse repeat={4} className="[--duration:45s] [--gap:1.5rem]">
+              <Marquee vertical pauseOnHover reverse className="[--duration:45s] [--gap:1.5rem]">
                 {columns[3].map(({ key, ...review }) => (
                   <TestimonialCard key={key} {...review} />
                 ))}

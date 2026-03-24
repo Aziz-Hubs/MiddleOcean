@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 export const Marquee = ({
   children,
@@ -10,7 +10,6 @@ export const Marquee = ({
   pauseOnHover = true,
   className,
   vertical = false,
-  repeat = 4,
   reverse = false,
 }: {
   children: React.ReactNode;
@@ -19,19 +18,37 @@ export const Marquee = ({
   pauseOnHover?: boolean;
   className?: string;
   vertical?: boolean;
-  repeat?: number;
   reverse?: boolean;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    addAnimation();
-  }, []);
-
   const [start, setStart] = useState(false);
 
-  function addAnimation() {
+  const getDirection = useCallback(() => {
+    if (containerRef.current) {
+      let isForwards = direction === "left" || direction === "up";
+      if (reverse) isForwards = !isForwards;
+
+      containerRef.current.style.setProperty(
+        "--animation-direction",
+        isForwards ? "forwards" : "reverse"
+      );
+    }
+  }, [direction, reverse]);
+
+  const getSpeed = useCallback(() => {
+    if (containerRef.current) {
+      if (speed === "fast") {
+        containerRef.current.style.setProperty("--animation-duration", "20s");
+      } else if (speed === "normal") {
+        containerRef.current.style.setProperty("--animation-duration", "40s");
+      } else {
+        containerRef.current.style.setProperty("--animation-duration", "80s");
+      }
+    }
+  }, [speed]);
+
+  const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
 
@@ -46,31 +63,12 @@ export const Marquee = ({
       getSpeed();
       setStart(true);
     }
-  }
+  }, [getDirection, getSpeed]);
 
-  const getDirection = () => {
-    if (containerRef.current) {
-      let isForwards = direction === "left" || direction === "up";
-      if (reverse) isForwards = !isForwards;
-
-      containerRef.current.style.setProperty(
-        "--animation-direction",
-        isForwards ? "forwards" : "reverse"
-      );
-    }
-  };
-
-  const getSpeed = () => {
-    if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
-      }
-    }
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => addAnimation(), 0);
+    return () => clearTimeout(timer);
+  }, [addAnimation]);
 
   return (
     <div

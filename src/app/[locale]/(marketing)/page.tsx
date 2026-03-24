@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server"
-import { WebGLShader } from "@/components/ui/web-gl-shader"
 import AppHero from "@/components/app-hero"
 import { PartnersSection } from "@/components/ui/partners-section"
 import { sanityClient } from "@/sanity/client"
@@ -60,7 +59,6 @@ export default async function Home(props: {
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await props.params
-  const t = await getTranslations("Index")
   const isArabic = locale === "ar"
 
   // Fetch categories and site settings

@@ -9,26 +9,16 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Logo } from '@/components/logo';
 import { Skeleton } from '@/components/ui/skeleton';
+import { SanityProduct } from '@/sanity/types';
 
 interface ProductProps {
-    product: {
-        title: { en: string; ar: string };
-        description?: { en: string; ar: string };
-        slug: { current: string };
-        imageUrl?: string;
-        warrantyMonths?: number;
-        category?: {
-            title: { en: string; ar: string };
-            slug: { current: string };
-        };
-    };
+    product: SanityProduct;
     source?: "products" | "category";
 }
 
 const InteractiveProductCard = ({ product, source = "products" }: ProductProps) => {
     const [imageLoaded, setImageLoaded] = useState(false);
     const locale = useLocale();
-    const t = useTranslations('Common');
     const isRtl = locale === 'ar';
     
     // --- 3D Tilt Effect Logic ---
@@ -213,8 +203,8 @@ const InteractiveProductCard = ({ product, source = "products" }: ProductProps) 
                 style={{
                     background: useTransform(
                         [mouseXSpring, mouseYSpring],
-                        (values: any[]) => {
-                             const [px, py] = values as [number, number];
+                        (values: number[]) => {
+                             const [px, py] = values;
                              return `radial-gradient(circle 500px at calc(50% + ${px * 120}%) calc(50% + ${py * 120}%), 
                                 radial-gradient(circle at center, rgba(255, 0, 0, 0.05) 0%, rgba(255, 165, 0, 0.05) 15%, rgba(255, 255, 0, 0.04) 30%, rgba(0, 128, 0, 0.05) 45%, rgba(0, 0, 255, 0.04) 60%, rgba(75, 0, 130, 0.04) 75%, rgba(238, 130, 238, 0.04) 90%, transparent 100%)`
                         }

@@ -29,7 +29,7 @@ export class CategoryIcon {
   constructor(value: string) {
     const normalized = value.trim();
     
-    if (!CategoryIcon.VALID_ICONS.includes(normalized as any)) {
+    if (!CategoryIcon.VALID_ICONS.includes(normalized as typeof CategoryIcon.VALID_ICONS[number])) {
       throw new Error(`Invalid icon name: "${value}". Must be a valid Lucide icon identifier.`);
     }
     
@@ -54,6 +54,6 @@ export class CategoryIcon {
   }
 
   static isValid(icon: string): boolean {
-    return CategoryIcon.VALID_ICONS.includes(icon as any);
+    return (CategoryIcon.VALID_ICONS as readonly string[]).includes(icon);
   }
 }

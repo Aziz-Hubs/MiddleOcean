@@ -5,8 +5,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   
   // Fetch dynamic slugs using accurate GROQ
-  const products = await sanityClient.fetch(`*[_type == "product" && defined(slug.current)][]{ "slug": slug.current, "catSlug": category->slug.current, _updatedAt }`);
-  const categories = await sanityClient.fetch(`*[_type == "category" && defined(slug.current)][]{ "slug": slug.current, _updatedAt }`);
+  const products: Array<{ slug: string; catSlug: string; _updatedAt: string }> = await sanityClient.fetch(`*[_type == "product" && defined(slug.current)][]{ "slug": slug.current, "catSlug": category->slug.current, _updatedAt }`);
+  const categories: Array<{ slug: string; _updatedAt: string }> = await sanityClient.fetch(`*[_type == "category" && defined(slug.current)][]{ "slug": slug.current, _updatedAt }`);
   
   // Static Routes corresponding to locales
   const locales = ['en', 'ar'];
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Dynamic Product Routes
-  const productPaths = products.flatMap((product: any) => 
+  const productPaths = products.flatMap((product) => 
     locales.map(locale => ({
       url: `${baseUrl}/${locale}/products/${product.catSlug || 'all'}/${product.slug}`,
       lastModified: new Date(product._updatedAt),
@@ -42,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   // Dynamic Category Routes
-  const categoryPaths = categories.flatMap((category: any) => 
+  const categoryPaths = categories.flatMap((category) => 
     locales.map(locale => ({
       url: `${baseUrl}/${locale}/products/${category.slug}`,
       lastModified: new Date(category._updatedAt),

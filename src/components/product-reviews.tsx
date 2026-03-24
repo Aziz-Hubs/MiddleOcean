@@ -95,10 +95,11 @@ const PLACEHOLDER_REVIEWS_AR: Review[] = [
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function resolveLocale(field: any, locale: string): string {
+function resolveLocale(field: unknown, locale: string): string {
   if (!field) return ""
   if (typeof field === "string") return field
-  return field[locale] || field["en"] || ""
+  const record = field as Record<string, string>
+  return record[locale] || record["en"] || ""
 }
 
 function StarRow({ rating }: { rating: number }) {

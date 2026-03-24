@@ -21,7 +21,7 @@ export function LinkItem({
 		<Link
 			className={cn("flex items-center gap-x-2", className)}
 			href={href}
-			{...(props as any)}
+			{...props}
 		>
 			<div
 				className={cn(

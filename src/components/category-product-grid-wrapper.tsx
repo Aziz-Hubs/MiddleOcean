@@ -2,6 +2,7 @@ import { sanityClient } from "@/sanity/client";
 import { productsByCategoryPagedQuery, productsByCategoryCountQuery } from "@/sanity/queries";
 import InteractiveProductCard from "@/components/ui/interactive-product-card";
 import { ProductPagination } from "@/components/product-pagination";
+import { SanityProduct } from "@/sanity/types";
 
 interface CategoryProductGridWrapperProps {
   slug: string;
@@ -45,7 +46,7 @@ export default async function CategoryProductGridWrapper({
   return (
     <>
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product: any) => (
+        {products.map((product: SanityProduct) => (
           <InteractiveProductCard key={product._id} product={product} source="category" />
         ))}
       </div>

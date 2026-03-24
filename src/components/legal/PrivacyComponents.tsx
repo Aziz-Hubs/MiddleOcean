@@ -5,7 +5,6 @@ import { ShieldCheck, MessageSquare, Mail, Phone, Server, ExternalLink } from "l
 import { useTranslations, useLocale } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -28,8 +27,6 @@ const itemVariants = {
 
 export function ZeroCollectionHero() {
   const t = useTranslations("PrivacyPolicy");
-  const locale = useLocale();
-  const isRtl = locale === "ar";
 
   return (
     <motion.section 
@@ -67,7 +64,7 @@ export function ZeroCollectionHero() {
           {t("heroBadge")}
         </p>
         <p className="text-muted-foreground leading-relaxed text-lg italic">
-          "{t("heroSubtitle")}"
+          &quot;{t("heroSubtitle")}&quot;
         </p>
       </motion.div>
     </motion.section>

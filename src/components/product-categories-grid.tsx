@@ -154,10 +154,12 @@ function MobileCarousel({
 
   useEffect(() => {
     if (!api) return
-    onSelect(api)
+    // Defer initial select to avoid cascading renders
+    const timer = setTimeout(() => onSelect(api), 0)
     api.on("select", onSelect)
     api.on("reInit", onSelect)
     return () => {
+      clearTimeout(timer)
       api.off("select", onSelect)
       api.off("reInit", onSelect)
     }

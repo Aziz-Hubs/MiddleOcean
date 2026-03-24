@@ -7,9 +7,6 @@ import {
 	TwitterIcon, 
 	LinkedinIcon, 
 	Languages,
-	MailIcon,
-	MapPinIcon,
-	PhoneIcon
 } from "lucide-react";
 import { SanityCategory } from "@/sanity/types";
 import { motion, Variants } from "framer-motion";
@@ -124,7 +121,7 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 									<li key={link.label}>
 										<Link 
 											className="text-muted-foreground hover:text-primary transition-colors text-sm" 
-											href={link.href as any}
+											href={link.href}
 										>
 											{tn(link.label)}
 										</Link>
@@ -141,7 +138,7 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 									<li key={link.label}>
 										<Link 
 											className="text-muted-foreground hover:text-primary transition-colors text-sm" 
-											href={link.href as any}
+											href={link.href}
 										>
 											{tn(link.label)}
 										</Link>

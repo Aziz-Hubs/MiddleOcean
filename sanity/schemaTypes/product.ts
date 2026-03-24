@@ -129,7 +129,7 @@ export const product = defineType({
       return {
         title: titleEn || titleAr || "Untitled Product",
         subtitle: `${categoryEmoji} ${categoryTitle || "No Category"}`,
-        media: media || (categoryEmoji as any),
+        media: media || (categoryEmoji as string),
       };
     },
   },

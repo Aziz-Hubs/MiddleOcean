@@ -88,7 +88,7 @@ export default async function CategoryPage(props: {
   const limit = 12
 
   // Fetch data from Sanity
-  const [categoryData, allCategories, siteSettings]: [SanityCategory, SanityCategory[], any] = await Promise.all([
+  const [categoryData, allCategories, siteSettings]: [SanityCategory, SanityCategory[], { phone: string; email: string }] = await Promise.all([
     sanityClient.fetch(categoryBySlugQuery, { slug: category }),
     sanityClient.fetch(categoryQuery),
     sanityClient.fetch(siteSettingsQuery)

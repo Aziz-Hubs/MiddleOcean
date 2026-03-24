@@ -6,7 +6,7 @@ import { FloatingActions, DownloadCTA } from "@/components/terms-of-service/Inte
 import { Badge } from "@/components/ui/badge";
 import { ClockIcon, CalendarIcon } from "lucide-react";
 import { TOS_SECTIONS, LEGAL_DEFINITIONS, TOS_METADATA } from "@/lib/legal-content";
-import { FadeIn, ScaleIn, StaggerContainer } from "@/components/terms-of-service/AnimationWrappers";
+import { FadeIn, ScaleIn } from "@/components/terms-of-service/AnimationWrappers";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -23,7 +23,7 @@ export default async function TermsOfServicePage({ params }: PageProps) {
   const metadata = TOS_METADATA;
 
   // Calculate Reading Time
-  const totalText = sections.reduce((acc: string, s: { tlDr: string; content: any }) => acc + s.tlDr + JSON.stringify(s.content), "");
+  const totalText = sections.reduce((acc: string, s: { tlDr: string; content: unknown[] }) => acc + s.tlDr + JSON.stringify(s.content), "");
   const wordCount = totalText.split(/\s+/).length;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
@@ -95,7 +95,7 @@ export default async function TermsOfServicePage({ params }: PageProps) {
 
             {/* Terms Content */}
             <div className="space-y-4">
-              {sections.map((section: any) => (
+              {sections.map((section: { id: string; title: string; tlDr: string; content: unknown[] }) => (
                 <div key={section.id} className="print:break-inside-avoid print:mb-8">
                   <LegalSection 
                     id={section.id}
@@ -136,7 +136,7 @@ export default async function TermsOfServicePage({ params }: PageProps) {
                   </h2>
                 </FadeIn>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 print:grid-cols-1">
-                  {definitions.map((def: any, idx: number) => (
+                  {definitions.map((def: { term: string; description: string }, idx: number) => (
                     <ScaleIn key={idx} delay={idx * 0.05}>
                       <div className="group print:mb-4">
                         <p className="font-bold text-foreground group-hover:text-primary transition-colors duration-200 mb-1">

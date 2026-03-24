@@ -1,15 +1,8 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { PortableText } from "@/components/ui/portable-text";
-import { InfoIcon, LightbulbIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { LightbulbIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   Tooltip,
@@ -21,7 +14,7 @@ interface LegalSectionProps {
   id: string;
   title: string;
   tlDr?: string;
-  content: any;
+  content: unknown;
   isExpanded?: boolean;
 }
 
@@ -58,7 +51,7 @@ export function TLDRCard({ content }: { content: string }) {
   );
 }
 
-export function LegalSection({ id, title, tlDr, content, isExpanded }: LegalSectionProps) {
+export function LegalSection({ id, title, tlDr, content }: LegalSectionProps) {
   return (
     <motion.section 
       id={id} 

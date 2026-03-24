@@ -14,3 +14,17 @@ export interface SanityCategory {
   };
   image?: string;
 }
+
+export interface SanityProduct {
+  _id: string;
+  title: { en: string; ar: string };
+  description?: { en: string; ar: string };
+  slug: { current: string };
+  imageUrl?: string;
+  warrantyMonths?: number;
+  category?: {
+    _id?: string;
+    title: { en: string; ar: string };
+    slug: { current: string };
+  };
+}

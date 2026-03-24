@@ -1,6 +1,7 @@
 import { Package, Layers, Award, Star, Settings } from "lucide-react";
+import { StructureResolver } from "sanity/structure";
 
-export const structure: any = (S: any) =>
+export const structure: StructureResolver = (S) =>
   S.list()
     .title("Middle Ocean Content")
     .items([
@@ -52,7 +53,7 @@ export const structure: any = (S: any) =>
 
       // Filter out types that are already in the custom list
       ...S.documentTypeListItems().filter(
-        (listItem: any) =>
+        (listItem) =>
           !["product", "category", "brand", "productReview", "siteSettings"].includes(
             listItem.getId() || ""
           )

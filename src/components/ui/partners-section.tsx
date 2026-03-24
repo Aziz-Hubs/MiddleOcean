@@ -28,7 +28,7 @@ export function PartnersSection() {
       {/* Section heading */}
       <div className="mx-auto max-w-7xl px-6">
         <h2 className="text-center text-3xl font-extrabold tracking-tighter text-foreground uppercase md:text-5xl">
-          {t("trusted-partners" as any) || "Strategic Partners"}
+          {t("trusted-partners") || "Strategic Partners"}
         </h2>
       </div>
 

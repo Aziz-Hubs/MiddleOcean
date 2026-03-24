@@ -197,50 +197,53 @@ export function ThreeDImageRing({
     [draggable, rotationY]
   )
 
-  const handleDragEnd = useCallback(() => {
-    if (!isDraggingRef.current) return
-    isDraggingRef.current = false
-    
-    if (ringRef.current) {
-      ringRef.current.style.cursor = "grab"
-      currentRotRef.current = rotationY.get()
-    }
-
-    document.removeEventListener("mousemove", handleDragMove)
-    document.removeEventListener("mouseup", handleDragEnd)
-    document.removeEventListener("touchmove", handleDragMove)
-    document.removeEventListener("touchend", handleDragEnd)
-
-    // Apply inertia based on the last recorded velocity
-    const velocity = velocityRef.current * inertiaVelocityMultiplier
-    
-    isInertiaAnimatingRef.current = true
-    animate(rotationY, rotationY.get() + velocity, {
-      type: "inertia",
-      velocity: velocity,
-      power: inertiaPower,
-      timeConstant: inertiaTimeConstant,
-      restDelta: 0.1,
-      onUpdate: (latest) => {
-        currentRotRef.current = latest
-      },
-      onComplete: () => {
-        isInertiaAnimatingRef.current = false
-        lastTimeRef.current = performance.now() // Smooth handoff back to auto-rotation
-      },
-      onStop: () => {
-        isInertiaAnimatingRef.current = false
+  const handleDragEnd = useCallback(
+    function onDragEnd() {
+      if (!isDraggingRef.current) return
+      isDraggingRef.current = false
+      
+      if (ringRef.current) {
+        ringRef.current.style.cursor = "grab"
+        currentRotRef.current = rotationY.get()
       }
-    })
 
-    velocityRef.current = 0
-  }, [
-    rotationY,
-    handleDragMove,
-    inertiaVelocityMultiplier,
-    inertiaPower,
-    inertiaTimeConstant,
-  ])
+      document.removeEventListener("mousemove", handleDragMove)
+      document.removeEventListener("mouseup", onDragEnd)
+      document.removeEventListener("touchmove", handleDragMove)
+      document.removeEventListener("touchend", onDragEnd)
+
+      // Apply inertia based on the last recorded velocity
+      const velocity = velocityRef.current * inertiaVelocityMultiplier
+      
+      isInertiaAnimatingRef.current = true
+      animate(rotationY, rotationY.get() + velocity, {
+        type: "inertia",
+        velocity: velocity,
+        power: inertiaPower,
+        timeConstant: inertiaTimeConstant,
+        restDelta: 0.1,
+        onUpdate: (latest) => {
+          currentRotRef.current = latest
+        },
+        onComplete: () => {
+          isInertiaAnimatingRef.current = false
+          lastTimeRef.current = performance.now() // Smooth handoff back to auto-rotation
+        },
+        onStop: () => {
+          isInertiaAnimatingRef.current = false
+        }
+      })
+
+      velocityRef.current = 0
+    },
+    [
+      rotationY,
+      handleDragMove,
+      inertiaVelocityMultiplier,
+      inertiaPower,
+      inertiaTimeConstant,
+    ]
+  )
 
   const handleDragStart = useCallback(
     (event: React.MouseEvent | React.TouchEvent) => {

@@ -16,7 +16,7 @@ export class Currency {
       throw new Error('Amount cannot be negative');
     }
     
-    if (!Currency.VALID_CURRENCIES.includes(code as any)) {
+    if (!Currency.VALID_CURRENCIES.includes(code as typeof Currency.VALID_CURRENCIES[number])) {
       throw new Error(`Invalid currency code: ${code}. Must be one of: ${Currency.VALID_CURRENCIES.join(', ')}`);
     }
     
