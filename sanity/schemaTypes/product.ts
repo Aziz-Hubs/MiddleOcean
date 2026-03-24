@@ -1,9 +1,12 @@
 import { defineType, defineField } from "sanity";
+import { Package } from "lucide-react";
 
 export const product = defineType({
   name: "product",
   title: "Product",
+  description: "Manage product catalog items, specifications, and media.",
   type: "document",
+  icon: Package,
   fields: [
     defineField({
       name: "title",
@@ -81,4 +84,5 @@ export const product = defineType({
       ],
     }),
   ],
+  groups: [],
 });

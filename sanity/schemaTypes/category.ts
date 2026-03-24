@@ -1,9 +1,12 @@
 import { defineType, defineField } from "sanity";
+import { Layers } from "lucide-react";
 
 export const category = defineType({
   name: "category",
   title: "Category",
+  description: "Organize products into logical categories (e.g., Printers, Acrylic Sheets).",
   type: "document",
+  icon: Layers,
   fields: [
     defineField({
       name: "title",
@@ -28,4 +31,5 @@ export const category = defineType({
       },
     }),
   ],
+  groups: [],
 });

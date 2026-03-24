@@ -1,9 +1,12 @@
 import { defineType, defineField } from "sanity";
+import { Award } from "lucide-react";
 
 export const brand = defineType({
   name: "brand",
   title: "Brand",
+  description: "Manage product brands and their logos.",
   type: "document",
+  icon: Award,
   fields: [
     defineField({
       name: "title",
