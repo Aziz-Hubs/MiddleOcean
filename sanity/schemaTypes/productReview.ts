@@ -23,7 +23,7 @@ export const productReview = defineType({
       name: "companyName",
       title: "Company Name",
       type: "localeString",
-      description: "Name of the client company (displayed in both English and Arabic).",
+      description: "Name of the client company in English and Arabic.",
       validation: (Rule) => Rule.required(),
     }),
 
@@ -31,7 +31,7 @@ export const productReview = defineType({
       name: "companyLogo",
       title: "Company Logo",
       type: "image",
-      description: "Logo of the client company. Use a square or horizontal logo for best results.",
+      description: "Logo of the client company. Use a square or horizontal logo for best results (SVG or PNG preferred).",
       options: {
         hotspot: true,
       },
@@ -43,7 +43,7 @@ export const productReview = defineType({
       title: "Product",
       type: "reference",
       to: [{ type: "product" }],
-      description: "The product this review is associated with.",
+      description: "The specific product this review is associated with.",
       validation: (Rule) => Rule.required(),
     }),
 
@@ -52,7 +52,7 @@ export const productReview = defineType({
       name: "reviewText",
       title: "Review",
       type: "localeText",
-      description: "The review content in both English and Arabic.",
+      description: "The actual review feedback in both English and Arabic.",
       validation: (Rule) => Rule.required(),
     }),
 
@@ -61,7 +61,7 @@ export const productReview = defineType({
       name: "rating",
       title: "Star Rating",
       type: "number",
-      description: "Rating from 1 to 5 stars.",
+      description: "Customer satisfaction rating from 1 (poor) to 5 (excellent).",
       validation: (Rule) => Rule.required().min(1).max(5).integer(),
       initialValue: 5,
     }),
@@ -71,7 +71,7 @@ export const productReview = defineType({
       name: "reviewerName",
       title: "Reviewer Name",
       type: "localeString",
-      description: "Name and/or title of the person who gave the review (e.g., 'Ahmed Al-Rashid, Operations Manager').",
+      description: "Name and professional title of the individual reviewer.",
     }),
 
     // ── Date ─────────────────────────────────────────────────────────
@@ -79,6 +79,7 @@ export const productReview = defineType({
       name: "date",
       title: "Review Date",
       type: "date",
+      description: "The date when the review was originally given.",
       options: {
         dateFormat: "YYYY-MM-DD",
       },
@@ -90,7 +91,7 @@ export const productReview = defineType({
       name: "published",
       title: "Published",
       type: "boolean",
-      description: "Only published reviews will appear on the website.",
+      description: "Toggle on to make this review visible on the public website.",
       initialValue: true,
     }),
   ],
