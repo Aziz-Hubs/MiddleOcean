@@ -33,14 +33,16 @@ export async function generateMetadata({
   
   // Fetch global settings for SEO defaults
   const settings = await sanityClient.fetch(siteSettingsQuery);
-  const siteTitle = settings?.title || (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
+  const siteTitle = (settings?.title && settings.title !== "Middle Ocean Settings") 
+    ? settings.title 
+    : (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
   
   return {
     title: {
       template: `%s | ${siteTitle}`,
       default: isArabic 
-        ? "ميدل اوشن للطباعة - شريكك الموثوق لحلول مواد الطباعة الرقمية" 
-        : "Middle Ocean Printing - Your Trusted Partner for Digital Printing Materials Solutions",
+        ? "ميدل اوشن للطباعة - شريكك الموثوق لحلول الطباعة الرقمية" 
+        : "Middle Ocean Printing - Your Trusted Partner for Digital Printing Solutions",
     },
     description: isArabic 
       ? "المزود الرائد لحلول مواد الطباعة الرقمية، بما في ذلك الفلكس والفينيل والأحبار والمواد الإعلانية. الشركة الأم لـ OceanTeck و OceanJett." 
@@ -51,6 +53,19 @@ export async function generateMetadata({
         'en': '/en',
         'ar': '/ar',
       },
+    },
+    icons: {
+      icon: [
+        { url: '/favicon.ico' },
+        { url: '/icons/icon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/icons/icon-32x32.png', sizes: '32x32', type: 'image/png' },
+      ],
+      apple: [
+        { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
+      ],
+      other: [
+        { rel: 'apple-touch-icon', url: '/icons/icon-192x192.png' },
+      ],
     },
   };
 }

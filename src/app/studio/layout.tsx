@@ -1,6 +1,9 @@
 export const metadata = {
   title: "Sanity Studio",
   description: "Content Management System",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function StudioLayout({

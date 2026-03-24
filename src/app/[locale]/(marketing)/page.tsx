@@ -20,7 +20,6 @@ export async function generateMetadata({
   const isArabic = locale === "ar";
   
   return {
-    title: isArabic ? "الرئيسية" : "Home",
     description: isArabic 
       ? "ميدل اوشن للطباعة هي الشركة الرائدة في حلول مواد الطباعة الرقمية في الأردن والمنطقة. موزعين معتمدين لـ OceanTeck و OceanJett."
       : "Middle Ocean Printing is the leading provider of digital printing materials solutions in Jordan and the region. Authorized distributors of OceanTeck and OceanJett.",

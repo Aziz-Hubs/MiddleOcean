@@ -29,7 +29,7 @@ export async function generateMetadata({
   const isArabic = locale === "ar";
   
   return {
-    title: isArabic ? "كتالوج المنتجات | ميدل اوشن للطباعة" : "Product Catalog | Middle Ocean Printing",
+    title: isArabic ? "كتالوج المنتجات" : "Product Catalog",
     description: isArabic 
       ? "تصفح كتالوجنا الكامل لمواد الطباعة الرقمية، الألواح الإعلانية، الأحبار، والماكينات. حلول متكاملة لجميع احتياجاتك الإعلانية."
       : "Browse our complete catalog of digital printing materials, advertising sheets, inks, and machines. Integrated solutions for all your advertising needs.",
@@ -70,7 +70,7 @@ export default async function ProductsPage(props: {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-screen flex-col bg-background pt-4">
       <StickyBreadcrumbContainer>
         <Breadcrumb>
           <BreadcrumbList>

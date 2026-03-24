@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Link } from "@/i18n/routing"
 import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target, Search } from "lucide-react"
-import ContactUs1 from "@/components/contact-us-1"
 import { PrintBrochureButton, RequestQuoteButton, StickyHeader } from "@/components/product-client-components"
 import { ProductReviews } from "@/components/product-reviews"
+import { ProductImage } from "@/components/product-image"
+import ContactUs1 from "@/components/contact-us-1"
 import { cn } from "@/lib/utils"
-import { TEST_PRODUCT_IMAGES } from "@/lib/test-images"
 import Image from "next/image"
 import type { Metadata } from "next"
 
@@ -119,7 +119,7 @@ export default async function ProductPage(props: {
     '@type': 'Product',
     name: productTitle,
     description: productDesc,
-    image: productData.media?.thumbnailUrl || TEST_PRODUCT_IMAGES[productData.slug.current],
+    image: productData.media?.thumbnailUrl,
     sku: partNumber,
     brand: {
       '@type': 'Brand',
@@ -235,27 +235,11 @@ export default async function ProductPage(props: {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start pb-14 print:pb-10 border-b border-border/40 print:border-zinc-200">
-            <div className={cn(
-              "relative aspect-square md:aspect-[4/3] lg:aspect-square group rounded-[2rem] overflow-hidden",
-              "bg-background/40 backdrop-blur-md border border-white/10 print:border-none",
-              "flex items-center justify-center print:p-0"
-            )}>
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.04] to-white/[0.01] print:hidden" />
-              {productData.media?.thumbnailUrl || TEST_PRODUCT_IMAGES[productData.slug.current] ? (
-                <Image
-                  src={TEST_PRODUCT_IMAGES[productData.slug.current] || productData.media.thumbnailUrl}
-                  alt={productTitle}
-                  width={800}
-                  height={800}
-                  priority
-                  className="w-full h-full object-cover relative z-10 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110 print:scale-100 drop-shadow-2xl print:drop-shadow-none"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <Search className="w-16 h-16 text-zinc-700 opacity-20" />
-                </div>
-              )}
-            </div>
+            <ProductImage 
+              src={productData.media?.thumbnailUrl} 
+              alt={productTitle} 
+              priority 
+            />
 
             <div className="flex flex-col gap-7">
               <div className="space-y-2">
@@ -292,26 +276,31 @@ export default async function ProductPage(props: {
                 <div className="rounded-xl border border-border/40 bg-background/40 backdrop-blur-md overflow-hidden print:border-zinc-300">
                   {productData.specifications && productData.specifications.length > 0 ? (
                     <div className="divide-y divide-border/20 print:divide-zinc-200">
-                      {productData.specifications.map((spec: any, idx: number) => {
-                        const specName = resolveLocale(spec.name, locale) || "Unknown"
-                        const specValue = resolveLocale(spec.value, locale) || "N/A"
-                        return (
-                          <div
-                            key={idx}
-                            className={cn(
-                              "flex flex-col sm:flex-row sm:items-center px-4 py-2.5",
-                              idx % 2 === 0 ? "bg-white/[0.02]" : "bg-transparent"
-                            )}
-                          >
-                            <div className="w-full sm:w-2/5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70 print:text-zinc-500 mb-0.5 sm:mb-0">
-                              {specName}
+                      {productData.specifications
+                        ?.filter((spec: any) => {
+                          const nameEn = resolveLocale(spec.name, "en")?.toLowerCase()
+                          return nameEn !== "media thumbnail" && nameEn !== "thumbnail"
+                        })
+                        .map((spec: any, idx: number) => {
+                          const specName = resolveLocale(spec.name, locale) || "Unknown"
+                          const specValue = resolveLocale(spec.value, locale) || "N/A"
+                          return (
+                            <div
+                              key={idx}
+                              className={cn(
+                                "flex flex-col sm:flex-row sm:items-center px-4 py-3",
+                                idx % 2 === 0 ? "bg-white/[0.02]" : "bg-transparent"
+                              )}
+                            >
+                              <div className="w-full sm:w-2/5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground/70 print:text-zinc-500 mb-1.5 sm:mb-0 sm:border-e border-border/20 sm:pe-4">
+                                {specName}
+                              </div>
+                              <div className={cn("w-full sm:w-3/5 text-sm text-foreground font-medium print:text-black sm:ps-4", locale === "ar" && "font-arabic")}>
+                                {specValue}
+                              </div>
                             </div>
-                            <div className={cn("w-full sm:w-3/5 text-sm text-foreground font-medium print:text-black", locale === "ar" && "font-arabic")}>
-                              {specValue}
-                            </div>
-                          </div>
-                        )
-                      })}
+                          )
+                        })}
                     </div>
                   ) : (
                     <div className="px-4 py-6 text-center text-sm text-muted-foreground">

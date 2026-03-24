@@ -13,7 +13,7 @@ export async function generateMetadata({
   const isArabic = locale === "ar";
   
   return {
-    title: isArabic ? "اتصل بنا | ميدل اوشن للطباعة" : "Contact Us | Middle Ocean Printing",
+    title: isArabic ? "اتصل بنا" : "Contact Us",
     description: isArabic 
       ? "تواصل مع فريقنا الخبير في ميدل اوشن للطباعة للحصول على استشارات، عروض أسعار، أو دعم فني بخصوص منتجات الطباعة الرقمية."
       : "Get in touch with our expert team at Middle Ocean Printing for consultations, quotes, or technical support regarding digital printing products.",
