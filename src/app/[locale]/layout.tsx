@@ -12,6 +12,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { sanityClient } from "@/sanity/client";
 import { categoryQuery, siteSettingsQuery } from "@/sanity/queries";
+import { Analytics } from '@vercel/analytics/next';
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const fontMono = Geist_Mono({
@@ -141,6 +142,7 @@ export default async function RootLayout({
 						</TooltipProvider>
 					</ThemeProvider>
 				</NextIntlClientProvider>
+				<Analytics />
 			</body>
 		</html>
 	);
