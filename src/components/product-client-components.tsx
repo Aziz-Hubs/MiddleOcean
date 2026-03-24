@@ -17,8 +17,8 @@ export function PrintBrochureButton({ className }: { className?: string }) {
       className={cn("w-full sm:w-auto gap-2 border-white/10 hover:bg-white/5 cursor-pointer print:hidden", className)}
     >
       <Printer className="size-4" />
-      <span className="max-sm:hidden">Print Brochure</span>
-      <span className="sm:hidden">Print</span>
+      <span className="max-sm:hidden">{t("print_brochure")}</span>
+      <span className="sm:hidden">{t("print")}</span>
     </Button>
   )
 }

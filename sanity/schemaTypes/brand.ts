@@ -12,19 +12,19 @@ export const brand = defineType({
       name: "title",
       title: "Brand Name",
       type: "string",
-      description: "The name of the brand (e.g., 'Mimaki', '3M').",
+      description: "Brand name. اسم العلامة التجارية (Mimaki, 3M,...).",
     }),
     defineField({
       name: "isGeneric",
-      title: "Is Generic Brand?",
+      title: "Generic Brand?",
       type: "boolean",
-      description: "Flag to indicate if this is a generic or unbranded item.",
+      description: "Is it unbranded? هل الصنف بدون علامة تجارية معروفة؟",
     }),
     defineField({
       name: "logo",
       title: "Brand Logo",
       type: "image",
-      description: "Official logo of the brand.",
+      description: "Logo image. شعار العلامة التجارية الأصلي.",
       options: {
         hotspot: true,
       },

@@ -18,11 +18,38 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === "ar";
-  
+  const siteTitle = (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
+  const description = isArabic 
+    ? "ميدل اوشن للطباعة هي الشركة الرائدة في حلول مواد الطباعة الرقمية في الأردن والمنطقة. موزعين معتمدين لـ OceanTeck و OceanJett."
+    : "Middle Ocean Printing is the leading provider of digital printing materials solutions in Jordan and the region. Authorized distributors of OceanTeck and OceanJett.";
+
   return {
-    description: isArabic 
-      ? "ميدل اوشن للطباعة هي الشركة الرائدة في حلول مواد الطباعة الرقمية في الأردن والمنطقة. موزعين معتمدين لـ OceanTeck و OceanJett."
-      : "Middle Ocean Printing is the leading provider of digital printing materials solutions in Jordan and the region. Authorized distributors of OceanTeck and OceanJett.",
+    title: isArabic 
+      ? "ميدل اوشن للطباعة - حلول متكاملة لمواد الطباعة الرقمية والإعلان" 
+      : "Middle Ocean Printing - Complete Digital Printing Materials & Advertising Solutions",
+    description,
+    openGraph: {
+      title: isArabic ? `الرئيسية | ${siteTitle}` : `Home | ${siteTitle}`,
+      description,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}`,
+      siteName: siteTitle,
+      images: [
+        {
+          url: '/landing_page_assets/hero/ecosystem_collage.png',
+          width: 1200,
+          height: 630,
+          alt: siteTitle,
+        },
+      ],
+      locale: locale === "ar" ? "ar_JO" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: isArabic ? `الرئيسية | ${siteTitle}` : `Home | ${siteTitle}`,
+      description,
+      images: ['/landing_page_assets/hero/ecosystem_collage.png'],
+    },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}`,
     }

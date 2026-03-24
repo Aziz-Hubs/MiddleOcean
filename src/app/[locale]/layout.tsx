@@ -67,6 +67,26 @@ export async function generateMetadata({
         { rel: 'apple-touch-icon', url: '/icons/icon-192x192.png' },
       ],
     },
+    openGraph: {
+      type: "website",
+      locale: locale === "ar" ? "ar_JO" : "en_US",
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}`,
+      siteName: siteTitle,
+      images: [
+        {
+          url: '/brand/logo.svg',
+          width: 800,
+          height: 600,
+          alt: siteTitle,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@middleocean",
+      creator: "@middleocean",
+      images: ['/brand/logo.svg'],
+    },
   };
 }
 

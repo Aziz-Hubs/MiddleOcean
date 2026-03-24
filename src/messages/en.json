@@ -6,6 +6,8 @@
     "about": "About Us",
     "contact": "Contact Us",
     "company": "Company",
+    "print_brochure": "Print Brochure",
+    "print": "Print",
     "explore_all": "Explore Full Catalog",
     "Website Builder": "Website Builder",
     "Cloud Platform": "Cloud Platform",
@@ -376,6 +378,17 @@
     "readMore": "Read More",
     "readLess": "Read Less",
     "fullReview": "Full Review",
-    "close": "Close"
+    "close": "Close",
+    "page": "Page"
+  },
+  "Product": {
+    "specifications": "Technical Specifications",
+    "warranty_protection": "Warranty Protection",
+    "certifications": "Certifications",
+    "quality_verified": "Quality Verified",
+    "visuals": "Product Visuals",
+    "all_rights_reserved": "All rights reserved.",
+    "specs_notice": "Specifications are subject to change without prior notice.",
+    "specification_sheet": "Product Specification Sheet"
   }
 }

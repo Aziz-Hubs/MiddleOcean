@@ -376,7 +376,9 @@ export function ProductReviews({ productId, locale, initialReviews, totalCount }
         </div>
         {totalPages > 1 && (
           <div className="flex flex-col items-end gap-1">
-             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">Page</span>
+             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+               {isRtl ? "صفحة" : "Page"}
+             </span>
              <span className="text-xl font-black tabular-nums text-primary/80">
               {isRtl ? `${currentPage}/${totalPages}` : `${currentPage}/${totalPages}`}
             </span>

@@ -46,19 +46,25 @@ export async function generateMetadata(props: {
   const description = typeof rawDesc === 'object' ? rawDesc[locale as keyof typeof rawDesc] || rawDesc['en'] : rawDesc || ""
   const safeDesc = typeof description === 'string' ? description.substring(0, 160) : (isArabic ? "تصفح مجموعتنا من مواد الطباعة الرقمية وحلول الإعلان." : "Browse our collection of digital printing materials and advertising solutions.")
   
-  const imageUrl = categoryData.seo?.ogImageUrl || categoryData.thumbnailUrl
+  const siteTitle = (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
+  const fullTitle = `${title} | ${siteTitle}`;
+  const imageUrl = categoryData.seo?.ogImageUrl || categoryData.thumbnailUrl || `${process.env.NEXT_PUBLIC_SITE_URL}/landing_page_assets/hero/ecosystem_collage.png`
 
   return {
     title,
     description: safeDesc,
     openGraph: {
-      title,
+      title: fullTitle,
       description: safeDesc,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}/products/${category}`,
+      siteName: siteTitle,
       images: imageUrl ? [{ url: imageUrl }] : [],
+      locale: locale === "ar" ? "ar_JO" : "en_US",
+      type: "website",
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: fullTitle,
       description: safeDesc,
       images: imageUrl ? [imageUrl] : [],
     },

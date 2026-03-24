@@ -12,13 +12,13 @@ export const category = defineType({
       name: "title",
       title: "Category Title",
       type: "localeString",
-      description: "The name of the category in English and Arabic (e.g., 'Printers' / 'طابعات').",
+      description: "Category name (EN/AR). اسم القسم باللغتين العربية والإنجليزية.",
     }),
     defineField({
       name: "slug",
-      title: "Slug",
+      title: "Slug (URL)",
       type: "slug",
-      description: "Unique identifier used in the URL. Generated from the English title.",
+      description: "Unique URL ID. معرف الرابط الفريد يتم إنشاؤه تلقائياً.",
       options: {
         source: "title.en",
         maxLength: 96,
@@ -26,9 +26,9 @@ export const category = defineType({
     }),
     defineField({
       name: "image",
-      title: "Category Cover Image",
+      title: "Category Image",
       type: "image",
-      description: "The hero image representing this category on the website.",
+      description: "Hero image. صورة القسم الرئيسية التي تظهر بالموقع.",
       options: {
         hotspot: true,
       },

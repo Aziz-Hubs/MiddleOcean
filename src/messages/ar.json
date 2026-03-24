@@ -6,6 +6,8 @@
     "about": "من نحن",
     "contact": "اتصل بنا",
     "company": "الشركة",
+    "print_brochure": "طباعة البروشور",
+    "print": "طباعة",
     "explore_all": "استكشف الكتالوج الكامل",
     "Website Builder": "منشئ المواقع",
     "Cloud Platform": "منصة الحوسبة السحابية",
@@ -376,6 +378,17 @@
     "readMore": "اقرأ المزيد",
     "readLess": "اقرأ أقل",
     "fullReview": "المراجعة الكاملة",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "page": "صفحة"
+  },
+  "Product": {
+    "specifications": "المواصفات الفنية",
+    "warranty_protection": "حماية الضمان",
+    "certifications": "الشهادات والاعتمادات",
+    "quality_verified": "جودة معتمدة",
+    "visuals": "صور المنتج",
+    "all_rights_reserved": "جميع الحقوق محفوظة.",
+    "specs_notice": "المواصفات عرضة للتغيير دون إشعار مسبق.",
+    "specification_sheet": "نشرة المواصفات الفنية"
   }
 }

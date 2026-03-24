@@ -27,14 +27,44 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const isArabic = locale === "ar";
-  
+  const siteTitle = (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
+  const title = isArabic ? "كتالوج المنتجات" : "Product Catalog";
+  const fullTitle = `${title} | ${siteTitle}`;
+  const description = isArabic 
+    ? "تصفح كتالوجنا الكامل لمواد الطباعة الرقمية، الألواح الإعلانية، الأحبار، والماكينات. حلول متكاملة لجميع احتياجاتك الإعلانية."
+    : "Browse our complete catalog of digital printing materials, advertising sheets, inks, and machines. Integrated solutions for all your advertising needs.";
+
   return {
-    title: isArabic ? "كتالوج المنتجات" : "Product Catalog",
-    description: isArabic 
-      ? "تصفح كتالوجنا الكامل لمواد الطباعة الرقمية، الألواح الإعلانية، الأحبار، والماكينات. حلول متكاملة لجميع احتياجاتك الإعلانية."
-      : "Browse our complete catalog of digital printing materials, advertising sheets, inks, and machines. Integrated solutions for all your advertising needs.",
+    title,
+    description,
+    openGraph: {
+      title: fullTitle,
+      description,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}/products`,
+      siteName: siteTitle,
+      images: [
+        {
+          url: '/landing_page_assets/hero/ecosystem_collage.png',
+          width: 1200,
+          height: 630,
+          alt: fullTitle,
+        },
+      ],
+      locale: locale === "ar" ? "ar_JO" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: fullTitle,
+      description,
+      images: ['/landing_page_assets/hero/ecosystem_collage.png'],
+    },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/${locale}/products`,
+      languages: {
+        'en': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/en/products`,
+        'ar': `${process.env.NEXT_PUBLIC_SITE_URL || 'https://middleocean.jo'}/ar/products`,
+      },
     }
   };
 }
