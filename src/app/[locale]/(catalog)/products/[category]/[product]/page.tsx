@@ -402,7 +402,7 @@ export default async function ProductPage(props: {
                           src={url} 
                           alt={`Gallery ${idx}`} 
                           fill 
-                          className="object-cover" 
+                          className="object-contain" 
                         />
                       </div>
                     ))}

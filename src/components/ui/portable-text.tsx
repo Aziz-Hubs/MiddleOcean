@@ -62,7 +62,7 @@ interface PortableTextProps {
 export function PortableText({ value, className }: PortableTextProps) {
   return (
     <div className={cn("max-w-none text-muted-foreground", className)}>
-      <PortableTextComponent value={value} components={components} />
+      <PortableTextComponent value={value as any} components={components} />
     </div>
   );
 }

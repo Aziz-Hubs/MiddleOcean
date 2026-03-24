@@ -17,9 +17,9 @@ export function ProductImage({ src, alt, priority = false }: ProductImageProps) 
 
   return (
     <div className={cn(
-      "relative aspect-square md:aspect-[4/3] lg:aspect-square group rounded-[2rem] overflow-hidden w-full h-full",
+      "relative aspect-square md:aspect-[4/3] lg:aspect-square group rounded-[2rem] overflow-hidden print:overflow-visible w-full h-full",
       "bg-background/40 backdrop-blur-md border border-white/10 print:border-none",
-      "flex items-center justify-center print:p-0"
+      "flex items-center justify-center print:p-8 print:bg-white"
     )}>
       <div className="absolute inset-0 bg-gradient-to-tr from-white/[0.04] to-white/[0.01] print:hidden" />
       
@@ -36,7 +36,7 @@ export function ProductImage({ src, alt, priority = false }: ProductImageProps) 
             priority={priority}
             onLoad={() => setImageLoaded(true)}
             className={cn(
-              "w-full h-full object-cover relative z-10 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110 print:scale-100 drop-shadow-2xl print:drop-shadow-none",
+              "w-full h-full object-cover print:object-contain print:max-w-full print:max-h-full print:w-auto print:h-auto relative z-10 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-110 print:scale-100 drop-shadow-2xl print:drop-shadow-none",
               imageLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
             )}
           />

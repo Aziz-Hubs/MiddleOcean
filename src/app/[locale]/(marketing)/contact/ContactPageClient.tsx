@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Phone, Mail, MapPin, ExternalLink, CheckCircle2, ChevronDown } from "lucide-react";
+import { Copy, Phone, Mail, MapPin, ExternalLink, CheckCircle2, ChevronDown, Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Map, MapMarker, MarkerContent, MapControls } from "@/components/ui/map";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -129,9 +129,9 @@ export default function ContactPageClient({ settings, locale }: { settings: { ph
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 mb-8 bg-background/50 backdrop-blur-sm px-4 py-1.5 rounded-full border border-border/50"
+            className="mb-8"
           >
-            <Badge variant={isOpen ? "default" : "secondary"} className={`text-xs py-0.5 px-3 transition-colors ${isOpen ? "bg-green-500 hover:bg-green-600" : ""}`}>
+            <Badge variant={isOpen ? "default" : "secondary"} className={`text-xs py-1.5 px-4 transition-colors border-border/50 backdrop-blur-sm bg-background/50 ${isOpen ? "bg-green-500 hover:bg-green-600" : ""}`}>
               <span className={`w-1.5 h-1.5 rounded-full mr-1.5 ${isOpen ? "bg-white animate-pulse" : "bg-gray-400"}`}></span>
               {isOpen ? t("openNow") : t("closedNow")}
             </Badge>
@@ -171,7 +171,7 @@ export default function ContactPageClient({ settings, locale }: { settings: { ph
         {/* 2. Direct Contact Cards Grid */}
         <section className="grid md:grid-cols-3 gap-6">
           <ContactCard 
-            icon={<Phone className="w-6 h-6" />}
+            icon={<Phone className="w-6 h-6 text-yellow-500" />}
             title={t("phone")}
             content={phone}
             actionLabel={t("clickToCall")}
@@ -181,7 +181,7 @@ export default function ContactPageClient({ settings, locale }: { settings: { ph
             t={t}
           />
           <ContactCard 
-            icon={<Mail className="w-6 h-6" />}
+            icon={<Mail className="w-6 h-6 text-blue-500" />}
             title={t("email")}
             content={email}
             actionLabel={t("clickToEmail")}
@@ -268,7 +268,7 @@ export default function ContactPageClient({ settings, locale }: { settings: { ph
                     <AccordionItem 
                       value={`faq-${index}`} 
                       key={index}
-                      className="border-border/40 px-6 rounded-2xl bg-background/40 backdrop-blur-sm transition-all hover:bg-background/60"
+                      className="px-6 rounded-2xl bg-background/40 backdrop-blur-sm transition-all hover:bg-background/60"
                     >
                       <AccordionTrigger className="text-lg font-semibold hover:no-underline py-6">
                         {faq.question?.[locale] || faq.question?.en}
@@ -287,16 +287,16 @@ export default function ContactPageClient({ settings, locale }: { settings: { ph
                 <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-[0.3em]">{t("socials")}</h3>
                 <div className="flex justify-center flex-wrap gap-6">
                   {settings.socialLinks.facebook && (
-                    <SocialButton href={settings.socialLinks.facebook} label="Facebook" />
+                    <SocialButton href={settings.socialLinks.facebook} label="Facebook" icon={<Facebook className="w-5 h-5" />} />
                   )}
                   {settings.socialLinks.instagram && (
-                    <SocialButton href={settings.socialLinks.instagram} label="Instagram" />
+                    <SocialButton href={settings.socialLinks.instagram} label="Instagram" icon={<Instagram className="w-5 h-5" />} />
                   )}
                   {settings.socialLinks.linkedin && (
-                    <SocialButton href={settings.socialLinks.linkedin} label="LinkedIn" />
+                    <SocialButton href={settings.socialLinks.linkedin} label="LinkedIn" icon={<Linkedin className="w-5 h-5" />} />
                   )}
                   {settings.socialLinks.twitter && (
-                    <SocialButton href={settings.socialLinks.twitter} label="Twitter" />
+                    <SocialButton href={settings.socialLinks.twitter} label="Twitter" icon={<Twitter className="w-5 h-5" />} />
                   )}
                 </div>
               </div>
@@ -320,13 +320,13 @@ function ContactCard({ icon, title, content, actionLabel, onAction, copyAction, 
         onClick={onAction}
       >
         <CardHeader className="pb-4">
-          <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
+          <div className="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 text-primary group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
             {icon}
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">{title}</CardTitle>
         </CardHeader>
         <CardContent className="flex-1 flex flex-col pt-0">
-          <p className="text-lg font-medium mb-8 flex-1 break-all text-muted-foreground group-hover:text-foreground transition-colors">{content}</p>
+          <p className="text-lg font-medium mb-8 flex-1 break-all text-muted-foreground group-hover:text-foreground transition-colors" dir="ltr">{content}</p>
           <div className="flex items-center justify-between pt-6 border-t border-border/20">
             <span className="text-sm font-bold text-primary uppercase tracking-wider group-hover:translate-x-1 transition-transform inline-flex items-center gap-2">
               {actionLabel}
@@ -335,7 +335,7 @@ function ContactCard({ icon, title, content, actionLabel, onAction, copyAction, 
             <Button 
               variant="secondary" 
               size="icon" 
-              className="h-10 w-10 rounded-xl bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all relative border border-border/30"
+              className="h-10 w-10 rounded-full bg-background/50 hover:bg-primary hover:text-primary-foreground transition-all relative border border-border/30"
               onClick={(e) => {
                 e.stopPropagation();
                 copyAction();
@@ -371,12 +371,11 @@ function ContactCard({ icon, title, content, actionLabel, onAction, copyAction, 
   );
 }
 
-function SocialButton({ href, label }: { href: string, label: string }) {
-  // Using a generic SVG path since lucide doesn't have all brand icons in some versions
+function SocialButton({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}
        className={cn(buttonVariants({ variant: "outline", size: "icon" }), "rounded-full w-12 h-12 hover:bg-primary hover:text-primary-foreground transition-all duration-300 bg-background/50 backdrop-blur-sm border-border/40 font-bold")}>
-      <span className="mx-auto text-sm">{label[0]}</span>
+      <span className="mx-auto">{icon}</span>
     </a>
   );
 }
