@@ -6,7 +6,11 @@ import puppeteer from "puppeteer-core"
 import chromium from "@sparticuz/chromium"
 import path from "path"
 import fs from "fs"
+import { promisify } from "util"
+import { brotliDecompress } from "zlib"
 import { generateBrochureHTML, resolveLocale } from "./template"
+
+const brotliDecompressAsync = promisify(brotliDecompress)
 
 // ── Route Handler ────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
@@ -79,7 +83,7 @@ export async function GET(req: NextRequest) {
         "/var/task/node_modules/@sparticuz/chromium/bin/chromium",
         "/var/task/node_modules/@sparticuz/chromium/bin/chromium.br",
       ]
-      
+
       for (const tryPath of possiblePaths) {
         if (fs.existsSync(tryPath)) {
           console.log("[BROCHURE-PDF] Found Chromium at:", tryPath)
@@ -88,12 +92,34 @@ export async function GET(req: NextRequest) {
         }
       }
     }
-    
+
     if (!executablePath) {
       console.error("[BROCHURE-PDF] Chromium binary not found in any location")
       throw new Error("Chromium binary not found. Please ensure @sparticuz/chromium is properly installed.")
     }
-    
+
+    // Decompress if it's a .br file
+    if (executablePath.endsWith('.br')) {
+      console.log("[BROCHURE-PDF] Decompressing binary...")
+      const decompressedPath = executablePath.replace('.br', '')
+
+      try {
+        if (!fs.existsSync(decompressedPath)) {
+          const compressed = fs.readFileSync(executablePath)
+          const decompressed = await brotliDecompressAsync(compressed)
+          fs.writeFileSync(decompressedPath, decompressed)
+          fs.chmodSync(decompressedPath, 0o755)
+          console.log("[BROCHURE-PDF] Decompressed to:", decompressedPath)
+        } else {
+          console.log("[BROCHURE-PDF] Using existing decompressed binary:", decompressedPath)
+        }
+        executablePath = decompressedPath
+      } catch (decompressError) {
+        console.error("[BROCHURE-PDF] Failed to decompress:", decompressError)
+        throw new Error("Failed to decompress Chromium binary")
+      }
+    }
+
     console.log("[BROCHURE-PDF] Launching Puppeteer...")
     
     // Launch Puppeteer with Chromium
