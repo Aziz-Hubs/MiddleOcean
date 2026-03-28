@@ -112,6 +112,12 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
             placeholder={t("placeholder")}
             value={query}
             onValueChange={setQuery}
+            onKeyDown={(e) => {
+              // Prevent command palette from interpreting space as selection
+              if (e.key === " " || e.code === "Space") {
+                e.stopPropagation();
+              }
+            }}
             className={cn(
               "flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground",
               locale === "ar" && "text-right"

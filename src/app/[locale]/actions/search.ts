@@ -15,10 +15,10 @@ export async function searchProducts(
   }
 
   // Sanitize search term - escape special GROQ characters
+  // Only escape quotes, preserve spaces and other characters
   const sanitizedQuery = query
     .replace(/\\/g, "\\\\")
     .replace(/"/g, '\\"')
-    .replace(/'/g, "\\'")
     .trim();
 
   if (sanitizedQuery.length === 0) {
@@ -29,8 +29,11 @@ export async function searchProducts(
     // Use the appropriate query based on locale
     const searchQuery = locale === "ar" ? searchProductsQueryAr : searchProductsQueryEn;
     
+    // Add wildcards for partial matching - GROQ match function works better this way
+    const searchTermWithWildcards = "*" + sanitizedQuery + "*";
+    
     const results = await sanityClient.fetch(searchQuery, {
-      searchTerm: sanitizedQuery.toLowerCase(),
+      searchTerm: searchTermWithWildcards,
     });
 
     return results || [];
