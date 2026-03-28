@@ -192,59 +192,59 @@ export default async function ProductPage(props: {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      {/* Breadcrumb + StickyHeader sticky wrapper */}
-      <div className="sticky top-[57px] z-30 bg-background/95 backdrop-blur-md border-b border-border/40 print:hidden">
-        <div className="container mx-auto px-6">
-          <div className="py-3">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link href="/" />}>{t("home")}</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator>
-                  <ChevronIcon className="size-4 opacity-40" />
-                </BreadcrumbSeparator>
+      {/* Sticky request-quote header — z-30, appears after 200px scroll */}
+      <StickyHeader 
+        title={productTitle} 
+        locale={locale} 
+        productId={productData._id}
+        productSlug={productSlug}
+        category={category}
+        productNameAr={productTitleAr}
+        categoryAr={categoryTitleAr}
+      />
 
-                {categoryTitle && category !== 'all' ? (
-                  <>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator>
-                      <ChevronIcon className="size-4 opacity-40" />
-                    </BreadcrumbSeparator>
-                    <BreadcrumbItem>
-                      <BreadcrumbLink render={<Link href={`/products/${category}`} />}>
-                        <span className="capitalize">{categoryTitle}</span>
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
-                  </>
-                ) : (
+      {/* Breadcrumb bar — sticky below navbar */}
+      <div className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
+        <div className="container mx-auto px-6">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink render={<Link href="/" />}>{t("home")}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator>
+                <ChevronIcon className="size-4 opacity-40" />
+              </BreadcrumbSeparator>
+
+              {categoryTitle && category !== 'all' ? (
+                <>
                   <BreadcrumbItem>
                     <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
                   </BreadcrumbItem>
-                )}
-
-                <BreadcrumbSeparator>
-                  <ChevronIcon className="size-4 opacity-40" />
-                </BreadcrumbSeparator>
+                  <BreadcrumbSeparator>
+                    <ChevronIcon className="size-4 opacity-40" />
+                  </BreadcrumbSeparator>
+                  <BreadcrumbItem>
+                    <BreadcrumbLink render={<Link href={`/products/${category}`} />}>
+                      <span className="capitalize">{categoryTitle}</span>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </>
+              ) : (
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="font-semibold text-foreground line-clamp-1 max-w-[200px] lg:max-w-[400px]">
-                    {productTitle}
-                  </BreadcrumbPage>
+                  <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
                 </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-          <StickyHeader 
-            title={productTitle} 
-            locale={locale} 
-            productId={productData._id}
-            productSlug={productSlug}
-            category={category}
-            productNameAr={productTitleAr}
-            categoryAr={categoryTitleAr}
-          />
+              )}
+
+              <BreadcrumbSeparator>
+                <ChevronIcon className="size-4 opacity-40" />
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage className="font-semibold text-foreground line-clamp-1 max-w-[200px] lg:max-w-[400px]">
+                  {productTitle}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
       </div>
 

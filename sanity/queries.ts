@@ -149,6 +149,7 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 }`;
 
 // Search products with fuzzy matching - English version (default)
+// Uses select() to calculate priority score for sorting
 export const searchProductsQueryEn = `*[_type == "product" && (
   title.en match $searchTerm + "*" ||
   title.ar match $searchTerm + "*" ||
@@ -157,14 +158,7 @@ export const searchProductsQueryEn = `*[_type == "product" && (
   category->title.en match $searchTerm + "*" ||
   category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
-)] | order(
-  title.en match $searchTerm + "*" desc,
-  title.ar match $searchTerm + "*" desc,
-  category->title.en match $searchTerm + "*" desc,
-  category->title.ar match $searchTerm + "*" desc,
-  brand->title match $searchTerm + "*" desc,
-  _createdAt desc
-) [0...10]{
+)] {
   _id,
   title,
   description,
@@ -178,10 +172,19 @@ export const searchProductsQueryEn = `*[_type == "product" && (
     "logoUrl": logo.asset->url
   },
   "imageUrl": media.thumbnail.asset->url,
-  warrantyMonths
-}`;
+  warrantyMonths,
+  "priority": select(
+    title.en match $searchTerm + "*" => 5,
+    title.ar match $searchTerm + "*" => 4,
+    category->title.en match $searchTerm + "*" => 3,
+    category->title.ar match $searchTerm + "*" => 2,
+    brand->title match $searchTerm + "*" => 1,
+    true => 0
+  )
+} | order(priority desc, _createdAt desc) [0...10]`;
 
 // Search products with fuzzy matching - Arabic version
+// Uses select() to calculate priority score for sorting
 export const searchProductsQueryAr = `*[_type == "product" && (
   title.en match $searchTerm + "*" ||
   title.ar match $searchTerm + "*" ||
@@ -190,14 +193,7 @@ export const searchProductsQueryAr = `*[_type == "product" && (
   category->title.en match $searchTerm + "*" ||
   category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
-)] | order(
-  title.ar match $searchTerm + "*" desc,
-  title.en match $searchTerm + "*" desc,
-  category->title.ar match $searchTerm + "*" desc,
-  category->title.en match $searchTerm + "*" desc,
-  brand->title match $searchTerm + "*" desc,
-  _createdAt desc
-) [0...10]{
+)] {
   _id,
   title,
   description,
@@ -211,8 +207,16 @@ export const searchProductsQueryAr = `*[_type == "product" && (
     "logoUrl": logo.asset->url
   },
   "imageUrl": media.thumbnail.asset->url,
-  warrantyMonths
-}`;
+  warrantyMonths,
+  "priority": select(
+    title.ar match $searchTerm + "*" => 5,
+    title.en match $searchTerm + "*" => 4,
+    category->title.ar match $searchTerm + "*" => 3,
+    category->title.en match $searchTerm + "*" => 2,
+    brand->title match $searchTerm + "*" => 1,
+    true => 0
+  )
+} | order(priority desc, _createdAt desc) [0...10]`;
 
 // Get recent/popular products for empty search state
 export const recentProductsQuery = `*[_type == "product"] | order(_createdAt desc) [0...6]{
