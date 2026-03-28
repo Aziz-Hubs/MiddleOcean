@@ -6,6 +6,7 @@ import { Logo } from "@/components/logo"
 import { useScroll } from "@/hooks/use-scroll"
 import { DesktopNav } from "@/components/desktop-nav"
 import { MobileNav } from "@/components/mobile-nav"
+import { SearchTrigger } from "@/components/search-trigger"
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/routing"
 import { usePathname } from "next/navigation"
@@ -42,17 +43,19 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
         </div>
 
         <div className={cn(
-          "flex items-center gap-4",
-          isProductPage ? "justify-end" : "justify-end" 
-          // Actually, since the left side is flex-1, the right side will naturally be pushed to the far right.
-          // This ensures alignment with other container-end elements like the Request Quote button.
+          "flex items-center gap-2",
+          isProductPage ? "justify-end" : "justify-end"
         )}>
           <div className="hidden items-center gap-2 md:flex">
+            <SearchTrigger variant="ghost" size="icon" />
             <RainbowButton asChild size="default">
               <Link href="/contact">{t("contact")}</Link>
             </RainbowButton>
           </div>
-          <MobileNav categories={categories} />
+          <div className="flex items-center gap-2 md:hidden">
+            <SearchTrigger variant="ghost" size="icon" />
+            <MobileNav categories={categories} />
+          </div>
         </div>
       </div>
     </header>

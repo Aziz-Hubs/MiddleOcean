@@ -425,5 +425,23 @@
       "quantityMax": "Quantity must not exceed 999,999",
       "submitFailed": "Failed to submit request. Please try again later."
     }
+  },
+  "Search": {
+    "title": "Product Search",
+    "description": "Search for products in our catalog",
+    "placeholder": "Search products...",
+    "triggerText": "Search",
+    "triggerAriaLabel": "Open product search",
+    "clear": "Clear search",
+    "retry": "Try again",
+    "remove": "Remove from history",
+    "recentSearches": "Recent Searches",
+    "recentProducts": "Recent Products",
+    "results": "Search Results",
+    "clearRecent": "Clear all recent searches",
+    "startTyping": "Start typing to search for products...",
+    "noResults": "No products found for \"{query}\"",
+    "tryDifferent": "Try different keywords or check your spelling",
+    "error": "Failed to search. Please try again."
   }
 }
