@@ -105,8 +105,10 @@ export default async function ProductPage(props: {
   const ChevronIcon = isRtl ? ChevronLeft : ChevronRight
 
   const productTitle = resolveLocale(productData.title, locale)
+  const productTitleAr = resolveLocale(productData.title, "ar") || resolveLocale(productData.title, "en")
   const productDesc = resolveLocale(productData.description, locale)
   const categoryTitle = resolveLocale(productData.category?.title, locale) || category.replace(/-/g, ' ')
+  const categoryTitleAr = resolveLocale(productData.category?.title, "ar") || category.replace(/-/g, ' ')
   const partNumber = `SKU-${productData._id.substring(0, 8).toUpperCase()}`
   const brandFromSpec = productData.specifications?.find((s: { name: Record<string, string> | string; value: Record<string, string> | string }) => {
     const nameEn = resolveLocale(s.name, "en")?.toLowerCase()
@@ -196,6 +198,8 @@ export default async function ProductPage(props: {
         productId={productData._id}
         productSlug={productSlug}
         category={category}
+        productNameAr={productTitleAr}
+        categoryAr={categoryTitleAr}
       />
 
       {/* Breadcrumb bar — sticky below navbar, z-40, solid backdrop */}
@@ -298,8 +302,10 @@ export default async function ProductPage(props: {
                   className="h-12 px-8 text-sm" 
                   productId={productData._id}
                   productName={productTitle}
+                  productNameAr={productTitleAr}
                   productSlug={productSlug}
                   category={category}
+                  categoryAr={categoryTitleAr}
                 />
                 <DownloadBrochureButton className="h-12 px-8 text-sm" productSlug={productSlug} />
               </div>

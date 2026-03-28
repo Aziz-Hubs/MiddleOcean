@@ -18,8 +18,10 @@ import { cn } from "@/lib/utils"
 interface QuoteRequestDialogProps {
   productId: string
   productName: string
+  productNameAr: string
   productSlug: string
   category: string
+  categoryAr: string
   locale: string
   isOpen: boolean
   onClose: () => void
@@ -39,11 +41,76 @@ interface FormErrors {
   quantity?: string
 }
 
+// Sonar/Ping Effect Component
+function SonarEffect({ status }: { status: "idle" | "success" | "error" | "loading" }) {
+  if (status === "idle") return null
+  
+  const colors = {
+    success: "bg-green-500",
+    error: "bg-red-500",
+    loading: "bg-blue-500"
+  }
+  
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-visible">
+      <motion.div
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-30`}
+        initial={{ width: 0, height: 0 }}
+        animate={{ 
+          width: [0, 400, 600], 
+          height: [0, 400, 600],
+          opacity: [0.5, 0.2, 0] 
+        }}
+        transition={{ 
+          duration: 2, 
+          repeat: Infinity,
+          ease: "easeOut" 
+        }}
+        style={{ zIndex: -1 }}
+      />
+      <motion.div
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-20`}
+        initial={{ width: 0, height: 0 }}
+        animate={{ 
+          width: [0, 300, 500], 
+          height: [0, 300, 500],
+          opacity: [0.4, 0.15, 0] 
+        }}
+        transition={{ 
+          duration: 2, 
+          repeat: Infinity,
+          ease: "easeOut",
+          delay: 0.3
+        }}
+        style={{ zIndex: -1 }}
+      />
+      <motion.div
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-10`}
+        initial={{ width: 0, height: 0 }}
+        animate={{ 
+          width: [0, 200, 400], 
+          height: [0, 200, 400],
+          opacity: [0.3, 0.1, 0] 
+        }}
+        transition={{ 
+          duration: 2, 
+          repeat: Infinity,
+          ease: "easeOut",
+          delay: 0.6
+        }}
+        style={{ zIndex: -1 }}
+      />
+    </div>
+  )
+}
+
 export function QuoteRequestDialog({
   productId,
   productName,
+  productNameAr,
   productSlug,
   category,
+  categoryAr,
   locale,
   isOpen,
   onClose,
@@ -167,10 +234,9 @@ export function QuoteRequestDialog({
         body: JSON.stringify({
           ...formData,
           productId,
-          productName,
+          productNameAr,
           productSlug,
-          category,
-          locale,
+          categoryAr,
         }),
       })
 
@@ -203,25 +269,31 @@ export function QuoteRequestDialog({
     }
   }
 
+  // Determine sonar status
+  const sonarStatus = isSubmitting ? "loading" : submitStatus !== "idle" ? submitStatus : "idle"
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent 
         className={cn(
-          "sm:max-w-md md:max-w-lg",
+          "sm:max-w-md md:max-w-lg bg-black border-white/10",
           isRtl && "font-arabic"
         )}
         showCloseButton={false}
       >
+        {/* Sonar Effect */}
+        <SonarEffect status={sonarStatus} />
+        
         <DialogHeader className={cn("space-y-2", isRtl && "text-right")}>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-lg font-semibold flex items-center gap-2">
+            <DialogTitle className="text-lg font-semibold flex items-center gap-2 text-white">
               <MessageSquareText className="size-5 text-primary" />
               {t("title")}
             </DialogTitle>
             <Button
               variant="ghost"
               size="icon"
-              className="size-8 rounded-full shrink-0"
+              className="size-8 rounded-full shrink-0 text-white hover:bg-white/10"
               onClick={handleClose}
               disabled={isSubmitting}
             >
@@ -240,19 +312,20 @@ export function QuoteRequestDialog({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="py-12 flex flex-col items-center justify-center text-center space-y-4"
+              className="py-12 flex flex-col items-center justify-center text-center space-y-4 relative"
             >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
+                className="relative"
               >
-                <div className="size-16 rounded-full bg-green-500/10 flex items-center justify-center">
+                <div className="size-16 rounded-full bg-green-500/20 flex items-center justify-center border-2 border-green-500">
                   <CheckCircle2 className="size-8 text-green-500" />
                 </div>
               </motion.div>
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold">{t("success.title")}</h3>
+                <h3 className="text-lg font-semibold text-white">{t("success.title")}</h3>
                 <p className="text-sm text-muted-foreground">{t("success.message")}</p>
               </div>
             </motion.div>
@@ -262,12 +335,12 @@ export function QuoteRequestDialog({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onSubmit={handleSubmit}
-              className="space-y-5 pt-2"
+              className="space-y-5 pt-2 relative"
               dir={isRtl ? "rtl" : "ltr"}
             >
               {/* Full Name Field */}
               <div className="space-y-2">
-                <label htmlFor="fullName" className="text-xs font-medium flex items-center gap-1">
+                <label htmlFor="fullName" className="text-xs font-medium flex items-center gap-1 text-white">
                   {t("fields.fullName")}
                   <span className="text-destructive">*</span>
                 </label>
@@ -283,7 +356,7 @@ export function QuoteRequestDialog({
                     onChange={(e) => handleChange("fullName", e.target.value)}
                     onBlur={() => handleBlur("fullName")}
                     className={cn(
-                      "h-10 transition-all duration-200",
+                      "h-10 transition-all duration-200 bg-white/5 border-white/10 text-white placeholder:text-white/40",
                       errors.fullName && touched.fullName && "border-destructive focus-visible:ring-destructive/20"
                     )}
                     disabled={isSubmitting}
@@ -307,7 +380,7 @@ export function QuoteRequestDialog({
 
               {/* Phone Field */}
               <div className="space-y-2">
-                <label htmlFor="phone" className="text-xs font-medium flex items-center gap-1">
+                <label htmlFor="phone" className="text-xs font-medium flex items-center gap-1 text-white">
                   {t("fields.phone")}
                   <span className="text-destructive">*</span>
                 </label>
@@ -323,7 +396,7 @@ export function QuoteRequestDialog({
                     onChange={(e) => handleChange("phone", e.target.value)}
                     onBlur={() => handleBlur("phone")}
                     className={cn(
-                      "h-10 transition-all duration-200",
+                      "h-10 transition-all duration-200 bg-white/5 border-white/10 text-white placeholder:text-white/40",
                       errors.phone && touched.phone && "border-destructive focus-visible:ring-destructive/20"
                     )}
                     disabled={isSubmitting}
@@ -347,7 +420,7 @@ export function QuoteRequestDialog({
 
               {/* Email Field */}
               <div className="space-y-2">
-                <label htmlFor="email" className="text-xs font-medium flex items-center gap-1">
+                <label htmlFor="email" className="text-xs font-medium flex items-center gap-1 text-white">
                   {t("fields.email")}
                   <span className="text-muted-foreground text-[10px]">({t("optional")})</span>
                 </label>
@@ -363,7 +436,7 @@ export function QuoteRequestDialog({
                     onChange={(e) => handleChange("email", e.target.value)}
                     onBlur={() => handleBlur("email")}
                     className={cn(
-                      "h-10 transition-all duration-200",
+                      "h-10 transition-all duration-200 bg-white/5 border-white/10 text-white placeholder:text-white/40",
                       errors.email && touched.email && "border-destructive focus-visible:ring-destructive/20"
                     )}
                     disabled={isSubmitting}
@@ -387,7 +460,7 @@ export function QuoteRequestDialog({
 
               {/* Quantity Field */}
               <div className="space-y-2">
-                <label htmlFor="quantity" className="text-xs font-medium">
+                <label htmlFor="quantity" className="text-xs font-medium text-white">
                   {t("fields.quantity")}
                 </label>
                 <div className="flex items-center gap-3">
@@ -398,11 +471,11 @@ export function QuoteRequestDialog({
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="size-10 rounded-full"
+                      className="size-10 rounded-full border-white/10 hover:bg-white/10"
                       onClick={() => handleQuantityChange(-1)}
                       disabled={isSubmitting || formData.quantity <= 1}
                     >
-                      <Minus className="size-4" />
+                      <Minus className="size-4 text-white" />
                     </Button>
                   </motion.div>
                   
@@ -421,7 +494,7 @@ export function QuoteRequestDialog({
                       onChange={(e) => handleChange("quantity", parseInt(e.target.value) || 1)}
                       onBlur={() => handleBlur("quantity")}
                       className={cn(
-                        "h-10 w-24 text-center transition-all duration-200",
+                        "h-10 w-24 text-center transition-all duration-200 bg-white/5 border-white/10 text-white",
                         errors.quantity && touched.quantity && "border-destructive focus-visible:ring-destructive/20"
                       )}
                       disabled={isSubmitting}
@@ -435,11 +508,11 @@ export function QuoteRequestDialog({
                       type="button"
                       variant="outline"
                       size="icon"
-                      className="size-10 rounded-full"
+                      className="size-10 rounded-full border-white/10 hover:bg-white/10"
                       onClick={() => handleQuantityChange(1)}
                       disabled={isSubmitting || formData.quantity >= 999999}
                     >
-                      <Plus className="size-4" />
+                      <Plus className="size-4 text-white" />
                     </Button>
                   </motion.div>
                 </div>

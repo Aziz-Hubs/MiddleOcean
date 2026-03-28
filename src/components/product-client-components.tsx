@@ -138,13 +138,17 @@ export function StickyHeader({
   locale,
   productId,
   productSlug,
-  category
+  category,
+  productNameAr,
+  categoryAr
 }: { 
   title: string
   locale: string
   productId?: string
   productSlug?: string
   category?: string
+  productNameAr?: string
+  categoryAr?: string
 }) {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -171,8 +175,10 @@ export function StickyHeader({
           className="shrink-0 h-9 px-4 text-xs"
           productId={productId}
           productName={title}
+          productNameAr={productNameAr}
           productSlug={productSlug}
           category={category}
+          categoryAr={categoryAr}
         />
       </div>
     </div>
