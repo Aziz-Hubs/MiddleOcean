@@ -148,16 +148,22 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
 }`;
 
-// Search products with fuzzy matching and scoring
+// Search products with fuzzy matching and scoring - searches in both locales
 export const searchProductsQuery = `*[_type == "product" && (
-  title[$locale] match $searchTerm + "*" ||
-  description[$locale] match $searchTerm + "*" ||
-  category->title[$locale] match $searchTerm + "*" ||
+  title.en match $searchTerm + "*" ||
+  title.ar match $searchTerm + "*" ||
+  description.en match $searchTerm + "*" ||
+  description.ar match $searchTerm + "*" ||
+  category->title.en match $searchTerm + "*" ||
+  category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
 )] | score(
-  title[$locale] match $searchTerm + "*" * 3,
-  description[$locale] match $searchTerm + "*" * 1,
-  category->title[$locale] match $searchTerm + "*" * 2,
+  title.en match $searchTerm + "*" * 3,
+  title.ar match $searchTerm + "*" * 3,
+  description.en match $searchTerm + "*" * 1,
+  description.ar match $searchTerm + "*" * 1,
+  category->title.en match $searchTerm + "*" * 2,
+  category->title.ar match $searchTerm + "*" * 2,
   brand->title match $searchTerm + "*" * 2
 ) | order(_score desc) [0...10]{
   _id,
@@ -193,6 +199,12 @@ export const recentProductsQuery = `*[_type == "product"] | order(_createdAt des
   },
   "imageUrl": media.thumbnail.asset->url,
   warrantyMonths
+}`;
+
+// Get product names for search placeholder cycling
+export const productNamesForPlaceholderQuery = `*[_type == "product" && defined(title.en)] | order(_createdAt desc) [0...20]{
+  "en": title.en,
+  "ar": title.ar
 }`;
 
 

@@ -124,13 +124,6 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
               <X className="h-4 w-4" />
             </button>
           )}
-          <div className={cn(
-            "hidden sm:flex items-center gap-1 rounded border bg-muted px-1.5 py-0.5 text-xs text-muted-foreground",
-            locale === "ar" ? "mr-2" : "ml-2"
-          )}>
-            <kbd className="font-sans">⌘</kbd>
-            <kbd className="font-sans">K</kbd>
-          </div>
         </div>
 
         <CommandList className="max-h-[60vh] overflow-y-auto">

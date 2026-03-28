@@ -7,6 +7,7 @@ import { useScroll } from "@/hooks/use-scroll"
 import { DesktopNav } from "@/components/desktop-nav"
 import { MobileNav } from "@/components/mobile-nav"
 import { SearchTrigger } from "@/components/search-trigger"
+import { SearchBar } from "@/components/search-bar"
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/routing"
 import { usePathname } from "next/navigation"
@@ -46,8 +47,8 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
           "flex items-center gap-2",
           isProductPage ? "justify-end" : "justify-end"
         )}>
-          <div className="hidden items-center gap-2 md:flex">
-            <SearchTrigger variant="ghost" size="icon" />
+          <div className="hidden items-center gap-3 md:flex">
+            <SearchBar className="w-[280px] lg:w-[320px]" />
             <RainbowButton asChild size="default">
               <Link href="/contact">{t("contact")}</Link>
             </RainbowButton>
