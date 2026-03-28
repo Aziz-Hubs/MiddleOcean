@@ -148,9 +148,8 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
 }`;
 
-// Search products with fuzzy matching - searches in both locales
-// Ordering: title matches first, then category, then brand, then description
-export const searchProductsQuery = `*[_type == "product" && (
+// Search products with fuzzy matching - English version (default)
+export const searchProductsQueryEn = `*[_type == "product" && (
   title.en match $searchTerm + "*" ||
   title.ar match $searchTerm + "*" ||
   description.en match $searchTerm + "*" ||
@@ -159,8 +158,43 @@ export const searchProductsQuery = `*[_type == "product" && (
   category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
 )] | order(
-  title[$locale] match $searchTerm + "*" desc,
-  category->title[$locale] match $searchTerm + "*" desc,
+  title.en match $searchTerm + "*" desc,
+  title.ar match $searchTerm + "*" desc,
+  category->title.en match $searchTerm + "*" desc,
+  category->title.ar match $searchTerm + "*" desc,
+  brand->title match $searchTerm + "*" desc,
+  _createdAt desc
+) [0...10]{
+  _id,
+  title,
+  description,
+  slug,
+  category->{
+    title,
+    slug
+  },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
+  },
+  "imageUrl": media.thumbnail.asset->url,
+  warrantyMonths
+}`;
+
+// Search products with fuzzy matching - Arabic version
+export const searchProductsQueryAr = `*[_type == "product" && (
+  title.en match $searchTerm + "*" ||
+  title.ar match $searchTerm + "*" ||
+  description.en match $searchTerm + "*" ||
+  description.ar match $searchTerm + "*" ||
+  category->title.en match $searchTerm + "*" ||
+  category->title.ar match $searchTerm + "*" ||
+  brand->title match $searchTerm + "*"
+)] | order(
+  title.ar match $searchTerm + "*" desc,
+  title.en match $searchTerm + "*" desc,
+  category->title.ar match $searchTerm + "*" desc,
+  category->title.en match $searchTerm + "*" desc,
   brand->title match $searchTerm + "*" desc,
   _createdAt desc
 ) [0...10]{
@@ -203,5 +237,3 @@ export const productNamesForPlaceholderQuery = `*[_type == "product" && defined(
   "en": title.en,
   "ar": title.ar
 }`;
-
-

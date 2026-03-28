@@ -228,7 +228,6 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
                       onSelect={() => handleSelect(product)}
                       getLocalizedText={getLocalizedText}
                       locale={locale}
-                      score={product._score}
                     />
                   </motion.div>
                 ))}
@@ -271,10 +270,9 @@ interface ProductItemProps {
   onSelect: () => void;
   getLocalizedText: (obj: { en?: string; ar?: string } | undefined) => string;
   locale: "en" | "ar";
-  score?: number;
 }
 
-function ProductItem({ product, onSelect, getLocalizedText, locale, score }: ProductItemProps) {
+function ProductItem({ product, onSelect, getLocalizedText, locale }: ProductItemProps) {
   const title = getLocalizedText(product.title);
   const description = getLocalizedText(product.description);
   const categoryTitle = getLocalizedText(product.category?.title);
@@ -328,12 +326,6 @@ function ProductItem({ product, onSelect, getLocalizedText, locale, score }: Pro
         )}
       </div>
 
-      {/* Score indicator (only for search results) */}
-      {score !== undefined && score > 0 && (
-        <div className="text-xs text-muted-foreground shrink-0">
-          {Math.round(score * 100)}%
-        </div>
-      )}
     </CommandItem>
   );
 }

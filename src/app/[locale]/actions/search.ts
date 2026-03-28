@@ -1,12 +1,10 @@
 "use server";
 
 import { sanityClient } from "@/sanity/client";
-import { searchProductsQuery, recentProductsQuery } from "@/sanity/queries";
+import { searchProductsQueryEn, searchProductsQueryAr, recentProductsQuery } from "@/sanity/queries";
 import { SanityProduct } from "@/sanity/types";
 
-export interface SearchResult extends SanityProduct {
-  _score?: number;
-}
+export type SearchResult = SanityProduct;
 
 export async function searchProducts(
   query: string,
@@ -28,9 +26,11 @@ export async function searchProducts(
   }
 
   try {
-    const results = await sanityClient.fetch(searchProductsQuery, {
+    // Use the appropriate query based on locale
+    const searchQuery = locale === "ar" ? searchProductsQueryAr : searchProductsQueryEn;
+    
+    const results = await sanityClient.fetch(searchQuery, {
       searchTerm: sanitizedQuery.toLowerCase(),
-      locale,
     });
 
     return results || [];
