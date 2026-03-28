@@ -4,5 +4,6 @@
       "maxDuration": 30,
       "memory": 2048
     }
-  }
+  },
+  "buildCommand": "npm run postinstall && next build"
 }

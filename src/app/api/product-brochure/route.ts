@@ -61,6 +61,16 @@ export async function GET(req: NextRequest) {
 
     console.log("[BROCHURE-PDF] Launching Puppeteer...")
     
+    // Get Chromium executable path
+    let executablePath: string
+    try {
+      executablePath = await chromium.executablePath()
+      console.log("[BROCHURE-PDF] Chromium path:", executablePath)
+    } catch (pathError) {
+      console.error("[BROCHURE-PDF] Failed to get Chromium path:", pathError)
+      throw new Error("Chromium binary not found. Please ensure @sparticuz/chromium is properly installed.")
+    }
+    
     // Launch Puppeteer with Chromium
     browser = await puppeteer.launch({
       args: [
@@ -71,7 +81,7 @@ export async function GET(req: NextRequest) {
         "--disable-gpu",
         "--font-render-hinting=none",
       ],
-      executablePath: await chromium.executablePath(),
+      executablePath,
       headless: true,
     })
 
