@@ -21,6 +21,8 @@ export async function GET(req: NextRequest) {
   let browser = null
 
   try {
+    console.log(`[BROCHURE-PDF] Starting PDF generation for ${productSlug} (${locale})`)
+    
     const [productData, siteSettings] = await Promise.all([
       sanityClient.fetch(productBySlugQuery, { slug: productSlug }),
       sanityClient.fetch(siteSettingsQuery),
@@ -45,7 +47,7 @@ export async function GET(req: NextRequest) {
         logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
       }
     } catch (e) {
-      console.warn("Logo failed load", e)
+      console.warn("[BROCHURE-PDF] Logo failed to load:", e)
     }
 
     // Generate HTML
@@ -57,27 +59,33 @@ export async function GET(req: NextRequest) {
       logoBase64,
     })
 
+    console.log("[BROCHURE-PDF] Launching Puppeteer...")
+    
     // Launch Puppeteer with Chromium
     browser = await puppeteer.launch({
-      args: chromium.args,
+      args: [
+        ...chromium.args,
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--font-render-hinting=none",
+      ],
       executablePath: await chromium.executablePath(),
       headless: true,
     })
 
+    console.log("[BROCHURE-PDF] Browser launched, creating page...")
+    
     const page = await browser.newPage()
     
-    // Set HTML content
+    // Set HTML content with shorter timeout
     await page.setContent(html, {
-      waitUntil: ["networkidle0", "domcontentloaded"],
+      waitUntil: "networkidle0",
+      timeout: 15000,
     })
 
-    // Wait for fonts to load
-    await page.waitForFunction(() => {
-      return document.fonts.ready
-    })
-
-    // Additional wait to ensure all resources are loaded
-    await new Promise(resolve => setTimeout(resolve, 500))
+    console.log("[BROCHURE-PDF] Content loaded, generating PDF...")
 
     // Generate PDF
     const pdfBuffer = await page.pdf({
@@ -93,6 +101,9 @@ export async function GET(req: NextRequest) {
     })
 
     await browser.close()
+    browser = null
+    
+    console.log("[BROCHURE-PDF] PDF generated successfully")
 
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
@@ -105,11 +116,22 @@ export async function GET(req: NextRequest) {
     
     // Ensure browser is closed even on error
     if (browser) {
-      await browser.close()
+      try {
+        await browser.close()
+      } catch (closeError) {
+        console.error("[BROCHURE-PDF] Error closing browser:", closeError)
+      }
     }
     
     const errorMessage = error instanceof Error ? error.message : "Unknown error"
-    return NextResponse.json({ error: "Failed", details: errorMessage }, { status: 500 })
+    const errorStack = error instanceof Error ? error.stack : ""
+    
+    console.error("[BROCHURE-PDF] Full error:", { message: errorMessage, stack: errorStack })
+    
+    return NextResponse.json({ 
+      error: "Failed to generate PDF", 
+      details: errorMessage 
+    }, { status: 500 })
   }
 }
 
