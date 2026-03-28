@@ -164,7 +164,7 @@ export function StickyHeader({
   return (
     <div 
       className={cn(
-        "fixed top-[57px] left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
+        "sticky top-[44px] left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       )}
     >

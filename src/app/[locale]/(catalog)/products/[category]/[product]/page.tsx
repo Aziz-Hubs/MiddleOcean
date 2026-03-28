@@ -191,20 +191,9 @@ export default async function ProductPage(props: {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      {/* Sticky request-quote header — z-30, appears after 200px scroll */}
-      <StickyHeader 
-        title={productTitle} 
-        locale={locale} 
-        productId={productData._id}
-        productSlug={productSlug}
-        category={category}
-        productNameAr={productTitleAr}
-        categoryAr={categoryTitleAr}
-      />
 
-      {/* Sticky wrapper for breadcrumb + product sticky header */}
+      {/* Breadcrumb + StickyHeader sticky wrapper */}
       <div className="sticky top-[57px] z-30 bg-background/95 backdrop-blur-md border-b border-border/40 print:hidden">
-        {/* Breadcrumb bar */}
         <div className="container mx-auto px-6">
           <div className="py-3">
             <Breadcrumb>
@@ -247,6 +236,15 @@ export default async function ProductPage(props: {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+          <StickyHeader 
+            title={productTitle} 
+            locale={locale} 
+            productId={productData._id}
+            productSlug={productSlug}
+            category={category}
+            productNameAr={productTitleAr}
+            categoryAr={categoryTitleAr}
+          />
         </div>
       </div>
 

@@ -148,7 +148,8 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
 }`;
 
-// Search products with fuzzy matching and scoring - searches in both locales
+// Search products with fuzzy matching - searches in both locales
+// Ordering: title matches first, then category, then brand, then description
 export const searchProductsQuery = `*[_type == "product" && (
   title.en match $searchTerm + "*" ||
   title.ar match $searchTerm + "*" ||
@@ -157,15 +158,12 @@ export const searchProductsQuery = `*[_type == "product" && (
   category->title.en match $searchTerm + "*" ||
   category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
-)] | score(
-  boost(title.en match $searchTerm + "*", 3),
-  boost(title.ar match $searchTerm + "*", 3),
-  boost(description.en match $searchTerm + "*", 1),
-  boost(description.ar match $searchTerm + "*", 1),
-  boost(category->title.en match $searchTerm + "*", 2),
-  boost(category->title.ar match $searchTerm + "*", 2),
-  boost(brand->title match $searchTerm + "*", 2)
-) | order(_score desc) [0...10]{
+)] | order(
+  title[$locale] match $searchTerm + "*" desc,
+  category->title[$locale] match $searchTerm + "*" desc,
+  brand->title match $searchTerm + "*" desc,
+  _createdAt desc
+) [0...10]{
   _id,
   title,
   description,
@@ -179,8 +177,7 @@ export const searchProductsQuery = `*[_type == "product" && (
     "logoUrl": logo.asset->url
   },
   "imageUrl": media.thumbnail.asset->url,
-  warrantyMonths,
-  _score
+  warrantyMonths
 }`;
 
 // Get recent/popular products for empty search state
