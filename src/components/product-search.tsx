@@ -43,6 +43,7 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
     error,
     hasSearched,
     recentSearches,
+    addRecentSearch,
     removeRecentSearch,
     clearRecentSearches,
   } = useProductSearch({ locale });
@@ -70,10 +71,14 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
   const handleSelect = useCallback(
     (product: SearchResult | SanityProduct) => {
       onOpenChange(false);
+      // Save the current search query to recent searches when a product is selected
+      if (query.trim()) {
+        addRecentSearch(query.trim());
+      }
       const url = `/${locale}/products/${product.category?.slug?.current || "uncategorized"}/${product.slug.current}`;
       router.push(url);
     },
-    [locale, onOpenChange, router]
+    [locale, onOpenChange, router, query, addRecentSearch]
   );
 
   const getLocalizedText = (obj: { en?: string; ar?: string } | undefined) => {

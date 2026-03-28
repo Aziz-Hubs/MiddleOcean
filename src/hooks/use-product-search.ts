@@ -144,11 +144,6 @@ export function useProductSearch({
       try {
         const searchResults = await searchProducts(query.trim(), locale);
         setResults(searchResults);
-        
-        // Add to recent searches if we got results
-        if (searchResults.length > 0) {
-          addRecentSearch(query.trim());
-        }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Search failed");
         setResults([]);
