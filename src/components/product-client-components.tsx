@@ -1,24 +1,59 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useTranslations } from "next-intl"
+import { useTranslations, useLocale } from "next-intl"
 import { Button } from "@/components/ui/button"
-import { Printer, MessageSquareText } from "lucide-react"
+import { Printer, MessageSquareText, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Link } from "@/i18n/routing"
 
-export function PrintBrochureButton({ className }: { className?: string }) {
+export function DownloadBrochureButton({ 
+  className, 
+  productSlug 
+}: { 
+  className?: string, 
+  productSlug: string 
+}) {
   const t = useTranslations("Navigation")
-  
+  const locale = useLocale()
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownload = async () => {
+    setIsDownloading(true)
+    try {
+      const response = await fetch(`/api/product-brochure?product=${productSlug}&locale=${locale}`)
+      if (!response.ok) throw new Error('Failed to generate PDF')
+      
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `brochure-${productSlug}-${locale}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Download failed:', error)
+      alert(locale === 'ar' ? 'فشل تحميل الكتيب' : 'Failed to download brochure')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   return (
     <Button 
       variant="outline" 
-      onClick={() => window.print()}
+      onClick={handleDownload}
+      disabled={isDownloading}
       className={cn("w-full sm:w-auto gap-2 border-white/10 hover:bg-white/5 cursor-pointer print:hidden", className)}
     >
-      <Printer className="size-4" />
-      <span className="max-sm:hidden">{t("print_brochure")}</span>
-      <span className="sm:hidden">{t("print")}</span>
+      {isDownloading ? (
+        <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+      ) : (
+        <Download className="size-4" />
+      )}
+      <span>{isDownloading ? (locale === 'ar' ? 'جاري التحميل...' : 'Downloading...') : t("print_brochure")}</span>
     </Button>
   )
 }
@@ -42,7 +77,6 @@ export function StickyHeader({ title, locale }: { title: string, locale: string 
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show after scrolling past initial hero area
       setIsVisible(window.scrollY > 200)
     }
     
@@ -53,7 +87,6 @@ export function StickyHeader({ title, locale }: { title: string, locale: string 
   return (
     <div 
       className={cn(
-        // top-[101px] = 57px navbar + ~44px breadcrumb bar (minus 1px to overlap border)
         "fixed top-[101px] left-0 right-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       )}

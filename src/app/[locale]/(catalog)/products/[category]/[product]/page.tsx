@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Link } from "@/i18n/routing"
 import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target } from "lucide-react"
-import { PrintBrochureButton, RequestQuoteButton, StickyHeader } from "@/components/product-client-components"
+import { DownloadBrochureButton, RequestQuoteButton, StickyHeader } from "@/components/product-client-components"
 import { ProductReviews } from "@/components/product-reviews"
 import { ProductImage } from "@/components/product-image"
 import ContactUs1 from "@/components/contact-us-1"
@@ -288,7 +288,7 @@ export default async function ProductPage(props: {
 
               <div className="flex flex-col sm:flex-row gap-3 print:hidden">
                 <RequestQuoteButton locale={locale} className="h-12 px-8 text-sm" />
-                <PrintBrochureButton className="h-12 px-8 text-sm" />
+                <DownloadBrochureButton className="h-12 px-8 text-sm" productSlug={productSlug} />
               </div>
 
               <div className="space-y-3 print:hidden">
