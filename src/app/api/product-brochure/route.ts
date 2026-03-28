@@ -223,7 +223,7 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
     qrLabel: { fontSize: 5, color: C.slateUltraLight, marginTop: 1 },
 
     // Hero section
-    hero: { flexDirection: isRtl ? "row-reverse" : "row", gap: 24, marginBottom: 20 },
+    hero: { flexDirection: isRtl ? "row-reverse" : "row", gap: 24, marginBottom: 18 },
     imgContainer: { width: "30%" },
     imgBox: {
       aspectRatio: 1,
@@ -231,7 +231,6 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       borderWidth: 1.5,
       borderColor: C.borderLight,
       backgroundColor: C.bgAlt,
-      overflow: "hidden",
       alignItems: "center",
       justifyContent: "center",
       padding: 10,
@@ -286,8 +285,8 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       flexDirection: isRtl ? "row-reverse" : "row",
       alignItems: "center",
       gap: 8,
-      marginBottom: 12,
-      marginTop: 4,
+      marginBottom: 10,
+      marginTop: 2,
     },
     sectionBar: {
       width: 3.5,
@@ -308,7 +307,6 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       borderWidth: 1,
       borderColor: C.border,
       borderRadius: 6,
-      overflow: "hidden",
     },
     specRow: {
       flexDirection: isRtl ? "row-reverse" : "row",
@@ -318,10 +316,10 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
     specCell: {
       flexDirection: isRtl ? "row-reverse" : "row",
       flex: 1,
-      paddingVertical: 6.5,
-      paddingHorizontal: 12,
+      paddingVertical: 6,
+      paddingHorizontal: 10,
       alignItems: "center",
-      minHeight: 24,
+      minHeight: 22,
     },
     specCellBorder: {
       borderRightWidth: isRtl ? 0 : 0.5,
@@ -329,18 +327,18 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       borderColor: C.border,
     },
     specLabel: {
-      fontSize: 7,
+      fontSize: 6.5,
       fontWeight: 700,
       color: C.slateLight,
       textTransform: "uppercase",
-      width: "48%",
+      width: "50%", // More room for Arabic
       textAlign: isRtl ? "right" : "left",
     },
     specValue: {
-      fontSize: 7.5,
+      fontSize: 7,
       fontWeight: 500,
       color: C.navy,
-      width: "52%",
+      width: "50%",
       textAlign: isRtl ? "right" : "left",
     },
 
@@ -459,7 +457,9 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
           : React.createElement(Text, { style: { fontSize: 16, fontWeight: 800, color: C.navy } }, "Middle Ocean"),
         React.createElement(View, { style: s.headerRight },
           React.createElement(View, { style: s.headerText },
-            React.createElement(Text, { style: s.headerTitle }, isRtl ? "ورقة المواصفات" : "SPECIFICATION SHEET"),
+            React.createElement(Text, { style: { ...s.headerTitle, lineHeight: isRtl ? 1.4 : 1 } }, 
+              isRtl ? "\u200Fورقة المواصفات" : "SPECIFICATION SHEET"
+            ),
             React.createElement(Text, { style: s.headerDate }, dateStr),
           ),
           React.createElement(View, { style: s.qrBox },
@@ -480,9 +480,13 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
         ),
         React.createElement(View, { style: s.productInfo },
           React.createElement(Text, { style: s.brandSku }, `${brandName} • ${partNumber}`),
-          React.createElement(Text, { style: s.productTitle }, productTitle),
-          React.createElement(Text, { style: s.productDesc },
-            productDesc || (isRtl ? "منتج عالي الجودة بمواصفات عالمية وتصميم متميز يلبي احتياجاتكم" : "High-quality product with international specifications and premium design"),
+          React.createElement(Text, { style: { ...s.productTitle, lineHeight: isRtl ? 1.4 : 1.1 } }, 
+            isRtl ? `\u200F${productTitle}` : productTitle
+          ),
+          React.createElement(Text, { style: { ...s.productDesc, lineHeight: isRtl ? 1.5 : 1.6 } },
+            isRtl 
+              ? `\u200F${productDesc || "منتج عالي الجودة بمواصفات عالمية وتصميم متميز يلبي احتياجاتكم"}`
+              : (productDesc || "High-quality product with international specifications and premium design"),
           ),
           // Cert badges
           React.createElement(View, { style: s.badgesRow },
@@ -504,8 +508,8 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       filteredSpecs.length > 0 && React.createElement(View, { style: { marginBottom: 20 } },
         React.createElement(View, { style: s.sectionHeaderRow },
           React.createElement(View, { style: s.sectionBar }),
-          React.createElement(Text, { style: s.sectionTitle },
-            isRtl ? "المواصفات الفنية" : "TECHNICAL SPECIFICATIONS"
+          React.createElement(Text, { style: { ...s.sectionTitle, lineHeight: isRtl ? 1.4 : 1 } },
+            isRtl ? "\u200Fالمواصفات الفنية" : "TECHNICAL SPECIFICATIONS"
           ),
         ),
         React.createElement(View, { style: s.specsTable },
@@ -520,14 +524,22 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
             },
               // First spec
               React.createElement(View, { style: { ...s.specCell, ...s.specCellBorder } },
-                React.createElement(Text, { style: s.specLabel }, resolveLocale(pair[0].name, locale)),
-                React.createElement(Text, { style: s.specValue }, resolveLocale(pair[0].value, locale)),
+                React.createElement(Text, { style: { ...s.specLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+                  isRtl ? `\u200F${resolveLocale(pair[0].name, locale)}` : resolveLocale(pair[0].name, locale)
+                ),
+                React.createElement(Text, { style: { ...s.specValue, lineHeight: isRtl ? 1.4 : 1 } }, 
+                  isRtl ? `\u200F${resolveLocale(pair[0].value, locale)}` : resolveLocale(pair[0].value, locale)
+                ),
               ),
               // Second spec
               pair[1]
                 ? React.createElement(View, { style: s.specCell },
-                    React.createElement(Text, { style: s.specLabel }, resolveLocale(pair[1].name, locale)),
-                    React.createElement(Text, { style: s.specValue }, resolveLocale(pair[1].value, locale)),
+                    React.createElement(Text, { style: { ...s.specLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+                      isRtl ? `\u200F${resolveLocale(pair[1].name, locale)}` : resolveLocale(pair[1].name, locale)
+                    ),
+                    React.createElement(Text, { style: { ...s.specValue, lineHeight: isRtl ? 1.4 : 1 } }, 
+                      isRtl ? `\u200F${resolveLocale(pair[1].value, locale)}` : resolveLocale(pair[1].value, locale)
+                    ),
                   )
                 : React.createElement(View, { style: s.specCell }),
             )
@@ -539,8 +551,8 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       React.createElement(View, { style: { marginBottom: 12 } },
         React.createElement(View, { style: s.sectionHeaderRow },
           React.createElement(View, { style: s.sectionBar }),
-          React.createElement(Text, { style: s.sectionTitle },
-            isRtl ? "القيمة المضافة" : "ADDED VALUE"
+          React.createElement(Text, { style: { ...s.sectionTitle, lineHeight: isRtl ? 1.4 : 1 } },
+            isRtl ? "\u200Fالقيمة المضافة" : "ADDED VALUE"
           ),
         ),
         React.createElement(View, { style: s.featuresGrid },
@@ -550,8 +562,12 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
                 React.createElement(f.Icon),
               ),
               React.createElement(View, { style: s.featureContent },
-                React.createElement(Text, { style: s.featureLabel }, f.label),
-                React.createElement(Text, { style: s.featureDesc }, f.desc),
+                React.createElement(Text, { style: { ...s.featureLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+                  isRtl ? `\u200F${f.label}` : f.label
+                ),
+                React.createElement(Text, { style: { ...s.featureDesc, lineHeight: isRtl ? 1.4 : 1 } }, 
+                  isRtl ? `\u200F${f.desc}` : f.desc
+                ),
               ),
             )
           ),
@@ -563,7 +579,9 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
         React.createElement(View, { style: s.footerGrid },
           // Contact Us
           React.createElement(View, { style: { ...s.footerCol, width: "35%" } },
-            React.createElement(Text, { style: s.footerLabel }, isRtl ? "اتصل بنا" : "CONTACT US"),
+            React.createElement(Text, { style: { ...s.footerLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+              isRtl ? "\u200Fاتصل بنا" : "CONTACT US"
+            ),
             React.createElement(View, { style: s.footerItem },
               React.createElement(PhoneIcon),
               React.createElement(Text, { style: s.footerText }, siteSettings?.phone || "+962 7 8100 0988"),
@@ -579,19 +597,23 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
           ),
           // Location
           React.createElement(View, { style: { ...s.footerCol, width: "35%" } },
-            React.createElement(Text, { style: s.footerLabel }, isRtl ? "الموقع" : "LOCATION"),
+            React.createElement(Text, { style: { ...s.footerLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+              isRtl ? "\u200Fالموقع" : "LOCATION"
+            ),
             React.createElement(View, { style: s.footerItem },
               React.createElement(MapPinIcon),
-              React.createElement(Text, { style: { ...s.footerText, lineHeight: 1.3 } },
+              React.createElement(Text, { style: { ...s.footerText, lineHeight: 1.4 } },
                 isRtl 
-                  ? "شارع عصام العجلوني، مجمع شركو، الطابق الأول، عمان - الأردن"
+                  ? "\u200Fشارع عصام العجلوني، مجمع شركو، الطابق الأول، عمان - الأردن"
                   : (siteSettings?.address?.[locale as "en" | "ar"] || "60 Issam Ajlouni Str, Sherko Complex, Floor 1, Amman - Jordan"),
               ),
             ),
           ),
           // Follow Us
           React.createElement(View, { style: { ...s.footerCol, width: "25%" } },
-            React.createElement(Text, { style: s.footerLabel }, isRtl ? "تابعنا" : "FOLLOW US"),
+            React.createElement(Text, { style: { ...s.footerLabel, lineHeight: isRtl ? 1.4 : 1 } }, 
+              isRtl ? "\u200Fتابعنا" : "FOLLOW US"
+            ),
             React.createElement(View, { style: s.socialCard },
               React.createElement(FacebookIcon),
               React.createElement(Text, { style: s.socialText }, "middleocean"),
