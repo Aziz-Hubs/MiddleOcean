@@ -333,14 +333,14 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       fontWeight: 700,
       color: C.slateLight,
       textTransform: "uppercase",
-      width: "45%",
+      width: "48%",
       textAlign: isRtl ? "right" : "left",
     },
     specValue: {
       fontSize: 7.5,
       fontWeight: 500,
       color: C.navy,
-      width: "55%",
+      width: "52%",
       textAlign: isRtl ? "right" : "left",
     },
 
