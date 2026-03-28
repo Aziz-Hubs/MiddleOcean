@@ -19,7 +19,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "@sanity/client": "^7.17.0",
     "@sanity/mcp-server": "^0.12.2",
-    "@sparticuz/chromium": "^143.0.4",
+    "@sparticuz/chromium-min": "143.0.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "arabic-persian-reshaper": "^1.0.1",

@@ -3,9 +3,14 @@ import { sanityClient } from "@/sanity/client"
 import { productBySlugQuery, siteSettingsQuery } from "@/sanity/queries"
 import QRCode from "qrcode"
 import puppeteer from "puppeteer-core"
-import chromium from "@sparticuz/chromium"
+import chromium from "@sparticuz/chromium-min"
 import path from "path"
 import fs from "fs"
+
+// Chromium pack URL matching @sparticuz/chromium-min@143.0.4
+// Downloaded and cached in /tmp on cold start, reused on warm invocations
+const CHROMIUM_PACK_URL =
+  "https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar"
 import { generateBrochureHTML, resolveLocale } from "./template"
 
 // ── Route Handler ────────────────────────────────────────────────────
@@ -65,8 +70,8 @@ export async function GET(req: NextRequest) {
     // 3. Extracts fonts.tar.br to /tmp/fonts
     // 4. Extracts swiftshader.tar.br for WebGL support
     // 5. Sets LD_LIBRARY_PATH so the binary can find all shared libraries
-    console.log("[BROCHURE-PDF] Setting up Chromium via @sparticuz/chromium...")
-    const executablePath = await chromium.executablePath()
+    console.log("[BROCHURE-PDF] Setting up Chromium via @sparticuz/chromium-min...")
+    const executablePath = await chromium.executablePath(CHROMIUM_PACK_URL)
     console.log("[BROCHURE-PDF] Chromium ready at:", executablePath)
 
     // Launch Puppeteer with Chromium — use chromium.args and chromium.headless
