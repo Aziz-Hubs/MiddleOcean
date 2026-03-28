@@ -12,6 +12,8 @@ const nextConfig = {
       },
     ],
   },
+  // Ensure Chromium and Puppeteer packages are not bundled by webpack
+  serverExternalPackages: ['@sparticuz/chromium', 'puppeteer-core'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       // Ensure Chromium binaries are included in server bundle
@@ -21,10 +23,6 @@ const nextConfig = {
       });
     }
     return config;
-  },
-  // Ensure serverComponentsExternalPackages includes chromium
-  experimental: {
-    serverComponentsExternalPackages: ['@sparticuz/chromium'],
   },
 };
  

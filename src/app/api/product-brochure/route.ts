@@ -6,14 +6,7 @@ import puppeteer from "puppeteer-core"
 import chromium from "@sparticuz/chromium"
 import path from "path"
 import fs from "fs"
-import { promisify } from "util"
-import { brotliDecompress } from "zlib"
 import { generateBrochureHTML, resolveLocale } from "./template"
-
-const brotliDecompressAsync = promisify(brotliDecompress)
-
-// Path to cached decompressed chromium in /tmp (writable directory)
-const CACHED_CHROMIUM_PATH = "/tmp/chromium"
 
 // ── Route Handler ────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
@@ -66,85 +59,22 @@ export async function GET(req: NextRequest) {
       logoBase64,
     })
 
-    console.log("[BROCHURE-PDF] Setting up Chromium...")
-    
-    // Get Chromium executable path
-    let executablePath: string
-    
-    // Check if we have a cached decompressed binary in /tmp
-    if (fs.existsSync(CACHED_CHROMIUM_PATH)) {
-      console.log("[BROCHURE-PDF] Using cached Chromium from /tmp")
-      executablePath = CACHED_CHROMIUM_PATH
-    } else {
-      // Find the compressed binary
-      let compressedPath: string | null = null
-      
-      // Try standard path first
-      try {
-        const standardPath = await chromium.executablePath()
-        console.log("[BROCHURE-PDF] Standard Chromium path:", standardPath)
-        if (standardPath && fs.existsSync(standardPath)) {
-          compressedPath = standardPath
-        }
-      } catch {
-        console.log("[BROCHURE-PDF] Standard path not available, trying fallback locations")
-      }
-      
-      // Fallback locations
-      if (!compressedPath) {
-        const possiblePaths = [
-          "/var/task/node_modules/@sparticuz/chromium/bin/chromium.br",
-          "/var/task/node_modules/@sparticuz/chromium/bin/chromium",
-          path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium.br"),
-          path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium"),
-        ]
-        
-        for (const tryPath of possiblePaths) {
-          if (fs.existsSync(tryPath)) {
-            console.log("[BROCHURE-PDF] Found Chromium at:", tryPath)
-            compressedPath = tryPath
-            break
-          }
-        }
-      }
+    // Use @sparticuz/chromium's built-in executablePath() which:
+    // 1. Decompresses chromium.br to /tmp/chromium
+    // 2. Extracts al2023.tar.br (shared libs like libnspr4.so) to /tmp/al2023
+    // 3. Extracts fonts.tar.br to /tmp/fonts
+    // 4. Extracts swiftshader.tar.br for WebGL support
+    // 5. Sets LD_LIBRARY_PATH so the binary can find all shared libraries
+    console.log("[BROCHURE-PDF] Setting up Chromium via @sparticuz/chromium...")
+    const executablePath = await chromium.executablePath()
+    console.log("[BROCHURE-PDF] Chromium ready at:", executablePath)
 
-      if (!compressedPath) {
-        throw new Error("Chromium binary not found in any location")
-      }
-
-      // Check if already decompressed (no .br extension)
-      if (!compressedPath.endsWith('.br')) {
-        console.log("[BROCHURE-PDF] Binary already decompressed, copying to /tmp...")
-        const binary = fs.readFileSync(compressedPath)
-        fs.writeFileSync(CACHED_CHROMIUM_PATH, binary)
-        fs.chmodSync(CACHED_CHROMIUM_PATH, 0o755)
-        executablePath = CACHED_CHROMIUM_PATH
-      } else {
-        // Decompress .br file to /tmp
-        console.log("[BROCHURE-PDF] Decompressing binary to /tmp...")
-        const compressed = fs.readFileSync(compressedPath)
-        const decompressed = await brotliDecompressAsync(compressed)
-        fs.writeFileSync(CACHED_CHROMIUM_PATH, decompressed)
-        fs.chmodSync(CACHED_CHROMIUM_PATH, 0o755)
-        console.log("[BROCHURE-PDF] Decompressed and cached to:", CACHED_CHROMIUM_PATH)
-        executablePath = CACHED_CHROMIUM_PATH
-      }
-    }
-    
-    console.log("[BROCHURE-PDF] Launching Puppeteer with:", executablePath)
-    
-    // Launch Puppeteer with Chromium
+    // Launch Puppeteer with Chromium — use chromium.args and chromium.headless
+    // which are specifically tuned for serverless environments
     browser = await puppeteer.launch({
-      args: [
-        ...chromium.args,
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-        "--font-render-hinting=none",
-      ],
+      args: chromium.args,
       executablePath,
-      headless: true,
+      headless: "shell" as const,
     })
 
     console.log("[BROCHURE-PDF] Browser launched, creating page...")
