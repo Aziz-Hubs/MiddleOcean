@@ -39,11 +39,11 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
         </div>
 
         {/* Center section: SearchBar (both mobile and desktop) */}
-        <div className="flex-1 flex justify-center px-4">
-          <div className="hidden md:block">
-            <SearchBar className="w-[240px] lg:w-[280px] xl:w-[320px]" />
+        <div className="flex-1 flex justify-center px-2 sm:px-4">
+          <div className="hidden md:block w-full max-w-[400px] lg:max-w-[480px] xl:max-w-[560px]">
+            <SearchBar className="w-full" />
           </div>
-          <div className="md:hidden flex-1 max-w-[200px]">
+          <div className="md:hidden w-full max-w-[280px] sm:max-w-[320px]">
             <SearchBar className="w-full" />
           </div>
         </div>

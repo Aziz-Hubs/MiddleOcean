@@ -12,6 +12,9 @@ import { generateBrochureHTML, resolveLocale } from "./template"
 
 const brotliDecompressAsync = promisify(brotliDecompress)
 
+// Path to cached decompressed chromium in /tmp (writable directory)
+const CACHED_CHROMIUM_PATH = "/tmp/chromium"
+
 // ── Route Handler ────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -65,62 +68,70 @@ export async function GET(req: NextRequest) {
 
     console.log("[BROCHURE-PDF] Setting up Chromium...")
     
-    // Try to get Chromium executable path
-    let executablePath: string | null = null
-    try {
-      // First try the standard path
-      executablePath = await chromium.executablePath()
-      console.log("[BROCHURE-PDF] Chromium path from package:", executablePath)
-    } catch (pathError) {
-      console.error("[BROCHURE-PDF] Failed to get Chromium path from package:", pathError)
+    // Get Chromium executable path
+    let executablePath: string
+    
+    // Check if we have a cached decompressed binary in /tmp
+    if (fs.existsSync(CACHED_CHROMIUM_PATH)) {
+      console.log("[BROCHURE-PDF] Using cached Chromium from /tmp")
+      executablePath = CACHED_CHROMIUM_PATH
+    } else {
+      // Find the compressed binary
+      let compressedPath: string | null = null
+      
+      // Try standard path first
+      try {
+        const standardPath = await chromium.executablePath()
+        console.log("[BROCHURE-PDF] Standard Chromium path:", standardPath)
+        if (standardPath && fs.existsSync(standardPath)) {
+          compressedPath = standardPath
+        }
+      } catch {
+        console.log("[BROCHURE-PDF] Standard path not available, trying fallback locations")
+      }
+      
+      // Fallback locations
+      if (!compressedPath) {
+        const possiblePaths = [
+          "/var/task/node_modules/@sparticuz/chromium/bin/chromium.br",
+          "/var/task/node_modules/@sparticuz/chromium/bin/chromium",
+          path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium.br"),
+          path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium"),
+        ]
+        
+        for (const tryPath of possiblePaths) {
+          if (fs.existsSync(tryPath)) {
+            console.log("[BROCHURE-PDF] Found Chromium at:", tryPath)
+            compressedPath = tryPath
+            break
+          }
+        }
+      }
+
+      if (!compressedPath) {
+        throw new Error("Chromium binary not found in any location")
+      }
+
+      // Check if already decompressed (no .br extension)
+      if (!compressedPath.endsWith('.br')) {
+        console.log("[BROCHURE-PDF] Binary already decompressed, copying to /tmp...")
+        const binary = fs.readFileSync(compressedPath)
+        fs.writeFileSync(CACHED_CHROMIUM_PATH, binary)
+        fs.chmodSync(CACHED_CHROMIUM_PATH, 0o755)
+        executablePath = CACHED_CHROMIUM_PATH
+      } else {
+        // Decompress .br file to /tmp
+        console.log("[BROCHURE-PDF] Decompressing binary to /tmp...")
+        const compressed = fs.readFileSync(compressedPath)
+        const decompressed = await brotliDecompressAsync(compressed)
+        fs.writeFileSync(CACHED_CHROMIUM_PATH, decompressed)
+        fs.chmodSync(CACHED_CHROMIUM_PATH, 0o755)
+        console.log("[BROCHURE-PDF] Decompressed and cached to:", CACHED_CHROMIUM_PATH)
+        executablePath = CACHED_CHROMIUM_PATH
+      }
     }
     
-    // If standard path failed, try fallback locations
-    if (!executablePath) {
-      const possiblePaths = [
-        path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium"),
-        path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium.br"),
-        "/var/task/node_modules/@sparticuz/chromium/bin/chromium",
-        "/var/task/node_modules/@sparticuz/chromium/bin/chromium.br",
-      ]
-
-      for (const tryPath of possiblePaths) {
-        if (fs.existsSync(tryPath)) {
-          console.log("[BROCHURE-PDF] Found Chromium at:", tryPath)
-          executablePath = tryPath
-          break
-        }
-      }
-    }
-
-    if (!executablePath) {
-      console.error("[BROCHURE-PDF] Chromium binary not found in any location")
-      throw new Error("Chromium binary not found. Please ensure @sparticuz/chromium is properly installed.")
-    }
-
-    // Decompress if it's a .br file
-    if (executablePath.endsWith('.br')) {
-      console.log("[BROCHURE-PDF] Decompressing binary...")
-      const decompressedPath = executablePath.replace('.br', '')
-
-      try {
-        if (!fs.existsSync(decompressedPath)) {
-          const compressed = fs.readFileSync(executablePath)
-          const decompressed = await brotliDecompressAsync(compressed)
-          fs.writeFileSync(decompressedPath, decompressed)
-          fs.chmodSync(decompressedPath, 0o755)
-          console.log("[BROCHURE-PDF] Decompressed to:", decompressedPath)
-        } else {
-          console.log("[BROCHURE-PDF] Using existing decompressed binary:", decompressedPath)
-        }
-        executablePath = decompressedPath
-      } catch (decompressError) {
-        console.error("[BROCHURE-PDF] Failed to decompress:", decompressError)
-        throw new Error("Failed to decompress Chromium binary")
-      }
-    }
-
-    console.log("[BROCHURE-PDF] Launching Puppeteer...")
+    console.log("[BROCHURE-PDF] Launching Puppeteer with:", executablePath)
     
     // Launch Puppeteer with Chromium
     browser = await puppeteer.launch({
