@@ -4,12 +4,11 @@ import { sanityClient } from "@/sanity/client"
 import { productBySlugQuery, siteSettingsQuery } from "@/sanity/queries"
 import QRCode from "qrcode"
 import React from "react"
-import { Document, Page, View, Text, Image, Font, StyleSheet, Link } from "@react-pdf/renderer"
+import { Document, Page, View, Text, Image, Font, StyleSheet, Svg, Path, Circle, Rect } from "@react-pdf/renderer"
 import path from "path"
 import fs from "fs"
 
 // ── Fonts ────────────────────────────────────────────────────────────
-// Use TTF for better compatibility with react-pdf/fontkit in Node.js
 Font.register({
   family: "Inter",
   fonts: [
@@ -33,7 +32,6 @@ Font.register({
   ],
 })
 
-// Hyphenation callback - disable hyphenation
 Font.registerHyphenationCallback((word) => [word])
 
 // ── Helpers ──────────────────────────────────────────────────────────
@@ -44,17 +42,90 @@ function resolveLocale(field: Record<string, string> | string | undefined, local
 }
 
 // ── Colors ───────────────────────────────────────────────────────────
-const COLORS = {
+const C = {
   navy: "#0f172a",
   navyLight: "#1e293b",
   slate: "#475569",
   slateLight: "#64748b",
   slateUltraLight: "#94a3b8",
   border: "#e2e8f0",
+  borderLight: "#f1f5f9",
   bgAlt: "#f8fafc",
   white: "#ffffff",
   cyan: "#06b6d4",
   cyanDark: "#0891b2",
+  blue: "#3b82f6",
+  emerald: "#10b981",
+  yellow: "#f59e0b",
+}
+
+// ── SVG Icons (Lucide-style, 16x16 viewBox 0 0 24 24) ───────────────
+function ZapIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 16, height: 16 },
+    React.createElement(Path, {
+      d: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+      fill: "none", stroke: C.yellow, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"
+    })
+  )
+}
+
+function ShieldIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 16, height: 16 },
+    React.createElement(Path, {
+      d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+      fill: "none", stroke: C.blue, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"
+    }),
+    React.createElement(Path, {
+      d: "M9 12l2 2 4-4",
+      fill: "none", stroke: C.blue, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"
+    })
+  )
+}
+
+function TargetIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 16, height: 16 },
+    React.createElement(Circle, { cx: "12", cy: "12", r: "10", fill: "none", stroke: C.emerald, strokeWidth: 2 }),
+    React.createElement(Circle, { cx: "12", cy: "12", r: "6", fill: "none", stroke: C.emerald, strokeWidth: 2 }),
+    React.createElement(Circle, { cx: "12", cy: "12", r: "2", fill: "none", stroke: C.emerald, strokeWidth: 2 })
+  )
+}
+
+function CpuIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 16, height: 16 },
+    React.createElement(Rect, { x: "4", y: "4", width: "16", height: "16", rx: "2", ry: "2", fill: "none", stroke: C.slateLight, strokeWidth: 2 }),
+    React.createElement(Rect, { x: "9", y: "9", width: "6", height: "6", fill: "none", stroke: C.slateLight, strokeWidth: 2 }),
+    React.createElement(Path, { d: "M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3", fill: "none", stroke: C.slateLight, strokeWidth: 2, strokeLinecap: "round" })
+  )
+}
+
+function PhoneIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 10, height: 10 },
+    React.createElement(Path, {
+      d: "M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z",
+      fill: "none", stroke: C.slateLight, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round"
+    })
+  )
+}
+
+function MailIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 10, height: 10 },
+    React.createElement(Rect, { x: "2", y: "4", width: "20", height: "16", rx: "2", fill: "none", stroke: C.slateLight, strokeWidth: 2 }),
+    React.createElement(Path, { d: "M22 7l-10 7L2 7", fill: "none", stroke: C.slateLight, strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round" })
+  )
+}
+
+function GlobeIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 10, height: 10 },
+    React.createElement(Circle, { cx: "12", cy: "12", r: "10", fill: "none", stroke: C.slateLight, strokeWidth: 2 }),
+    React.createElement(Path, { d: "M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z", fill: "none", stroke: C.slateLight, strokeWidth: 2 })
+  )
+}
+
+function MapPinIcon() {
+  return React.createElement(Svg, { viewBox: "0 0 24 24", width: 10, height: 10 },
+    React.createElement(Path, { d: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z", fill: "none", stroke: C.slateLight, strokeWidth: 2 }),
+    React.createElement(Circle, { cx: "12", cy: "10", r: "3", fill: "none", stroke: C.slateLight, strokeWidth: 2 })
+  )
 }
 
 // ── PDF Document Component ───────────────────────────────────────────
@@ -72,24 +143,36 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
   const productTitle = resolveLocale(product.title, locale)
   const productDesc = resolveLocale(product.description, locale)
   const partNumber = `SKU-${product._id.substring(0, 8).toUpperCase()}`
-  const brandName = product.brand?.title || "Middle Ocean"
+  const brandName = product.brand?.title === "Generic" || !product.brand?.title ? "Generic" : product.brand.title
 
   const filteredSpecs = product.specifications
     ?.filter((spec: any) => {
       const nameEn = resolveLocale(spec.name, "en")?.toLowerCase()
       return nameEn !== "media thumbnail" && nameEn !== "thumbnail"
     })
-    .slice(0, 8) || []
+    .slice(0, 10) || []
 
   const dateStr = new Date().toLocaleDateString(locale === "ar" ? "ar-JO" : "en-US", {
-    year: "numeric", month: "short", day: "numeric",
+    year: "numeric", month: "long", day: "numeric",
   })
+
+  const features = [
+    { Icon: ZapIcon, label: isRtl ? "كفاءة عالية" : "High Efficiency", desc: isRtl ? "يقلل من وقت التوقف والصيانة" : "Reduces downtime and maintenance costs" },
+    { Icon: ShieldIcon, label: isRtl ? "موثوقية" : "Reliability", desc: isRtl ? "مصمم للبيئات الصناعية" : "Built for demanding industrial environments" },
+    { Icon: TargetIcon, label: isRtl ? "دقة متناهية" : "Precision", desc: isRtl ? "نتائج دقيقة في كل مرة" : "Perfectly calibrated for exact results" },
+    { Icon: CpuIcon, label: isRtl ? "تكامل سلس" : "Seamless Integration", desc: isRtl ? "متوافق مع أنظمتكم الحالية" : "Compatible with your existing workflows" },
+  ]
+
+  const certBadges = [
+    { label: "ISO 9001", borderColor: C.blue },
+    { label: "CE Certified", borderColor: C.emerald },
+  ]
 
   const s = StyleSheet.create({
     page: {
       fontFamily,
-      backgroundColor: COLORS.white,
-      padding: "24 28 20 28",
+      backgroundColor: C.white,
+      padding: "28 32 24 32",
       flexDirection: "column",
     },
     // Header
@@ -97,183 +180,256 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
       flexDirection: isRtl ? "row-reverse" : "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingBottom: 14,
-      marginBottom: 16,
-      borderBottomWidth: 2,
-      borderBottomColor: COLORS.navyLight,
+      paddingBottom: 16,
+      marginBottom: 20,
+      borderBottomWidth: 1,
+      borderBottomColor: C.border,
     },
-    logo: { height: 36, width: 66 },
+    logo: { height: 40, width: 73 },
     headerRight: {
       flexDirection: isRtl ? "row-reverse" : "row",
       alignItems: "center",
-      gap: 14,
+      gap: 16,
     },
     headerText: { textAlign: isRtl ? "left" : "right" },
-    headerTitle: { fontSize: 8, fontWeight: 700, color: COLORS.navyLight, textTransform: "uppercase", letterSpacing: 0.6 },
-    headerDate: { fontSize: 6.5, color: COLORS.slateUltraLight, marginTop: 2 },
+    headerTitle: { fontSize: 10, fontWeight: 700, color: C.navyLight, textTransform: "uppercase", letterSpacing: 1 },
+    headerDate: { fontSize: 7, color: C.slateUltraLight, marginTop: 3 },
     qrBox: { alignItems: "center" },
-    qrImg: { width: 52, height: 52 },
-    qrLabel: { fontSize: 5, color: COLORS.slateUltraLight, marginTop: 2 },
+    qrImg: { width: 48, height: 48 },
+    qrLabel: { fontSize: 5.5, color: C.slateUltraLight, marginTop: 2 },
 
     // Hero section
-    hero: { flexDirection: isRtl ? "row-reverse" : "row", gap: 20, marginBottom: 18 },
-    imgContainer: { width: "36%" },
+    hero: { flexDirection: isRtl ? "row-reverse" : "row", gap: 24, marginBottom: 24 },
+    imgContainer: { width: "30%" },
     imgBox: {
       aspectRatio: 1,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: COLORS.border,
-      backgroundColor: COLORS.bgAlt,
+      borderColor: C.border,
+      backgroundColor: C.bgAlt,
       overflow: "hidden",
       alignItems: "center",
       justifyContent: "center",
-      padding: 8,
+      padding: 10,
     },
     productImg: { width: "100%", height: "100%", objectFit: "contain" },
     productInfo: { flex: 1, justifyContent: "center" },
     brandSku: {
       fontSize: 8,
       fontWeight: 600,
-      color: COLORS.slateLight,
+      color: C.slateLight,
       textTransform: "uppercase",
-      letterSpacing: 0.6,
+      letterSpacing: 0.8,
       marginBottom: 6,
       textAlign: isRtl ? "right" : "left",
     },
     productTitle: {
-      fontSize: 20,
-      fontWeight: 900,
-      color: COLORS.navy,
+      fontSize: 22,
+      fontWeight: 800,
+      color: C.navy,
       lineHeight: 1.2,
-      marginBottom: 8,
+      marginBottom: 10,
       textAlign: isRtl ? "right" : "left",
     },
     productDesc: {
       fontSize: 9,
-      color: COLORS.slate,
-      lineHeight: 1.6,
+      color: C.slate,
+      lineHeight: 1.7,
+      marginBottom: 12,
       textAlign: isRtl ? "right" : "left",
     },
 
-    // Specs section
-    sectionHeader: {
+    // Cert badges
+    badgesRow: {
       flexDirection: isRtl ? "row-reverse" : "row",
-      alignItems: "center",
-      gap: 6,
-      fontSize: 10,
-      fontWeight: 800,
-      color: COLORS.navy,
+      gap: 8,
+    },
+    badge: {
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 4,
+      borderWidth: 1.5,
+    },
+    badgeText: {
+      fontSize: 7.5,
+      fontWeight: 700,
       textTransform: "uppercase",
       letterSpacing: 0.5,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
-      paddingBottom: 5,
-      marginBottom: 10,
-      textAlign: isRtl ? "right" : "left",
     },
-    specsGrid: {
+
+    // Section header with left bar
+    sectionHeaderRow: {
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 12,
+      marginTop: 4,
+    },
+    sectionBar: {
+      width: 3,
+      height: 16,
+      backgroundColor: C.cyan,
+      borderRadius: 2,
+    },
+    sectionTitle: {
+      fontSize: 11,
+      fontWeight: 800,
+      color: C.navy,
+      textTransform: "uppercase",
+      letterSpacing: 0.8,
+    },
+
+    // Specs - 2 column grid
+    specsTable: {
       borderWidth: 1,
-      borderColor: COLORS.border,
+      borderColor: C.border,
       borderRadius: 6,
       overflow: "hidden",
     },
     specRow: {
       flexDirection: isRtl ? "row-reverse" : "row",
-      padding: "5 10",
       borderBottomWidth: 0.5,
-      borderBottomColor: COLORS.border,
+      borderBottomColor: C.border,
+    },
+    specCell: {
+      flexDirection: isRtl ? "row-reverse" : "row",
+      flex: 1,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+    },
+    specCellBorder: {
+      borderRightWidth: 0.5,
+      borderRightColor: C.border,
     },
     specLabel: {
-      width: "45%",
       fontSize: 7,
       fontWeight: 700,
-      color: COLORS.slateLight,
+      color: C.slateLight,
+      textTransform: "uppercase",
+      width: "45%",
       textAlign: isRtl ? "right" : "left",
     },
     specValue: {
-      width: "55%",
-      fontSize: 7,
+      fontSize: 7.5,
       fontWeight: 500,
-      color: COLORS.navy,
+      color: C.navy,
+      width: "55%",
       textAlign: isRtl ? "right" : "left",
     },
 
-    // Features row
-    featuresRow: {
+    // Business Value - 2x2 grid
+    featuresGrid: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 10,
+      marginBottom: 8,
+    },
+    featureCard: {
+      width: "48%",
       flexDirection: isRtl ? "row-reverse" : "row",
-      gap: 8,
-      marginTop: 14,
-      marginBottom: 14,
+      gap: 10,
+      padding: 12,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: C.border,
+      backgroundColor: C.bgAlt,
     },
-    featureBox: {
-      flex: 1,
-      padding: "8 10",
+    featureIconWrap: {
+      width: 28,
+      height: 28,
       borderRadius: 6,
-      backgroundColor: COLORS.bgAlt,
-      borderWidth: 0.5,
-      borderColor: COLORS.border,
-      alignItems: isRtl ? "flex-end" : "flex-start",
+      backgroundColor: C.white,
+      borderWidth: 1,
+      borderColor: C.border,
+      alignItems: "center",
+      justifyContent: "center",
     },
-    featureIcon: { fontSize: 12, marginBottom: 3 },
+    featureContent: { flex: 1 },
     featureLabel: {
-      fontSize: 7,
+      fontSize: 8,
       fontWeight: 700,
-      color: COLORS.navy,
+      color: C.navy,
+      marginBottom: 2,
+      textAlign: isRtl ? "right" : "left",
+    },
+    featureDesc: {
+      fontSize: 6.5,
+      color: C.slateLight,
+      lineHeight: 1.5,
       textAlign: isRtl ? "right" : "left",
     },
 
     // Footer
     footer: {
       marginTop: "auto",
-      paddingTop: 12,
       borderTopWidth: 2,
-      borderTopColor: COLORS.navyLight,
+      borderTopColor: C.navyLight,
+      paddingTop: 14,
     },
     footerGrid: {
       flexDirection: isRtl ? "row-reverse" : "row",
       justifyContent: "space-between",
-      gap: 16,
     },
-    footerCol: {},
-    footerLabel: { fontSize: 7.5, fontWeight: 700, color: COLORS.navy, marginBottom: 4, textAlign: isRtl ? "right" : "left" },
-    footerText: { fontSize: 6.5, color: COLORS.slate, lineHeight: 1.5, textAlign: isRtl ? "right" : "left" },
-    footerRight: { textAlign: isRtl ? "left" : "right" },
-    footerWebsite: { fontSize: 7, fontWeight: 700, color: COLORS.navy },
-    footerCopyright: { fontSize: 5.5, color: COLORS.slateUltraLight, marginTop: 8, textAlign: "center" },
+    footerCol: { width: "30%" },
+    footerLabel: {
+      fontSize: 8,
+      fontWeight: 800,
+      color: C.navy,
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+      marginBottom: 8,
+      textAlign: isRtl ? "right" : "left",
+    },
+    footerItem: {
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 5,
+      marginBottom: 4,
+    },
+    footerText: { fontSize: 7, color: C.slate, textAlign: isRtl ? "right" : "left" },
+    socialItem: {
+      flexDirection: isRtl ? "row-reverse" : "row",
+      alignItems: "center",
+      gap: 6,
+      marginBottom: 5,
+      paddingVertical: 3,
+      paddingHorizontal: 8,
+      borderRadius: 4,
+      backgroundColor: C.bgAlt,
+      borderWidth: 0.5,
+      borderColor: C.border,
+    },
+    socialText: { fontSize: 7, color: C.slate, fontWeight: 500 },
+    copyrightBar: {
+      flexDirection: isRtl ? "row-reverse" : "row",
+      justifyContent: "space-between",
+      marginTop: 12,
+      paddingTop: 8,
+      borderTopWidth: 0.5,
+      borderTopColor: C.border,
+    },
+    copyrightText: { fontSize: 5.5, color: C.slateUltraLight },
 
-    // Accent bar
-    accentBar: {
-      height: 3,
-      backgroundColor: COLORS.cyan,
-      borderRadius: 2,
-      marginBottom: 14,
-    },
-
-    noImageText: {
-      fontSize: 9,
-      color: COLORS.slateLight,
-      textAlign: "center",
-    },
+    noImageText: { fontSize: 9, color: C.slateLight, textAlign: "center" },
   })
 
-  const features = [
-    { icon: "⚡", label: isRtl ? "كفاءة" : "Efficiency" },
-    { icon: "🛡️", label: isRtl ? "موثوقية" : "Reliable" },
-    { icon: "🎯", label: isRtl ? "دقة" : "Precision" },
-    { icon: "💻", label: isRtl ? "تكامل" : "Integration" },
-  ]
+  // Build spec rows in pairs (2-column layout)
+  const specPairs: any[][] = []
+  for (let i = 0; i < filteredSpecs.length; i += 2) {
+    specPairs.push(filteredSpecs.slice(i, i + 2))
+  }
 
   return React.createElement(Document, {},
     React.createElement(Page, { size: "A4", style: s.page },
-      // Accent bar
-      React.createElement(View, { style: s.accentBar }),
 
-      // Header
+      // ── HEADER ──
       React.createElement(View, { style: s.header },
-        React.createElement(Image, { src: logoBase64, style: s.logo }),
+        logoBase64
+          ? React.createElement(Image, { src: logoBase64, style: s.logo })
+          : React.createElement(Text, { style: { fontSize: 14, fontWeight: 800, color: C.navy } }, "Middle Ocean"),
         React.createElement(View, { style: s.headerRight },
           React.createElement(View, { style: s.headerText },
-            React.createElement(Text, { style: s.headerTitle }, isRtl ? "ورقة المواصفات" : "Specification Sheet"),
+            React.createElement(Text, { style: s.headerTitle }, isRtl ? "ورقة المواصفات" : "SPECIFICATION SHEET"),
             React.createElement(Text, { style: s.headerDate }, dateStr),
           ),
           React.createElement(View, { style: s.qrBox },
@@ -283,7 +439,7 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
         ),
       ),
 
-      // Hero
+      // ── HERO ──
       React.createElement(View, { style: s.hero },
         React.createElement(View, { style: s.imgContainer },
           React.createElement(View, { style: s.imgBox },
@@ -295,51 +451,134 @@ function BrochureDocument({ product, siteSettings, locale, qrCodeDataUrl, logoBa
         React.createElement(View, { style: s.productInfo },
           React.createElement(Text, { style: s.brandSku }, `${brandName} • ${partNumber}`),
           React.createElement(Text, { style: s.productTitle }, productTitle),
-          React.createElement(Text, { style: s.productDesc }, productDesc || (isRtl ? "لا يوجد وصف متاح" : "No description available")),
+          React.createElement(Text, { style: s.productDesc },
+            productDesc || (isRtl ? "لا يوجد وصف متاح" : "No description available"),
+          ),
+          // Cert badges
+          React.createElement(View, { style: s.badgesRow },
+            ...certBadges.map((b, i) =>
+              React.createElement(View, {
+                key: i,
+                style: { ...s.badge, borderColor: b.borderColor }
+              },
+                React.createElement(Text, {
+                  style: { ...s.badgeText, color: b.borderColor }
+                }, b.label),
+              )
+            ),
+          ),
         ),
       ),
 
-      // Specs
-      filteredSpecs.length > 0 && React.createElement(View, {},
-        React.createElement(Text, { style: s.sectionHeader }, isRtl ? "المواصفات الفنية" : "Technical Specifications"),
-        React.createElement(View, { style: s.specsGrid },
-          ...filteredSpecs.map((spec: any, idx: number) =>
-            React.createElement(View, { key: idx, style: { ...s.specRow, backgroundColor: idx % 2 === 0 ? COLORS.bgAlt : COLORS.white } },
-              React.createElement(Text, { style: s.specLabel }, resolveLocale(spec.name, locale)),
-              React.createElement(Text, { style: s.specValue }, resolveLocale(spec.value, locale)),
+      // ── TECHNICAL SPECIFICATIONS ──
+      filteredSpecs.length > 0 && React.createElement(View, { style: { marginBottom: 20 } },
+        React.createElement(View, { style: s.sectionHeaderRow },
+          React.createElement(View, { style: s.sectionBar }),
+          React.createElement(Text, { style: s.sectionTitle },
+            isRtl ? "المواصفات الفنية" : "TECHNICAL SPECIFICATIONS"
+          ),
+        ),
+        React.createElement(View, { style: s.specsTable },
+          ...specPairs.map((pair, rowIdx) =>
+            React.createElement(View, {
+              key: rowIdx,
+              style: {
+                ...s.specRow,
+                backgroundColor: rowIdx % 2 === 0 ? C.bgAlt : C.white,
+              }
+            },
+              // First spec
+              React.createElement(View, { style: { ...s.specCell, ...s.specCellBorder } },
+                React.createElement(Text, { style: s.specLabel }, resolveLocale(pair[0].name, locale)),
+                React.createElement(Text, { style: s.specValue }, resolveLocale(pair[0].value, locale)),
+              ),
+              // Second spec (or empty)
+              pair[1]
+                ? React.createElement(View, { style: s.specCell },
+                    React.createElement(Text, { style: s.specLabel }, resolveLocale(pair[1].name, locale)),
+                    React.createElement(Text, { style: s.specValue }, resolveLocale(pair[1].value, locale)),
+                  )
+                : React.createElement(View, { style: s.specCell }),
             )
           ),
         ),
       ),
 
-      // Features
-      React.createElement(View, { style: s.featuresRow },
-        ...features.map((f, idx) =>
-          React.createElement(View, { key: idx, style: s.featureBox },
-            React.createElement(Text, { style: s.featureIcon }, f.icon),
-            React.createElement(Text, { style: s.featureLabel }, f.label),
-          )
+      // ── BUSINESS VALUE ──
+      React.createElement(View, { style: { marginBottom: 12 } },
+        React.createElement(View, { style: s.sectionHeaderRow },
+          React.createElement(View, { style: s.sectionBar }),
+          React.createElement(Text, { style: s.sectionTitle },
+            isRtl ? "القيمة التجارية" : "BUSINESS VALUE"
+          ),
+        ),
+        React.createElement(View, { style: s.featuresGrid },
+          ...features.map((f, idx) =>
+            React.createElement(View, { key: idx, style: s.featureCard },
+              React.createElement(View, { style: s.featureIconWrap },
+                React.createElement(f.Icon),
+              ),
+              React.createElement(View, { style: s.featureContent },
+                React.createElement(Text, { style: s.featureLabel }, f.label),
+                React.createElement(Text, { style: s.featureDesc }, f.desc),
+              ),
+            )
+          ),
         ),
       ),
 
-      // Footer
+      // ── FOOTER ──
       React.createElement(View, { style: s.footer },
         React.createElement(View, { style: s.footerGrid },
+          // Contact Us
           React.createElement(View, { style: s.footerCol },
-            React.createElement(Text, { style: s.footerLabel }, isRtl ? "اتصل بنا" : "Contact Us"),
-            React.createElement(Text, { style: s.footerText }, siteSettings?.phone || ""),
-            React.createElement(Text, { style: s.footerText }, siteSettings?.email || ""),
+            React.createElement(Text, { style: s.footerLabel }, isRtl ? "اتصل بنا" : "CONTACT US"),
+            React.createElement(View, { style: s.footerItem },
+              React.createElement(PhoneIcon),
+              React.createElement(Text, { style: s.footerText }, siteSettings?.phone || "+962 7 8100 0988"),
+            ),
+            React.createElement(View, { style: s.footerItem },
+              React.createElement(MailIcon),
+              React.createElement(Text, { style: s.footerText }, siteSettings?.email || "info@middleocean.jo"),
+            ),
+            React.createElement(View, { style: s.footerItem },
+              React.createElement(GlobeIcon),
+              React.createElement(Text, { style: s.footerText }, "www.middleocean.jo"),
+            ),
           ),
+          // Location
           React.createElement(View, { style: s.footerCol },
-            React.createElement(Text, { style: s.footerLabel }, isRtl ? "الموقع" : "Location"),
-            React.createElement(Text, { style: s.footerText }, siteSettings?.address?.[locale as "en" | "ar"] || ""),
+            React.createElement(Text, { style: s.footerLabel }, isRtl ? "الموقع" : "LOCATION"),
+            React.createElement(View, { style: s.footerItem },
+              React.createElement(MapPinIcon),
+              React.createElement(Text, { style: s.footerText },
+                siteSettings?.address?.[locale as "en" | "ar"] || "60 Issam Ajlouni Str, Sherko Complex, Floor 1, Amman - Jordan",
+              ),
+            ),
           ),
-          React.createElement(View, { style: s.footerRight },
-            React.createElement(Text, { style: s.footerWebsite }, "www.middleocean.jo"),
+          // Follow Us
+          React.createElement(View, { style: s.footerCol },
+            React.createElement(Text, { style: s.footerLabel }, isRtl ? "تابعنا" : "FOLLOW US"),
+            React.createElement(View, { style: s.socialItem },
+              React.createElement(Text, { style: s.socialText }, "middleocean"),
+            ),
+            React.createElement(View, { style: s.socialItem },
+              React.createElement(Text, { style: s.socialText }, "middleocean"),
+            ),
+            React.createElement(View, { style: s.socialItem },
+              React.createElement(Text, { style: s.socialText }, "middleocean"),
+            ),
           ),
         ),
-        React.createElement(Text, { style: s.footerCopyright },
-          `© ${new Date().getFullYear()} Middle Ocean Printing. All rights reserved.`,
+
+        // Copyright
+        React.createElement(View, { style: s.copyrightBar },
+          React.createElement(Text, { style: s.copyrightText },
+            `© ${new Date().getFullYear()} Middle Ocean Printing. All Rights Reserved`,
+          ),
+          React.createElement(Text, { style: s.copyrightText },
+            isRtl ? "المواصفات قابلة للتغيير" : "Specifications subject to change",
+          ),
         ),
       ),
     ),
@@ -357,55 +596,38 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Fetch data from Sanity
-    console.log(`[BROCHURE-PDF] Fetching data for ${productSlug}...`)
+    console.log(`[BROCHURE-PDF] Generating for ${productSlug}, locale=${locale}`)
     const [productData, siteSettings] = await Promise.all([
       sanityClient.fetch(productBySlugQuery, { slug: productSlug }),
       sanityClient.fetch(siteSettingsQuery),
     ])
 
     if (!productData) {
-      console.error(`[BROCHURE-PDF] Product not found: ${productSlug}`)
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    // Generate QR code
-    console.log(`[BROCHURE-PDF] Generating QR code...`)
+    // QR code
     const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.jo"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
     const qrCodeDataUrl = await QRCode.toDataURL(productUrl, {
-      width: 80,
-      margin: 1,
-      color: { dark: "#1e293b", light: "#ffffff" },
+      width: 80, margin: 1, color: { dark: "#1e293b", light: "#ffffff" },
     })
 
-    // Read logo as base64 data URI
-    console.log(`[BROCHURE-PDF] Loading logo...`)
+    // Logo
     let logoBase64 = ""
     try {
       const logoPath = path.join(process.cwd(), "public", "brand", "logo_test.png")
       if (fs.existsSync(logoPath)) {
         const logoBuffer = fs.readFileSync(logoPath)
         logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
-      } else {
-        console.warn(`[BROCHURE-PDF] Logo not found at ${logoPath}, falling back to remote if possible or skipping`)
       }
     } catch (e: any) {
-      console.error(`[BROCHURE-PDF] Error loading logo: ${e.message}`)
+      console.error(`[BROCHURE-PDF] Logo load error: ${e.message}`)
     }
 
-    // Render PDF
-    console.log(`[BROCHURE-PDF] Rendering PDF...`)
-    const doc = BrochureDocument({
-      product: productData,
-      siteSettings,
-      locale,
-      qrCodeDataUrl,
-      logoBase64,
-    })
-
-    console.log(`[BROCHURE-PDF] Calling renderToBuffer...`)
+    // Render
+    const doc = BrochureDocument({ product: productData, siteSettings, locale, qrCodeDataUrl, logoBase64 })
     const pdfBuffer = await renderToBuffer(doc as any)
-    console.log(`[BROCHURE-PDF] Successfully generated PDF buffer, size: ${pdfBuffer.length} bytes`)
+    console.log(`[BROCHURE-PDF] Done, ${pdfBuffer.length} bytes`)
 
     return new Response(new Uint8Array(pdfBuffer), {
       headers: {
