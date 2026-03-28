@@ -155,7 +155,7 @@ function ReviewCard({ review, locale, isPlaceholder }: { review: Review; locale:
       <div 
         onClick={() => isLongText && setIsOpen(true)}
         className={cn(
-          "relative flex flex-col gap-4 rounded-2xl border border-border/40",
+          "relative flex flex-col gap-4 rounded-2xl border border-border/40 overflow-hidden",
           "bg-background/40 backdrop-blur-md p-6 lg:p-7",
           "transition-all duration-300 hover:bg-white/[0.06] hover:border-white/20",
           "print:border-zinc-200 print:bg-transparent h-[280px] w-full group",
@@ -171,7 +171,7 @@ function ReviewCard({ review, locale, isPlaceholder }: { review: Review; locale:
 
           <div className="relative flex-1 overflow-hidden">
             <blockquote className={cn(
-              "text-sm lg:text-base text-muted-foreground leading-relaxed font-light",
+              "text-sm lg:text-base text-muted-foreground leading-relaxed font-light break-words overflow-wrap-anywhere",
               locale === "ar" && "font-arabic text-right"
             )}>
               &ldquo;{text.length > 160 ? text.substring(0, 160) + "..." : text}&rdquo;

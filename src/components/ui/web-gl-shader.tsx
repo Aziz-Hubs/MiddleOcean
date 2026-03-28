@@ -12,6 +12,7 @@ export function WebGLShader() {
     mesh: THREE.Mesh | null
     uniforms: { [uniform: string]: THREE.IUniform } | null
     animationId: number | null
+    startTime: number | null
   }>({
     scene: null,
     camera: null,
@@ -19,6 +20,7 @@ export function WebGLShader() {
     mesh: null,
     uniforms: null,
     animationId: null,
+    startTime: null,
   })
 
   useEffect(() => {
@@ -102,7 +104,11 @@ export function WebGLShader() {
     }
 
     const animate = () => {
-      if (refs.uniforms) refs.uniforms.time.value += 0.01
+      if (!refs.startTime) refs.startTime = performance.now()
+      if (refs.uniforms) {
+        const elapsed = (performance.now() - refs.startTime) / 1000
+        refs.uniforms.time.value = elapsed
+      }
       if (refs.renderer && refs.scene && refs.camera) {
         refs.renderer.render(refs.scene, refs.camera)
       }

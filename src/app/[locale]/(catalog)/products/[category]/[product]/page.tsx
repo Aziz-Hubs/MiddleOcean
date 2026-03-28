@@ -202,8 +202,8 @@ export default async function ProductPage(props: {
         categoryAr={categoryTitleAr}
       />
 
-      {/* Breadcrumb bar — sticky below navbar, z-40, solid backdrop */}
-      <div className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
+      {/* Breadcrumb bar — solid backdrop, scrolls with page */}
+      <div className="border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
         <div className="container mx-auto px-6">
           <Breadcrumb>
             <BreadcrumbList>
