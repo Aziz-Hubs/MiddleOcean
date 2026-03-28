@@ -9,26 +9,27 @@ import path from "path"
 import fs from "fs"
 
 // ── Fonts ────────────────────────────────────────────────────────────
+// Use TTF for better compatibility with react-pdf/fontkit in Node.js
 Font.register({
   family: "Inter",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfAZ9hiA.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuI6fAZ9hiA.woff2", fontWeight: 500 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuGKYAZ9hiA.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYAZ9hiA.woff2", fontWeight: 700 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuDyYAZ9hiA.woff2", fontWeight: 800 },
-    { src: "https://fonts.gstatic.com/s/inter/v18/UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuBWYAZ9hiA.woff2", fontWeight: 900 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400-normal.ttf", fontWeight: 400 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-500-normal.ttf", fontWeight: 500 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.ttf", fontWeight: 600 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-700-normal.ttf", fontWeight: 700 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-800-normal.ttf", fontWeight: 800 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-900-normal.ttf", fontWeight: 900 },
   ],
 })
 
 Font.register({
   family: "NotoSansArabic",
   fonts: [
-    { src: "https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfyGyfuXmn.woff2", fontWeight: 400 },
-    { src: "https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCf-myfuXmn.woff2", fontWeight: 600 },
-    { src: "https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCf02yfuXmn.woff2", fontWeight: 700 },
-    { src: "https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfqGyfuXmn.woff2", fontWeight: 800 },
-    { src: "https://fonts.gstatic.com/s/notosansarabic/v18/nwpxtLGrOAZMl5nJ_wfgRg3DrWFZWsnVBJ_sS6tlqHHFlhQ5l3sQWIHPqzCfgWyfuXmn.woff2", fontWeight: 900 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-arabic@latest/arabic-400-normal.ttf", fontWeight: 400 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-arabic@latest/arabic-600-normal.ttf", fontWeight: 600 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-arabic@latest/arabic-700-normal.ttf", fontWeight: 700 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-arabic@latest/arabic-800-normal.ttf", fontWeight: 800 },
+    { src: "https://cdn.jsdelivr.net/fontsource/fonts/noto-sans-arabic@latest/arabic-900-normal.ttf", fontWeight: 900 },
   ],
 })
 
@@ -357,16 +358,19 @@ export async function GET(req: NextRequest) {
 
   try {
     // Fetch data from Sanity
+    console.log(`[BROCHURE-PDF] Fetching data for ${productSlug}...`)
     const [productData, siteSettings] = await Promise.all([
       sanityClient.fetch(productBySlugQuery, { slug: productSlug }),
       sanityClient.fetch(siteSettingsQuery),
     ])
 
     if (!productData) {
+      console.error(`[BROCHURE-PDF] Product not found: ${productSlug}`)
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
     // Generate QR code
+    console.log(`[BROCHURE-PDF] Generating QR code...`)
     const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.jo"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
     const qrCodeDataUrl = await QRCode.toDataURL(productUrl, {
       width: 80,
@@ -375,11 +379,22 @@ export async function GET(req: NextRequest) {
     })
 
     // Read logo as base64 data URI
-    const logoPath = path.join(process.cwd(), "public", "brand", "logo_test.png")
-    const logoBuffer = fs.readFileSync(logoPath)
-    const logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
+    console.log(`[BROCHURE-PDF] Loading logo...`)
+    let logoBase64 = ""
+    try {
+      const logoPath = path.join(process.cwd(), "public", "brand", "logo_test.png")
+      if (fs.existsSync(logoPath)) {
+        const logoBuffer = fs.readFileSync(logoPath)
+        logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
+      } else {
+        console.warn(`[BROCHURE-PDF] Logo not found at ${logoPath}, falling back to remote if possible or skipping`)
+      }
+    } catch (e: any) {
+      console.error(`[BROCHURE-PDF] Error loading logo: ${e.message}`)
+    }
 
     // Render PDF
+    console.log(`[BROCHURE-PDF] Rendering PDF...`)
     const doc = BrochureDocument({
       product: productData,
       siteSettings,
@@ -388,7 +403,9 @@ export async function GET(req: NextRequest) {
       logoBase64,
     })
 
+    console.log(`[BROCHURE-PDF] Calling renderToBuffer...`)
     const pdfBuffer = await renderToBuffer(doc as any)
+    console.log(`[BROCHURE-PDF] Successfully generated PDF buffer, size: ${pdfBuffer.length} bytes`)
 
     return new Response(new Uint8Array(pdfBuffer), {
       headers: {
