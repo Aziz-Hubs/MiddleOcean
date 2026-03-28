@@ -6,21 +6,15 @@ import { Logo } from "@/components/logo"
 import { useScroll } from "@/hooks/use-scroll"
 import { DesktopNav } from "@/components/desktop-nav"
 import { MobileNav } from "@/components/mobile-nav"
-import { SearchTrigger } from "@/components/search-trigger"
 import { SearchBar } from "@/components/search-bar"
 import { useTranslations } from "next-intl"
 import { Link } from "@/i18n/routing"
-import { usePathname } from "next/navigation"
 import { RainbowButton } from "@/components/ui/rainbow-button"
 import { SanityCategory } from "@/sanity/types"
 
 export function Header({ categories }: { categories: SanityCategory[] }) {
   const t = useTranslations("Navigation")
   const scrolled = useScroll(20)
-  const pathname = usePathname()
-  
-  // Detect if we are on a product page (e.g., /en/products/category/slug or /ar/products/category/slug)
-  const isProductPage = pathname.includes("/products/") && pathname.split("/").length > 4
 
   return (
     <header className={cn(
@@ -30,8 +24,9 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
         ? "border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-lg shadow-black/5" 
         : "border-transparent bg-transparent shadow-none"
     )}>
-      <div className="container mx-auto flex h-[57px] items-center px-6">
-        <div className="flex items-center gap-8 flex-1">
+      <div className="container mx-auto flex h-[57px] items-center justify-between px-6">
+        {/* Left section: Logo and DesktopNav */}
+        <div className="flex items-center gap-4 md:gap-8">
           <Link
             className="rounded-xl px-3 py-2.5 hover:bg-muted dark:hover:bg-muted/50 transition-colors"
             href="/"
@@ -43,18 +38,24 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
           </div>
         </div>
 
-        <div className={cn(
-          "flex items-center gap-2",
-          isProductPage ? "justify-end" : "justify-end"
-        )}>
-          <div className="hidden items-center gap-3 md:flex">
-            <SearchBar className="w-[280px] lg:w-[320px]" />
+        {/* Center section: SearchBar (both mobile and desktop) */}
+        <div className="flex-1 flex justify-center px-4">
+          <div className="hidden md:block">
+            <SearchBar className="w-[240px] lg:w-[280px] xl:w-[320px]" />
+          </div>
+          <div className="md:hidden flex-1 max-w-[200px]">
+            <SearchBar className="w-full" />
+          </div>
+        </div>
+
+        {/* Right section: CTA (desktop) or MobileNav (mobile) */}
+        <div className="flex items-center">
+          <div className="hidden md:block">
             <RainbowButton asChild size="default">
               <Link href="/contact">{t("contact")}</Link>
             </RainbowButton>
           </div>
-          <div className="flex items-center gap-2 md:hidden">
-            <SearchTrigger variant="ghost" size="icon" />
+          <div className="md:hidden">
             <MobileNav categories={categories} />
           </div>
         </div>
