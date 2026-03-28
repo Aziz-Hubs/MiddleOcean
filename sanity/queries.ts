@@ -148,4 +148,51 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
 }`;
 
+// Search products with fuzzy matching and scoring
+export const searchProductsQuery = `*[_type == "product" && (
+  title[$locale] match $searchTerm + "*" ||
+  description[$locale] match $searchTerm + "*" ||
+  category->title[$locale] match $searchTerm + "*" ||
+  brand->title match $searchTerm + "*"
+)] | score(
+  title[$locale] match $searchTerm + "*" * 3,
+  description[$locale] match $searchTerm + "*" * 1,
+  category->title[$locale] match $searchTerm + "*" * 2,
+  brand->title match $searchTerm + "*" * 2
+) | order(_score desc) [0...10]{
+  _id,
+  title,
+  description,
+  slug,
+  category->{
+    title,
+    slug
+  },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
+  },
+  "imageUrl": media.thumbnail.asset->url,
+  warrantyMonths,
+  _score
+}`;
+
+// Get recent/popular products for empty search state
+export const recentProductsQuery = `*[_type == "product"] | order(_createdAt desc) [0...6]{
+  _id,
+  title,
+  description,
+  slug,
+  category->{
+    title,
+    slug
+  },
+  brand->{
+    title,
+    "logoUrl": logo.asset->url
+  },
+  "imageUrl": media.thumbnail.asset->url,
+  warrantyMonths
+}`;
+
 

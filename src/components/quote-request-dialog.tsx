@@ -41,69 +41,6 @@ interface FormErrors {
   quantity?: string
 }
 
-// Sonar/Ping Effect Component
-function SonarEffect({ status }: { status: "idle" | "success" | "error" | "loading" }) {
-  if (status === "idle") return null
-  
-  const colors = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    loading: "bg-blue-500"
-  }
-  
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-visible">
-      <motion.div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-30`}
-        initial={{ width: 0, height: 0 }}
-        animate={{ 
-          width: [0, 400, 600], 
-          height: [0, 400, 600],
-          opacity: [0.5, 0.2, 0] 
-        }}
-        transition={{ 
-          duration: 2, 
-          repeat: Infinity,
-          ease: "easeOut" 
-        }}
-        style={{ zIndex: -1 }}
-      />
-      <motion.div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-20`}
-        initial={{ width: 0, height: 0 }}
-        animate={{ 
-          width: [0, 300, 500], 
-          height: [0, 300, 500],
-          opacity: [0.4, 0.15, 0] 
-        }}
-        transition={{ 
-          duration: 2, 
-          repeat: Infinity,
-          ease: "easeOut",
-          delay: 0.3
-        }}
-        style={{ zIndex: -1 }}
-      />
-      <motion.div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${colors[status]} rounded-full opacity-10`}
-        initial={{ width: 0, height: 0 }}
-        animate={{ 
-          width: [0, 200, 400], 
-          height: [0, 200, 400],
-          opacity: [0.3, 0.1, 0] 
-        }}
-        transition={{ 
-          duration: 2, 
-          repeat: Infinity,
-          ease: "easeOut",
-          delay: 0.6
-        }}
-        style={{ zIndex: -1 }}
-      />
-    </div>
-  )
-}
-
 export function QuoteRequestDialog({
   productId,
   productName,
@@ -269,21 +206,15 @@ export function QuoteRequestDialog({
     }
   }
 
-  // Determine sonar status
-  const sonarStatus = isSubmitting ? "loading" : submitStatus !== "idle" ? submitStatus : "idle"
-
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent 
+      <DialogContent
         className={cn(
           "sm:max-w-md md:max-w-lg bg-black border-white/10",
           isRtl && "font-arabic"
         )}
         showCloseButton={false}
       >
-        {/* Sonar Effect */}
-        <SonarEffect status={sonarStatus} />
-        
         <DialogHeader className={cn("space-y-2", isRtl && "text-right")}>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-lg font-semibold flex items-center gap-2 text-white">
