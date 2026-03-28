@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useTranslations, useLocale } from "next-intl"
 import { Button } from "@/components/ui/button"
+import { RainbowButton } from "@/components/ui/rainbow-button"
 import { MessageSquareText, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Link } from "@/i18n/routing"
@@ -71,6 +72,7 @@ interface RequestQuoteButtonProps {
   productSlug?: string
   category?: string
   categoryAr?: string
+  useRainbow?: boolean
 }
 
 export function RequestQuoteButton({ 
@@ -82,6 +84,7 @@ export function RequestQuoteButton({
   productSlug,
   category,
   categoryAr,
+  useRainbow = false,
 }: RequestQuoteButtonProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   
@@ -100,6 +103,38 @@ export function RequestQuoteButton({
     )
   }
 
+  const buttonContent = (
+    <>
+      <MessageSquareText className="size-4" />
+      {locale === 'ar' ? 'طلب عرض سعر' : 'Request Quote'}
+    </>
+  )
+
+  const dialog = (
+    <QuoteRequestDialog
+      productId={productId}
+      productName={productName}
+      productNameAr={productNameAr || productName}
+      productSlug={productSlug}
+      category={category}
+      categoryAr={categoryAr || category}
+      locale={locale}
+      isOpen={isDialogOpen}
+      onClose={() => setIsDialogOpen(false)}
+    />
+  )
+
+  if (useRainbow) {
+    return (
+      <>
+        <RainbowButton onClick={() => setIsDialogOpen(true)} className={cn("gap-2 print:hidden", className)}>
+          {buttonContent}
+        </RainbowButton>
+        {dialog}
+      </>
+    )
+  }
+
   return (
     <>
       <motion.div
@@ -113,22 +148,10 @@ export function RequestQuoteButton({
             className
           )}
         >
-          <MessageSquareText className="size-4" />
-          {locale === 'ar' ? 'طلب عرض سعر' : 'Request Quote'}
+          {buttonContent}
         </Button>
       </motion.div>
-      
-      <QuoteRequestDialog
-        productId={productId}
-        productName={productName}
-        productNameAr={productNameAr || productName}
-        productSlug={productSlug}
-        category={category}
-        categoryAr={categoryAr || category}
-        locale={locale}
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-      />
+      {dialog}
     </>
   )
 }
@@ -179,6 +202,7 @@ export function StickyHeader({
           productSlug={productSlug}
           category={category}
           categoryAr={categoryAr}
+          useRainbow={true}
         />
       </div>
     </div>
