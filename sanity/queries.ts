@@ -158,13 +158,13 @@ export const searchProductsQuery = `*[_type == "product" && (
   category->title.ar match $searchTerm + "*" ||
   brand->title match $searchTerm + "*"
 )] | score(
-  title.en match $searchTerm + "*" * 3,
-  title.ar match $searchTerm + "*" * 3,
-  description.en match $searchTerm + "*" * 1,
-  description.ar match $searchTerm + "*" * 1,
-  category->title.en match $searchTerm + "*" * 2,
-  category->title.ar match $searchTerm + "*" * 2,
-  brand->title match $searchTerm + "*" * 2
+  boost(title.en match $searchTerm + "*", 3),
+  boost(title.ar match $searchTerm + "*", 3),
+  boost(description.en match $searchTerm + "*", 1),
+  boost(description.ar match $searchTerm + "*", 1),
+  boost(category->title.en match $searchTerm + "*", 2),
+  boost(category->title.ar match $searchTerm + "*", 2),
+  boost(brand->title match $searchTerm + "*", 2)
 ) | order(_score desc) [0...10]{
   _id,
   title,

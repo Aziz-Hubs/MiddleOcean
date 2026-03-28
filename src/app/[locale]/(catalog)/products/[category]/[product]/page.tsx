@@ -202,48 +202,51 @@ export default async function ProductPage(props: {
         categoryAr={categoryTitleAr}
       />
 
-      {/* Breadcrumb bar — solid backdrop, scrolls with page */}
-      <div className="border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
+      {/* Sticky wrapper for breadcrumb + product sticky header */}
+      <div className="sticky top-[57px] z-30 bg-background/95 backdrop-blur-md border-b border-border/40 print:hidden">
+        {/* Breadcrumb bar */}
         <div className="container mx-auto px-6">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>{t("home")}</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator>
-                <ChevronIcon className="size-4 opacity-40" />
-              </BreadcrumbSeparator>
+          <div className="py-3">
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbLink render={<Link href="/" />}>{t("home")}</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator>
+                  <ChevronIcon className="size-4 opacity-40" />
+                </BreadcrumbSeparator>
 
-              {categoryTitle && category !== 'all' ? (
-                <>
+                {categoryTitle && category !== 'all' ? (
+                  <>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
+                    </BreadcrumbItem>
+                    <BreadcrumbSeparator>
+                      <ChevronIcon className="size-4 opacity-40" />
+                    </BreadcrumbSeparator>
+                    <BreadcrumbItem>
+                      <BreadcrumbLink render={<Link href={`/products/${category}`} />}>
+                        <span className="capitalize">{categoryTitle}</span>
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </>
+                ) : (
                   <BreadcrumbItem>
                     <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
                   </BreadcrumbItem>
-                  <BreadcrumbSeparator>
-                    <ChevronIcon className="size-4 opacity-40" />
-                  </BreadcrumbSeparator>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink render={<Link href={`/products/${category}`} />}>
-                      <span className="capitalize">{categoryTitle}</span>
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                </>
-              ) : (
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
-                </BreadcrumbItem>
-              )}
+                )}
 
-              <BreadcrumbSeparator>
-                <ChevronIcon className="size-4 opacity-40" />
-              </BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbPage className="font-semibold text-foreground line-clamp-1 max-w-[200px] lg:max-w-[400px]">
-                  {productTitle}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
+                <BreadcrumbSeparator>
+                  <ChevronIcon className="size-4 opacity-40" />
+                </BreadcrumbSeparator>
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="font-semibold text-foreground line-clamp-1 max-w-[200px] lg:max-w-[400px]">
+                    {productTitle}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
         </div>
       </div>
 
