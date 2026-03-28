@@ -59,17 +59,42 @@ export async function GET(req: NextRequest) {
       logoBase64,
     })
 
-    console.log("[BROCHURE-PDF] Launching Puppeteer...")
+    console.log("[BROCHURE-PDF] Setting up Chromium...")
     
-    // Get Chromium executable path
-    let executablePath: string
+    // Try to get Chromium executable path
+    let executablePath: string | null = null
     try {
+      // First try the standard path
       executablePath = await chromium.executablePath()
-      console.log("[BROCHURE-PDF] Chromium path:", executablePath)
+      console.log("[BROCHURE-PDF] Chromium path from package:", executablePath)
     } catch (pathError) {
-      console.error("[BROCHURE-PDF] Failed to get Chromium path:", pathError)
+      console.error("[BROCHURE-PDF] Failed to get Chromium path from package:", pathError)
+    }
+    
+    // If standard path failed, try fallback locations
+    if (!executablePath) {
+      const possiblePaths = [
+        path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium"),
+        path.join(process.cwd(), "node_modules", "@sparticuz", "chromium", "bin", "chromium.br"),
+        "/var/task/node_modules/@sparticuz/chromium/bin/chromium",
+        "/var/task/node_modules/@sparticuz/chromium/bin/chromium.br",
+      ]
+      
+      for (const tryPath of possiblePaths) {
+        if (fs.existsSync(tryPath)) {
+          console.log("[BROCHURE-PDF] Found Chromium at:", tryPath)
+          executablePath = tryPath
+          break
+        }
+      }
+    }
+    
+    if (!executablePath) {
+      console.error("[BROCHURE-PDF] Chromium binary not found in any location")
       throw new Error("Chromium binary not found. Please ensure @sparticuz/chromium is properly installed.")
     }
+    
+    console.log("[BROCHURE-PDF] Launching Puppeteer...")
     
     // Launch Puppeteer with Chromium
     browser = await puppeteer.launch({

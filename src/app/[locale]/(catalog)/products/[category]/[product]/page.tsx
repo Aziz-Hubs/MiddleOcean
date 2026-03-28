@@ -190,7 +190,13 @@ export default async function ProductPage(props: {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       {/* Sticky request-quote header — z-30, appears after 200px scroll */}
-      <StickyHeader title={productTitle} locale={locale} />
+      <StickyHeader 
+        title={productTitle} 
+        locale={locale} 
+        productId={productData._id}
+        productSlug={productSlug}
+        category={category}
+      />
 
       {/* Breadcrumb bar — sticky below navbar, z-40, solid backdrop */}
       <div className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
@@ -287,7 +293,14 @@ export default async function ProductPage(props: {
               )}
 
               <div className="flex flex-col sm:flex-row gap-3 print:hidden">
-                <RequestQuoteButton locale={locale} className="h-12 px-8 text-sm" />
+                <RequestQuoteButton 
+                  locale={locale} 
+                  className="h-12 px-8 text-sm" 
+                  productId={productData._id}
+                  productName={productTitle}
+                  productSlug={productSlug}
+                  category={category}
+                />
                 <DownloadBrochureButton className="h-12 px-8 text-sm" productSlug={productSlug} />
               </div>
 

@@ -390,5 +390,40 @@
     "all_rights_reserved": "All rights reserved.",
     "specs_notice": "Specifications are subject to change without prior notice.",
     "specification_sheet": "Product Specification Sheet"
+  },
+  "QuoteRequest": {
+    "title": "Request a Quote",
+    "subtitle": "Get a custom quote for {productName}",
+    "close": "Close",
+    "optional": "optional",
+    "fields": {
+      "fullName": "Full Name",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "quantity": "Quantity"
+    },
+    "placeholders": {
+      "fullName": "Enter your full name",
+      "phone": "+962 7X XXX XXXX",
+      "email": "your.email@example.com"
+    },
+    "submit": "Submit Quote Request",
+    "submitting": "Sending...",
+    "privacyNote": "Your information will only be used to respond to your quote request.",
+    "success": {
+      "title": "Request Sent Successfully!",
+      "message": "We'll get back to you within 24 hours with a custom quote."
+    },
+    "errors": {
+      "fullNameRequired": "Full name is required (minimum 2 characters)",
+      "fullNameTooLong": "Full name must not exceed 100 characters",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Please enter a valid phone number",
+      "emailInvalid": "Please enter a valid email address",
+      "emailTooLong": "Email must not exceed 254 characters",
+      "quantityMin": "Quantity must be at least 1",
+      "quantityMax": "Quantity must not exceed 999,999",
+      "submitFailed": "Failed to submit request. Please try again later."
+    }
   }
 }

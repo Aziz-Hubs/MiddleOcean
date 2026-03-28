@@ -12,6 +12,20 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Ensure Chromium binaries are included in server bundle
+      config.module.rules.push({
+        test: /\.br$/,
+        type: 'asset/resource',
+      });
+    }
+    return config;
+  },
+  // Ensure serverComponentsExternalPackages includes chromium
+  experimental: {
+    serverComponentsExternalPackages: ['@sparticuz/chromium'],
+  },
 };
  
 export default withNextIntl(nextConfig);

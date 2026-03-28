@@ -390,5 +390,40 @@
     "all_rights_reserved": "جميع الحقوق محفوظة.",
     "specs_notice": "المواصفات عرضة للتغيير دون إشعار مسبق.",
     "specification_sheet": "نشرة المواصفات الفنية"
+  },
+  "QuoteRequest": {
+    "title": "طلب عرض سعر",
+    "subtitle": "احصل على عرض سعر مخصص لـ {productName}",
+    "close": "إغلاق",
+    "optional": "اختياري",
+    "fields": {
+      "fullName": "الاسم الكامل",
+      "phone": "رقم الهاتف",
+      "email": "عنوان البريد الإلكتروني",
+      "quantity": "الكمية"
+    },
+    "placeholders": {
+      "fullName": "أدخل اسمك الكامل",
+      "phone": "+962 7X XXX XXXX",
+      "email": "your.email@example.com"
+    },
+    "submit": "إرسال طلب عرض السعر",
+    "submitting": "جاري الإرسال...",
+    "privacyNote": "سيتم استخدام معلوماتك فقط للرد على طلب عرض السعر الخاص بك.",
+    "success": {
+      "title": "تم إرسال الطلب بنجاح!",
+      "message": "سنرد عليك خلال 24 ساعة بعرض سعر مخصص."
+    },
+    "errors": {
+      "fullNameRequired": "الاسم الكامل مطلوب (بحد أدنى حرفين)",
+      "fullNameTooLong": "يجب ألا يتجاوز الاسم الكامل 100 حرف",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "phoneInvalid": "الرجاء إدخال رقم هاتف صالح",
+      "emailInvalid": "الرجاء إدخال بريد إلكتروني صالح",
+      "emailTooLong": "يجب ألا يتجاوز البريد الإلكتروني 254 حرفاً",
+      "quantityMin": "يجب أن تكون الكمية 1 على الأقل",
+      "quantityMax": "يجب ألا تتجاوز الكمية 999,999",
+      "submitFailed": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى لاحقاً."
+    }
   }
 }

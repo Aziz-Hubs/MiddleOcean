@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react"
 import { useTranslations, useLocale } from "next-intl"
 import { Button } from "@/components/ui/button"
-import { Printer, MessageSquareText, Download } from "lucide-react"
+import { MessageSquareText, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Link } from "@/i18n/routing"
+import { QuoteRequestDialog } from "./quote-request-dialog"
+import { motion } from "framer-motion"
 
 export function DownloadBrochureButton({ 
   className, 
@@ -60,19 +62,90 @@ export function DownloadBrochureButton({
 
 import { buttonVariants } from "@/components/ui/button"
 
-export function RequestQuoteButton({ className, locale }: { className?: string, locale: string }) {
+interface RequestQuoteButtonProps {
+  className?: string
+  locale: string
+  productId?: string
+  productName?: string
+  productNameAr?: string
+  productSlug?: string
+  category?: string
+  categoryAr?: string
+}
+
+export function RequestQuoteButton({ 
+  className, 
+  locale,
+  productId,
+  productName,
+  productNameAr,
+  productSlug,
+  category,
+  categoryAr,
+}: RequestQuoteButtonProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  
+  // If we don't have product details, fall back to the contact page link
+  const hasProductDetails = productId && productName && productSlug && category
+  
+  if (!hasProductDetails) {
+    return (
+      <Link 
+        href="/contact" 
+        className={cn(buttonVariants({ variant: "default" }), "gap-2 bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 print:hidden", className)}
+      >
+        <MessageSquareText className="size-4" />
+        {locale === 'ar' ? 'طلب عرض سعر' : 'Request Quote'}
+      </Link>
+    )
+  }
+
   return (
-    <Link 
-      href="/contact" 
-      className={cn(buttonVariants({ variant: "default" }), "gap-2 bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 print:hidden", className)}
-    >
-      <MessageSquareText className="size-4" />
-      {locale === 'ar' ? 'طلب عرض سعر' : 'Request Quote'}
-    </Link>
+    <>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
+        <Button
+          onClick={() => setIsDialogOpen(true)}
+          className={cn(
+            "gap-2 bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 print:hidden",
+            className
+          )}
+        >
+          <MessageSquareText className="size-4" />
+          {locale === 'ar' ? 'طلب عرض سعر' : 'Request Quote'}
+        </Button>
+      </motion.div>
+      
+      <QuoteRequestDialog
+        productId={productId}
+        productName={productName}
+        productNameAr={productNameAr || productName}
+        productSlug={productSlug}
+        category={category}
+        categoryAr={categoryAr || category}
+        locale={locale}
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+      />
+    </>
   )
 }
 
-export function StickyHeader({ title, locale }: { title: string, locale: string }) {
+export function StickyHeader({ 
+  title, 
+  locale,
+  productId,
+  productSlug,
+  category
+}: { 
+  title: string
+  locale: string
+  productId?: string
+  productSlug?: string
+  category?: string
+}) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -93,7 +166,14 @@ export function StickyHeader({ title, locale }: { title: string, locale: string 
     >
       <div className="container mx-auto px-6 h-14 flex items-center justify-between gap-4">
         <h3 className="font-bold text-base truncate">{title}</h3>
-        <RequestQuoteButton locale={locale} className="shrink-0 h-9 px-4 text-xs" />
+        <RequestQuoteButton 
+          locale={locale} 
+          className="shrink-0 h-9 px-4 text-xs"
+          productId={productId}
+          productName={title}
+          productSlug={productSlug}
+          category={category}
+        />
       </div>
     </div>
   )
