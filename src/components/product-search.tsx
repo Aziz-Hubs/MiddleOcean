@@ -71,15 +71,17 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
   const handleSelect = useCallback(
     (product: SearchResult | SanityProduct) => {
       onOpenChange(false);
-      // Save the current search query to recent searches when a product is selected
-      if (query.trim()) {
-        addRecentSearch(query.trim());
-      }
       const url = `/${locale}/products/${product.category?.slug?.current || "uncategorized"}/${product.slug.current}`;
       router.push(url);
     },
-    [locale, onOpenChange, router, query, addRecentSearch]
+    [locale, onOpenChange, router]
   );
+
+  const handleSubmitSearch = useCallback(() => {
+    if (query.trim().length >= 2) {
+      addRecentSearch(query.trim());
+    }
+  }, [query, addRecentSearch]);
 
   const getLocalizedText = (obj: { en?: string; ar?: string } | undefined) => {
     if (!obj) return "";
@@ -113,6 +115,10 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
               // Prevent command palette from interpreting space as selection
               if (e.key === " " || e.code === "Space") {
                 e.stopPropagation();
+              }
+              // Save search query when user presses Enter (explicit submit)
+              if (e.key === "Enter" && query.trim().length >= 2) {
+                handleSubmitSearch();
               }
             }}
             className={cn(
