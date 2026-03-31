@@ -88,14 +88,12 @@ export function SearchBar({ className }: SearchBarProps) {
         )}
         aria-label={t("triggerAriaLabel")}
       >
-        <Search className={cn(
-          "h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors",
-          isRtl ? "order-1" : "order-0"
-        )} />
+        <Search className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
         
         <div className={cn(
-          "relative h-5 overflow-hidden min-w-[180px] text-left",
-          isRtl && "text-right"
+          "relative h-5 overflow-hidden",
+          "min-w-[200px] md:min-w-[300px] lg:min-w-[400px]",
+          "max-w-[200px] md:max-w-none"
         )}>
           <AnimatePresence mode="wait">
             <motion.span
@@ -104,7 +102,11 @@ export function SearchBar({ className }: SearchBarProps) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="absolute inset-0 flex items-center truncate"
+              className={cn(
+                "absolute inset-0 flex items-center",
+                "truncate md:whitespace-normal",
+                isRtl ? "justify-end text-right" : "justify-start text-left"
+              )}
             >
               {isLoading ? t("placeholder") : getCurrentPlaceholder()}
             </motion.span>
