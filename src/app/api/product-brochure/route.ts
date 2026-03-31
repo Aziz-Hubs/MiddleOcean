@@ -6,12 +6,12 @@ import puppeteer from "puppeteer-core"
 import chromium from "@sparticuz/chromium-min"
 import path from "path"
 import fs from "fs"
+import { generateBrochureHTML, resolveLocale } from "./template"
+import { optimizeSanityUrl, optimizeLocalImage, PDF_DIMENSIONS } from "./image-utils"
 
 // Chromium pack URL matching @sparticuz/chromium-min@143.0.4
-// Downloaded and cached in /tmp on cold start, reused on warm invocations
 const CHROMIUM_PACK_URL =
   "https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar"
-import { generateBrochureHTML, resolveLocale } from "./template"
 
 // ── Route Handler ────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
@@ -37,85 +37,75 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    // QR
+    // QR Code
     const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.vercel.app"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
     const qrCodeDataUrl = await QRCode.toDataURL(productUrl, {
       width: 80, margin: 1, color: { dark: "#1e293b", light: "#ffffff" },
     })
 
-    // Logo
+    // Logo - optimized as JPEG
     let logoBase64 = ""
     try {
       const logoPath = path.join(process.cwd(), "public", "brand", "Brochure_LOGO", "MiddleOcean_LOGO.png")
       if (fs.existsSync(logoPath)) {
-        const logoBuffer = fs.readFileSync(logoPath)
-        logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
+        logoBase64 = await optimizeLocalImage(logoPath, PDF_DIMENSIONS.logo.width, PDF_DIMENSIONS.logo.height)
+        console.log("[BROCHURE-PDF] Logo optimized successfully")
       }
     } catch (e) {
-      console.warn("[BROCHURE-PDF] Logo failed to load:", e)
+      console.warn("[BROCHURE-PDF] Logo optimization failed:", e)
     }
 
-    // Background image
+    // Background image - optimized as JPEG
     let backgroundBase64 = ""
     try {
       const bgPath = path.join(process.cwd(), "public", "misc", "Brochure_Image_background.png")
       if (fs.existsSync(bgPath)) {
-        const bgBuffer = fs.readFileSync(bgPath)
-        backgroundBase64 = `data:image/png;base64,${bgBuffer.toString("base64")}`
+        backgroundBase64 = await optimizeLocalImage(bgPath, PDF_DIMENSIONS.background.width, PDF_DIMENSIONS.background.height)
+        console.log("[BROCHURE-PDF] Background optimized successfully")
       }
     } catch (e) {
-      console.warn("[BROCHURE-PDF] Background failed to load:", e)
+      console.warn("[BROCHURE-PDF] Background optimization failed:", e)
     }
 
-    // Fonts - embed as base64 for reliable rendering in serverless Chromium
-    // Chromium only ships with Open Sans (Latin, Greek, Cyrillic)
-    // We need Inter and Noto Sans Arabic for proper text rendering
-    let interFontBase64 = ""
-    let arabicFontBase64 = ""
-    try {
-      const fontsDir = path.join(process.cwd(), "fonts")
-      const interFontPath = path.join(fontsDir, "Inter-Regular.ttf")
-      const arabicFontPath = path.join(fontsDir, "NotoSansArabic-Regular.ttf")
-      
-      if (fs.existsSync(interFontPath)) {
-        const fontBuffer = fs.readFileSync(interFontPath)
-        interFontBase64 = fontBuffer.toString("base64")
-        console.log("[BROCHURE-PDF] Loaded Inter font, size:", fontBuffer.length, "bytes")
+    // Optimize product image URLs via Sanity CDN (FREE)
+    let optimizedProduct = { ...productData }
+    
+    if (optimizedProduct.media?.thumbnailUrl) {
+      optimizedProduct = {
+        ...optimizedProduct,
+        media: {
+          ...optimizedProduct.media,
+          thumbnailUrl: optimizeSanityUrl(optimizedProduct.media.thumbnailUrl, PDF_DIMENSIONS.thumbnail.width)
+        }
       }
-      if (fs.existsSync(arabicFontPath)) {
-        const fontBuffer = fs.readFileSync(arabicFontPath)
-        arabicFontBase64 = fontBuffer.toString("base64")
-        console.log("[BROCHURE-PDF] Loaded Arabic font, size:", fontBuffer.length, "bytes")
+    }
+
+    if (optimizedProduct.brochureImages?.length) {
+      optimizedProduct = {
+        ...optimizedProduct,
+        brochureImages: optimizedProduct.brochureImages.map((img: { imageUrl: string; title?: Record<string, string>; description?: Record<string, string> }) => ({
+          ...img,
+          imageUrl: optimizeSanityUrl(img.imageUrl, PDF_DIMENSIONS.catalog.width)
+        }))
       }
-    } catch (fontError) {
-      console.warn("[BROCHURE-PDF] Font loading warning:", fontError)
-      // Continue even if font loading fails - will use fallback fonts
     }
 
     // Generate HTML
     const html = generateBrochureHTML({
-      product: productData,
+      product: optimizedProduct,
       siteSettings,
       locale,
       qrCodeDataUrl,
       logoBase64,
       backgroundImageBase64: backgroundBase64,
-      interFontBase64,
-      arabicFontBase64,
     })
 
-    // Use @sparticuz/chromium's built-in executablePath() which:
-    // 1. Decompresses chromium.br to /tmp/chromium
-    // 2. Extracts al2023.tar.br (shared libs like libnspr4.so) to /tmp/al2023
-    // 3. Extracts fonts.tar.br to /tmp/fonts (Open Sans - Latin, Greek, Cyrillic only)
-    // 4. Extracts swiftshader.tar.br for WebGL support
-    // 5. Sets LD_LIBRARY_PATH so the binary can find all shared libraries
+    // Use @sparticuz/chromium's built-in executablePath()
     console.log("[BROCHURE-PDF] Setting up Chromium via @sparticuz/chromium-min...")
     const executablePath = await chromium.executablePath(CHROMIUM_PACK_URL)
     console.log("[BROCHURE-PDF] Chromium ready at:", executablePath)
 
-    // Launch Puppeteer with Chromium — use chromium.args and chromium.headless
-    // which are specifically tuned for serverless environments
+    // Launch Puppeteer with Chromium
     browser = await puppeteer.launch({
       args: chromium.args,
       executablePath,
@@ -126,7 +116,7 @@ export async function GET(req: NextRequest) {
     
     const page = await browser.newPage()
     
-    // Set HTML content with shorter timeout
+    // Set HTML content
     await page.setContent(html, {
       waitUntil: "networkidle0",
       timeout: 15000,
@@ -134,7 +124,7 @@ export async function GET(req: NextRequest) {
 
     console.log("[BROCHURE-PDF] Content loaded, generating PDF...")
 
-    // Generate PDF
+    // Generate PDF buffer (images are already optimized)
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -150,7 +140,7 @@ export async function GET(req: NextRequest) {
     await browser.close()
     browser = null
     
-    console.log("[BROCHURE-PDF] PDF generated successfully")
+    console.log("[BROCHURE-PDF] PDF generated successfully, size:", (pdfBuffer.length /1024 ).toFixed(1), "KB")
 
     return new Response(Buffer.from(pdfBuffer), {
       headers: {
