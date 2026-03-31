@@ -31,7 +31,7 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
             className="rounded-xl px-3 py-2.5 hover:bg-muted dark:hover:bg-muted/50 transition-colors"
             href="/"
           >
-            <Logo className="h-10 md:h-8 w-auto" />
+            <Logo className="h-10 w-auto" />
           </Link>
           <div className="hidden md:block">
             <DesktopNav categories={categories} />
