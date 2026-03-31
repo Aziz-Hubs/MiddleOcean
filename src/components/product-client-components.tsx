@@ -144,7 +144,7 @@ export function RequestQuoteButton({
         <Button
           onClick={() => setIsDialogOpen(true)}
           className={cn(
-            "gap-2 bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 print:hidden",
+            "w-full sm:w-auto gap-2 bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 print:hidden",
             className
           )}
         >
