@@ -90,11 +90,7 @@ export function SearchBar({ className }: SearchBarProps) {
       >
         <Search className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-foreground transition-colors" />
         
-        <div className={cn(
-          "relative h-5 overflow-hidden",
-          "min-w-[200px] md:min-w-[300px] lg:min-w-[400px]",
-          "max-w-[200px] md:max-w-none"
-        )}>
+        <div className="relative h-5 min-w-0 flex-1 md:flex-none md:min-w-[300px] lg:min-w-[400px]">
           <AnimatePresence mode="wait">
             <motion.span
               key={currentIndex}
@@ -104,7 +100,7 @@ export function SearchBar({ className }: SearchBarProps) {
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className={cn(
                 "absolute inset-0 flex items-center",
-                "truncate md:whitespace-normal",
+                "truncate md:whitespace-normal md:overflow-visible",
                 "justify-start",
                 isRtl ? "text-right" : "text-left"
               )}
