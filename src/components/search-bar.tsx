@@ -83,7 +83,7 @@ export function SearchBar({ className }: SearchBarProps) {
           "group flex items-center gap-3 rounded-full border border-input bg-background px-4 py-2.5 text-sm text-muted-foreground shadow-sm transition-all",
           "hover:border-primary/50 hover:bg-accent hover:text-accent-foreground",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-          isRtl && "flex-row-reverse font-sans",
+          isRtl && "font-sans",
           className
         )}
         aria-label={t("triggerAriaLabel")}
@@ -105,7 +105,8 @@ export function SearchBar({ className }: SearchBarProps) {
               className={cn(
                 "absolute inset-0 flex items-center",
                 "truncate md:whitespace-normal",
-                isRtl ? "justify-end text-right" : "justify-start text-left"
+                "justify-start",
+                isRtl ? "text-right" : "text-left"
               )}
             >
               {isLoading ? t("placeholder") : getCurrentPlaceholder()}
