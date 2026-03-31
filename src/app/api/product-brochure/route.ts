@@ -67,6 +67,31 @@ export async function GET(req: NextRequest) {
       console.warn("[BROCHURE-PDF] Background failed to load:", e)
     }
 
+    // Fonts - embed as base64 for reliable rendering in serverless Chromium
+    // Chromium only ships with Open Sans (Latin, Greek, Cyrillic)
+    // We need Inter and Noto Sans Arabic for proper text rendering
+    let interFontBase64 = ""
+    let arabicFontBase64 = ""
+    try {
+      const fontsDir = path.join(process.cwd(), "fonts")
+      const interFontPath = path.join(fontsDir, "Inter-Regular.ttf")
+      const arabicFontPath = path.join(fontsDir, "NotoSansArabic-Regular.ttf")
+      
+      if (fs.existsSync(interFontPath)) {
+        const fontBuffer = fs.readFileSync(interFontPath)
+        interFontBase64 = fontBuffer.toString("base64")
+        console.log("[BROCHURE-PDF] Loaded Inter font, size:", fontBuffer.length, "bytes")
+      }
+      if (fs.existsSync(arabicFontPath)) {
+        const fontBuffer = fs.readFileSync(arabicFontPath)
+        arabicFontBase64 = fontBuffer.toString("base64")
+        console.log("[BROCHURE-PDF] Loaded Arabic font, size:", fontBuffer.length, "bytes")
+      }
+    } catch (fontError) {
+      console.warn("[BROCHURE-PDF] Font loading warning:", fontError)
+      // Continue even if font loading fails - will use fallback fonts
+    }
+
     // Generate HTML
     const html = generateBrochureHTML({
       product: productData,
@@ -75,12 +100,14 @@ export async function GET(req: NextRequest) {
       qrCodeDataUrl,
       logoBase64,
       backgroundImageBase64: backgroundBase64,
+      interFontBase64,
+      arabicFontBase64,
     })
 
     // Use @sparticuz/chromium's built-in executablePath() which:
     // 1. Decompresses chromium.br to /tmp/chromium
     // 2. Extracts al2023.tar.br (shared libs like libnspr4.so) to /tmp/al2023
-    // 3. Extracts fonts.tar.br to /tmp/fonts
+    // 3. Extracts fonts.tar.br to /tmp/fonts (Open Sans - Latin, Greek, Cyrillic only)
     // 4. Extracts swiftshader.tar.br for WebGL support
     // 5. Sets LD_LIBRARY_PATH so the binary can find all shared libraries
     console.log("[BROCHURE-PDF] Setting up Chromium via @sparticuz/chromium-min...")

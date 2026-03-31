@@ -41,10 +41,12 @@ interface TemplateData {
   qrCodeDataUrl: string
   logoBase64: string
   backgroundImageBase64?: string
+  interFontBase64?: string
+  arabicFontBase64?: string
 }
 
 export function generateBrochureHTML(data: TemplateData): string {
-  const { product, siteSettings, locale, qrCodeDataUrl, logoBase64, backgroundImageBase64 } = data
+  const { product, siteSettings, locale, qrCodeDataUrl, logoBase64, backgroundImageBase64, interFontBase64, arabicFontBase64 } = data
   const isRtl = locale === "ar"
   
   // Debug logging
@@ -172,16 +174,42 @@ export function generateBrochureHTML(data: TemplateData): string {
     ? "'Noto Sans Arabic', 'Inter', system-ui, sans-serif" 
     : "'Inter', system-ui, sans-serif"
 
+  // Build embedded font CSS for serverless environment
+  // Fallback to Google Fonts CDN if fonts not embedded
+  const embeddedFontsCSS = interFontBase64 && arabicFontBase64
+    ? `
+    @font-face {
+      font-family: 'Inter';
+      src: url(data:font/truetype;charset=utf-8;base64,${interFontBase64}) format('truetype');
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Noto Sans Arabic';
+      src: url(data:font/truetype;charset=utf-8;base64,${arabicFontBase64}) format('truetype');
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+  `
+    : ""
+
+  const googleFontsLink = !interFontBase64 || !arabicFontBase64
+    ? `
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet">`
+    : ""
+
   return `<!DOCTYPE html>
 <html lang="${locale}" dir="${dir}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${productTitle}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <title>${productTitle}</title>${googleFontsLink}
   <style>
+    ${embeddedFontsCSS}
     * {
       margin: 0;
       padding: 0;
