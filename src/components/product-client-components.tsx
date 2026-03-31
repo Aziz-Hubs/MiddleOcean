@@ -175,6 +175,7 @@ export function StickyHeader({
 }) {
   const [isVisible, setIsVisible] = useState(false)
   const [breadcrumbHeight, setBreadcrumbHeight] = useState(44)
+  const [isOverFooter, setIsOverFooter] = useState(false)
   const stickyTop = 57 + breadcrumbHeight
 
   useEffect(() => {
@@ -199,6 +200,24 @@ export function StickyHeader({
   }, [])
 
   useEffect(() => {
+    const footer = document.querySelector('[data-footer]')
+    if (!footer) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOverFooter(entry.isIntersecting)
+      },
+      {
+        rootMargin: "100px 0px 0px 0px",
+        threshold: 0,
+      }
+    )
+
+    observer.observe(footer)
+    return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
     const handleScroll = () => {
       setIsVisible(window.scrollY > 200)
     }
@@ -207,11 +226,13 @@ export function StickyHeader({
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const showHeader = isVisible && !isOverFooter
+
   return (
     <div 
       className={cn(
         "fixed left-0 right-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
-        isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+        showHeader ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       )}
       style={{ top: `${stickyTop}px` }}
     >

@@ -2,22 +2,14 @@ import { getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { sanityClient } from "@/sanity/client"
 import { productBySlugQuery, productReviewsPagedQuery, productReviewsCountQuery, siteSettingsQuery } from "@/sanity/queries"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-import { Link } from "@/i18n/routing"
-import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target } from "lucide-react"
 import { DownloadBrochureButton, RequestQuoteButton, StickyHeader } from "@/components/product-client-components"
+import { ProductBreadcrumb } from "@/components/product-breadcrumb"
 import { ProductReviews } from "@/components/product-reviews"
 import { ProductImage } from "@/components/product-image"
 import ContactUs1 from "@/components/contact-us-1"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
+import { ChevronRight, ChevronLeft, ShieldCheck, Cpu, Zap, Target } from "lucide-react"
 import type { Metadata } from "next"
 
 function resolveLocale(field: Record<string, string> | string | undefined, locale: string): string {
@@ -204,49 +196,12 @@ export default async function ProductPage(props: {
       />
 
       {/* Breadcrumb bar — sticky below navbar */}
-      <div data-breadcrumb-bar className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
-        <div className="container mx-auto px-6">
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink render={<Link href="/" />}>{t("home")}</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator>
-                <ChevronIcon className="size-4 opacity-40" />
-              </BreadcrumbSeparator>
-
-              {categoryTitle && category !== 'all' ? (
-                <>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator>
-                    <ChevronIcon className="size-4 opacity-40" />
-                  </BreadcrumbSeparator>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink render={<Link href={`/products/${category}`} />}>
-                      <span className="capitalize">{categoryTitle}</span>
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                </>
-              ) : (
-                <BreadcrumbItem>
-                  <BreadcrumbLink render={<Link href="/products" />}>{t("products_title")}</BreadcrumbLink>
-                </BreadcrumbItem>
-              )}
-
-              <BreadcrumbSeparator>
-                <ChevronIcon className="size-4 opacity-40" />
-              </BreadcrumbSeparator>
-              <BreadcrumbItem>
-                <BreadcrumbPage className="font-semibold text-foreground line-clamp-1 max-w-[200px] lg:max-w-[400px]">
-                  {productTitle}
-                </BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-        </div>
-      </div>
+      <ProductBreadcrumb
+        locale={locale}
+        category={category}
+        categoryTitle={categoryTitle}
+        productTitle={productTitle}
+      />
 
       <div className="relative z-10 bg-background text-foreground min-h-screen print:min-h-0 pt-12 lg:pt-20 print:pt-0 print:bg-white print:text-black">
         <article className="container mx-auto px-6 py-6 lg:py-10 print:py-0 print:px-0">

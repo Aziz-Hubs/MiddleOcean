@@ -38,7 +38,7 @@ export default function ContactUs1({ settings }: ContactUs1Props) {
   const mapLng = settings?.mapCoordinates?.lng || 46.674997;
 
   return (
-    <section className="relative w-full overflow-hidden pt-12 md:pt-16 pb-16 bg-transparent">
+    <section data-footer className="relative w-full overflow-hidden pt-12 md:pt-16 pb-16 bg-transparent">
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="bg-card/30 border border-white/5 mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.3)] backdrop-blur-xl">
           <div className="grid md:grid-cols-2 h-full">
