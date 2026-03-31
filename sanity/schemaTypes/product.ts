@@ -80,6 +80,15 @@ export const product = defineType({
       ],
     }),
     defineField({
+      name: "brochureImages",
+      title: "Brochure Images",
+      type: "array",
+      description: "Images dedicated for downloadable PDF brochure (3×2 grid, max 6).",
+      of: [{ type: "brochureImage" }],
+      validation: (Rule) => Rule.max(6),
+      options: { layout: "grid" },
+    }),
+    defineField({
       name: "specifications",
       title: "Technical Specs",
       type: "array",
@@ -101,6 +110,12 @@ export const product = defineType({
               description: "E.g. '1440 dpi'. قيمة الخاصية.",
             }),
           ],
+          preview: {
+            select: {
+              title: "name.ar",
+              subtitle: "name.en",
+            },
+          },
         },
       ],
     }),
