@@ -106,7 +106,7 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
           locale === "ar" && "font-sans"
         )}
       >
-        <div className="flex items-center border-b px-4 py-3">
+        <div className="flex items-center border-b px-4 py-4">
           <CommandInput
             placeholder={t("placeholder")}
             value={query}
@@ -140,7 +140,7 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
           )}
         </div>
 
-        <CommandList className="max-h-[60vh] overflow-y-auto px-2 pb-2">
+        <CommandList className="max-h-[60vh] overflow-y-auto px-4 pb-4">
           {/* Loading State */}
           {isLoading && (
             <div className="p-4 space-y-3">
