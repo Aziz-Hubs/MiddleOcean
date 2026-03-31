@@ -107,7 +107,13 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
     "galleryUrls": gallery[].asset->url,
     videoUrl
   },
-  specifications
+  specifications,
+  brochureImages[] {
+    _key,
+    title,
+    description,
+    "imageUrl": image.asset->url
+  }
 }`;
 
 // Reviews for a specific product, ordered newest first, only published
