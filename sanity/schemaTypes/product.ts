@@ -3,22 +3,22 @@ import { Package } from "lucide-react";
 
 export const product = defineType({
   name: "product",
-  title: "Product",
-  description: "Manage product catalog items, specifications, and media.",
+  title: "المنتج",
+  description: "إدارة منتجات الكتالوج والمواصفات والوسائط.",
   type: "document",
   icon: Package,
   fields: [
     defineField({
       name: "title",
-      title: "Product Title",
+      title: "اسم المنتج",
       type: "localeString",
-      description: "Product name (EN/AR). اسم المنتج باللغتين العربية والإنجليزية.",
+      description: "اسم المنتج باللغتين العربية والإنجليزية.",
     }),
     defineField({
       name: "slug",
-      title: "Slug (URL)",
+      title: "الرابط",
       type: "slug",
-      description: "Unique URL ID. معرف الرابط الفريد يتم إنشاؤه تلقائياً.",
+      description: "معرف الرابط الفريد يتم إنشاؤه تلقائياً.",
       options: {
         source: "title.en",
         maxLength: 96,
@@ -26,88 +26,88 @@ export const product = defineType({
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "الوصف",
       type: "localeText",
-      description: "Detailed overview. وصف تفصيلي للمنتج ومميزاته.",
+      description: "وصف تفصيلي للمنتج ومميزاته.",
     }),
     defineField({
       name: "category",
-      title: "Category",
+      title: "القسم",
       type: "reference",
-      description: "Main category. القسم الرئيسي الذي ينتمي إليه المنتج.",
+      description: "القسم الرئيسي الذي ينتمي إليه المنتج.",
       to: [{ type: "category" }],
     }),
     defineField({
       name: "brand",
-      title: "Brand",
+      title: "العلامة التجارية",
       type: "reference",
-      description: "Manufacturer. العلامة التجارية أو الشركة المصنعة.",
+      description: "العلامة التجارية أو الشركة المصنعة.",
       to: [{ type: "brand" }],
     }),
     defineField({
       name: "warrantyMonths",
-      title: "Warranty (Months)",
+      title: "الضمان (أشهر)",
       type: "number",
-      description: "Months of coverage. عدد أشهر الضمان.",
+      description: "عدد أشهر الضمان.",
     }),
     defineField({
       name: "media",
-      title: "Product Media",
+      title: "وسائط المنتج",
       type: "object",
-      description: "Images and videos for the product listing.",
+      description: "الصور والفيديوهات لصفحة المنتج.",
       fields: [
         defineField({
           name: "thumbnail",
-          title: "Main Thumbnail",
+          title: "الصورة الرئيسية",
           type: "image",
-          description: "The primary image shown in search results and catalogs.",
+          description: "الصورة الرئيسية التي تظهر في نتائج البحث والكتالوج.",
           options: { hotspot: true },
         }),
         defineField({
           name: "gallery",
-          title: "Image Gallery",
+          title: "معرض الصور",
           type: "array",
-          description: "Additional images showcasing the product.",
+          description: "صور إضافية تعرض المنتج.",
           of: [{ type: "image", options: { hotspot: true } }],
           options: { layout: "grid" },
         }),
         defineField({
           name: "videoUrl",
-          title: "Video Demo URL",
+          title: "رابط الفيديو",
           type: "url",
-          description: "Link to a YouTube or Vimeo video demonstrating the product.",
+          description: "رابط فيديو يوتيوب أو فيميو لعرض المنتج.",
         }),
       ],
     }),
     defineField({
       name: "brochureImages",
-      title: "Brochure Images",
+      title: "صور الكتالوج",
       type: "array",
-      description: "Images dedicated for downloadable PDF brochure (3×2 grid, max 6).",
+      description: "صور مخصصة لملف PDF القابل للتحميل (شبكة3×2، حدأقصى6 صور).",
       of: [{ type: "brochureImage" }],
       validation: (Rule) => Rule.max(6),
       options: { layout: "grid" },
     }),
     defineField({
       name: "specifications",
-      title: "Technical Specs",
+      title: "المواصفات الفنية",
       type: "array",
-      description: "Technical details. المواصفات الفنية (مثلاً: الدقة، الوزن).",
+      description: "المواصفات الفنية للمنتج (مثلاً: الدقة، الوزن).",
       of: [
         {
           type: "object",
           fields: [
             defineField({
               name: "name",
-              title: "Property",
+              title: "الخاصية",
               type: "localeString",
-              description: "E.g. 'Resolution'. اسم الخاصية.",
+              description: "اسم الخاصية (مثلاً: 'الدقة').",
             }),
             defineField({
               name: "value",
-              title: "Value",
+              title: "القيمة",
               type: "localeString",
-              description: "E.g. '1440 dpi'. قيمة الخاصية.",
+              description: "قيمة الخاصية (مثلاً: '1440 dpi').",
             }),
           ],
           preview: {
@@ -142,8 +142,8 @@ export const product = defineType({
       const categoryEmoji = categoryLogos[categorySlug] || "📦";
 
       return {
-        title: titleEn || titleAr || "Untitled Product",
-        subtitle: `${categoryEmoji} ${categoryTitle || "No Category"}`,
+        title: titleAr || titleEn || "منتج بدون اسم",
+        subtitle: `${categoryEmoji} ${categoryTitle || "بدون قسم"}`,
         media: media || (categoryEmoji as string),
       };
     },

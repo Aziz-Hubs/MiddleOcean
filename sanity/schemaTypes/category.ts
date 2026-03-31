@@ -3,22 +3,22 @@ import { Layers } from "lucide-react";
 
 export const category = defineType({
   name: "category",
-  title: "Category",
-  description: "Organize products into logical categories (e.g., Printers, Acrylic Sheets).",
+  title: "القسم",
+  description: "تنظيم المنتجات في أقسام منطقية (مثلاً: طابعات، ألواح أكريليك).",
   type: "document",
   icon: Layers,
   fields: [
     defineField({
       name: "title",
-      title: "Category Title",
+      title: "اسم القسم",
       type: "localeString",
-      description: "Category name (EN/AR). اسم القسم باللغتين العربية والإنجليزية.",
+      description: "اسم القسم باللغتين العربية والإنجليزية.",
     }),
     defineField({
       name: "slug",
-      title: "Slug (URL)",
+      title: "الرابط",
       type: "slug",
-      description: "Unique URL ID. معرف الرابط الفريد يتم إنشاؤه تلقائياً.",
+      description: "معرف الرابط الفريد يتم إنشاؤه تلقائياً من الاسم الإنجليزي.",
       options: {
         source: "title.en",
         maxLength: 96,
@@ -26,9 +26,9 @@ export const category = defineType({
     }),
     defineField({
       name: "image",
-      title: "Category Image",
+      title: "صورة القسم",
       type: "image",
-      description: "Hero image. صورة القسم الرئيسية التي تظهر بالموقع.",
+      description: "الصورة الرئيسية للقسم التي تظهر في الموقع.",
       options: {
         hotspot: true,
       },
@@ -42,8 +42,8 @@ export const category = defineType({
     },
     prepare({ titleEn, titleAr, media }) {
       return {
-        title: titleEn || titleAr || "Untitled Category",
-        subtitle: titleAr ? `AR: ${titleAr}` : "No Arabic Title",
+        title: titleAr || titleEn || "قسم بدون اسم",
+        subtitle: titleAr ? titleEn : undefined,
         media,
       };
     },

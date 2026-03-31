@@ -3,15 +3,15 @@ import { Image } from "lucide-react";
 
 export const brochureImage = defineType({
   name: "brochureImage",
-  title: "Brochure Image",
+  title: "صورة الكتالوج",
   type: "object",
   icon: Image,
   fields: [
     defineField({
       name: "image",
-      title: "Image",
+      title: "الصورة",
       type: "image",
-      description: "High-resolution image for PDF brochure.",
+      description: "صورة عالية الدقة لملف PDF.",
       options: {
         hotspot: true,
       },
@@ -19,15 +19,15 @@ export const brochureImage = defineType({
     }),
     defineField({
       name: "title",
-      title: "Title",
+      title: "العنوان",
       type: "localeString",
-      description: "Short title for this image (EN/AR).",
+      description: "عنوان مختصر للصورة باللغتين.",
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "الوصف",
       type: "localeText",
-      description: "Detailed description for the brochure (EN/AR).",
+      description: "وصف تفصيلي للصورة باللغتين.",
     }),
   ],
   preview: {
@@ -38,7 +38,7 @@ export const brochureImage = defineType({
     },
     prepare({ titleEn, titleAr, media }) {
       return {
-        title: titleAr || titleEn || "Untitled",
+        title: titleAr || titleEn || "بدون عنوان",
         subtitle: titleAr ? titleEn : undefined,
         media,
       };
