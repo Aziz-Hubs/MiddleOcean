@@ -28,7 +28,7 @@ export function MobileNav({ categories }: { categories: SanityCategory[] }) {
 				aria-controls="mobile-menu"
 				aria-expanded={open}
 				aria-label="Toggle menu"
-				className="md:hidden"
+				className="md:hidden size-10"
 				onClick={() => setOpen(!open)}
 				size="icon"
 				variant="outline"
