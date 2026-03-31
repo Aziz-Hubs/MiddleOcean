@@ -17,7 +17,7 @@ export function ProductImage({ src, alt, priority = false }: ProductImageProps) 
 
   return (
     <div className={cn(
-      "relative aspect-square md:aspect-[4/3] lg:aspect-square group rounded-[2rem] overflow-hidden print:overflow-visible w-full h-full",
+      "relative aspect-square group rounded-[2rem] overflow-hidden print:overflow-visible w-full",
       "bg-background/40 backdrop-blur-md border border-white/10 print:border-none",
       "flex items-center justify-center print:p-8 print:bg-white"
     )}>

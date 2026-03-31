@@ -268,11 +268,13 @@ export default async function ProductPage(props: {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start pb-14 print:pb-6 print:block border-b border-border/40 print:border-none">
-            <ProductImage 
-              src={productData.media?.thumbnailUrl} 
-              alt={productTitle} 
-              priority 
-            />
+            <div className="lg:sticky lg:top-[105px] self-start">
+              <ProductImage 
+                src={productData.media?.thumbnailUrl} 
+                alt={productTitle} 
+                priority 
+              />
+            </div>
 
             <div className="flex flex-col gap-7">
               <div className="space-y-2">
