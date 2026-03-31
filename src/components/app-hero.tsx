@@ -247,7 +247,7 @@ export default function AppHero() {
                   <div
                     key={index}
                     className={cn(
-                      "relative cursor-pointer transition-all duration-500 p-8 flex flex-col group overflow-hidden backdrop-blur-xl border-t",
+                      "relative cursor-pointer transition-all duration-500 p-8 flex flex-col group overflow-hidden backdrop-blur-xl border-t min-h-32",
                       isActive 
                         ? "bg-primary/10 border-t-primary/50 shadow-[inset_0_1px_0_rgba(var(--primary-rgb),0.3),0_0_30px_rgba(var(--primary-rgb),0.1)] flex" 
                         : "bg-card/30 border-t-white/5 hover:bg-white/5 hidden md:flex"
