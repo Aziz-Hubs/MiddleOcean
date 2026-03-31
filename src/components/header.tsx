@@ -43,7 +43,7 @@ export function Header({ categories }: { categories: SanityCategory[] }) {
           <div className="hidden md:block w-full max-w-[400px] lg:max-w-[480px] xl:max-w-[560px]">
             <SearchBar className="w-full" />
           </div>
-          <div className="md:hidden w-full max-w-[240px] sm:max-w-[280px]">
+          <div className="md:hidden w-full max-w-[260px] sm:max-w-[280px]">
             <SearchBar className="w-full" />
           </div>
         </div>
