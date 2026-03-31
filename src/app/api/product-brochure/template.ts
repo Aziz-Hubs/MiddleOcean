@@ -20,6 +20,12 @@ interface Product {
     name: Record<string, string> | string
     value: Record<string, string> | string
   }>
+  brochureImages?: Array<{
+    imageUrl: string
+    title?: Record<string, string>
+    description?: Record<string, string>
+  }>
+  warrantyMonths?: number
 }
 
 interface SiteSettings {
@@ -34,10 +40,11 @@ interface TemplateData {
   locale: string
   qrCodeDataUrl: string
   logoBase64: string
+  backgroundImageBase64?: string
 }
 
 export function generateBrochureHTML(data: TemplateData): string {
-  const { product, siteSettings, locale, qrCodeDataUrl, logoBase64 } = data
+  const { product, siteSettings, locale, qrCodeDataUrl, logoBase64, backgroundImageBase64 } = data
   const isRtl = locale === "ar"
   
   // Debug logging
@@ -118,6 +125,18 @@ export function generateBrochureHTML(data: TemplateData): string {
     { label: "CE Certified", color: "#10b981" },
   ]
 
+  // Process catalog images (3+ images required to show section)
+  const catalogImages = (product.brochureImages || [])
+    .slice(0, 6)
+    .filter(img => img.imageUrl)
+    .map(img => ({
+      imageUrl: img.imageUrl,
+      title: resolveLocale(img.title, locale) || "",
+      description: resolveLocale(img.description, locale) || "",
+    }))
+
+  const showCatalogSection = catalogImages.length >= 3
+
   // Spec rows (2 per row)
   const specRows: Array<Array<{ name: string; value: string }>> = []
   for (let i = 0; i < filteredSpecs.length; i += 2) {
@@ -174,7 +193,11 @@ export function generateBrochureHTML(data: TemplateData): string {
       font-size: 10px;
       line-height: 1.5;
       color: #0f172a;
-      background: white;
+      background-color: white;
+      background-image: ${backgroundImageBase64 ? `url('${backgroundImageBase64}')` : 'none'};
+      background-size: 100%100%;
+      background-position: center;
+      background-repeat: no-repeat;
       width: 210mm;
       min-height: 297mm;
       padding: 20px 32px 14px 32px;
@@ -206,6 +229,61 @@ export function generateBrochureHTML(data: TemplateData): string {
     .gap-3 { gap: 12px; }
     .gap-4 { gap: 16px; }
     .gap-6 { gap: 24px; }
+    
+    /* Catalog Features Grid */
+    .catalog-section {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    
+    .catalog-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .catalog-image-circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #f8fafc;
+      margin-bottom: 8px;
+    }
+    
+    .catalog-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .catalog-title {
+      font-size: 8px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+      text-align: center;
+    }
+    
+    .catalog-desc {
+      font-size: 6px;
+      color: #64748b;
+      line-height: 1.3;
+      text-align: center;
+    }
     
     /* Header */
     .header {
@@ -245,7 +323,7 @@ export function generateBrochureHTML(data: TemplateData): string {
     }
     
     .logo {
-      height: 36px;
+      height: 42px;
       width: auto;
     }
     
@@ -269,7 +347,7 @@ export function generateBrochureHTML(data: TemplateData): string {
     /* Hero Section */
     .hero {
       display: flex;
-      flex-direction: ${flexDirection};
+      flex-direction: row;
       gap: 24px;
       margin-bottom: 18px;
     }
@@ -336,7 +414,7 @@ export function generateBrochureHTML(data: TemplateData): string {
       display: flex;
       flex-direction: row;
       gap: 6px;
-      justify-content: ${isRtl ? 'flex-end' : 'flex-start'};
+      justify-content: flex-start;
       width: 100%;
     }
     
@@ -350,26 +428,16 @@ export function generateBrochureHTML(data: TemplateData): string {
       letter-spacing: 0.5px;
     }
     
-    /* Section Headers - RTL: bar on right, title on left */
+    /* Section Headers */
     .section-header {
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
       margin-bottom: 10px;
       margin-top: 2px;
-      justify-content: flex-start;
       padding-bottom: 8px;
       border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .section-bar {
-      width: 3.5px;
-      height: 16px;
-      background-color: #06b6d4;
-      border-radius: 2px;
-      flex-shrink: 0;
-      order: ${isRtl ? '1' : '2'};
     }
     
     .section-title {
@@ -378,7 +446,7 @@ export function generateBrochureHTML(data: TemplateData): string {
       color: #0f172a;
       text-transform: uppercase;
       letter-spacing: 1px;
-      order: ${isRtl ? '2' : '1'};
+      text-align: center;
     }
     
     /* Specs Table */
@@ -386,13 +454,21 @@ export function generateBrochureHTML(data: TemplateData): string {
       border: 1px solid #e2e8f0;
       border-radius: 6px;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
     
     .spec-row {
       display: flex;
       flex-direction: row;
       border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .spec-row:nth-child(odd) {
+      background-color: #f8fafc;
+    }
+    
+    .spec-row:nth-child(even) {
+      background-color: #ffffff;
     }
     
     .spec-row:last-child {
@@ -409,8 +485,8 @@ export function generateBrochureHTML(data: TemplateData): string {
     }
     
     .spec-cell:first-child {
-      border-right: ${isRtl ? 'none' : '1px solid #e2e8f0'};
-      border-left: ${isRtl ? '1px solid #e2e8f0' : 'none'};
+      border-right: ${isRtl ? "none" : "1px solid #e2e8f0"};
+      border-left: ${isRtl ? "1px solid #e2e8f0" : "none"};
     }
     
     .spec-label {
@@ -421,12 +497,12 @@ export function generateBrochureHTML(data: TemplateData): string {
       width: 45%;
       text-align: ${textAlign};
       flex-shrink: 0;
-      border-right: ${isRtl ? 'none' : '1px solid #e2e8f0'};
-      border-left: ${isRtl ? '1px solid #e2e8f0' : 'none'};
-      padding-right: ${isRtl ? '0' : '8px'};
-      padding-left: ${isRtl ? '8px' : '0'};
-      margin-right: ${isRtl ? '0' : '8px'};
-      margin-left: ${isRtl ? '8px' : '0'};
+      border-right: ${isRtl ? "none" : "1px solid #e2e8f0"};
+      border-left: ${isRtl ? "1px solid #e2e8f0" : "none"};
+      padding-right: ${isRtl ? "0" : "8px"};
+      padding-left: ${isRtl ? "8px" : "0"};
+      margin-right: ${isRtl ? "0" : "8px"};
+      margin-left: ${isRtl ? "8px" : "0"};
     }
     
     .spec-value {
@@ -435,6 +511,54 @@ export function generateBrochureHTML(data: TemplateData): string {
       color: #0f172a;
       width: 45%;
       text-align: ${textAlign};
+    }
+    
+    /* Warranty Section */
+    .warranty-section {
+      margin-bottom: 14px;
+      padding: 10px 14px;
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-radius: 8px;
+      border: 1px solid #bbf7d0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .warranty-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .warranty-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: white;
+    }
+    
+    .warranty-content {
+      flex: 1;
+    }
+    
+    .warranty-title {
+      font-size: 8px;
+      font-weight: 700;
+      color: #166534;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+    
+    .warranty-text {
+      font-size: 7px;
+      color: #15803d;
+      line-height: 1.4;
     }
     
     /* Features Grid */
@@ -660,52 +784,66 @@ export function generateBrochureHTML(data: TemplateData): string {
         </div>
       </section>
       
+      ${showCatalogSection ? `
+      <!-- Key Features -->
+      <section class="catalog-section">
+        <div class="catalog-grid">
+          ${catalogImages.map(img => `
+            <div class="catalog-item">
+              <div class="catalog-image-circle">
+                <img src="${img.imageUrl}" alt="${img.title}" class="catalog-image">
+              </div>
+              <div class="catalog-title">${img.title}</div>
+              <div class="catalog-desc">${img.description}</div>
+            </div>
+          `).join("")}
+        </div>
+      </section>
+      ` : ""}
+      
       ${specRows.length > 0 ? `
       <!-- Technical Specifications -->
-      <section style="margin-bottom: 20px;">
+      <section style="margin-bottom: 16px;">
         <div class="section-header">
-          <div class="section-bar"></div>
           <div class="section-title">${isRtl ? "المواصفات الفنية" : "TECHNICAL SPECIFICATIONS"}</div>
         </div>
         <div class="specs-table">
           ${specRows.map((row, idx) => `
-            <div class="spec-row" style="background-color: ${idx % 2 === 0 ? '#f8fafc' : 'white'};">
+            <div class="spec-row">
               <div class="spec-cell">
-                <div class="spec-label">${row[0]?.name || ''}</div>
-                <div class="spec-value">${row[0]?.value || ''}</div>
+                <div class="spec-label">${row[0]?.name || ""}</div>
+                <div class="spec-value">${row[0]?.value || ""}</div>
               </div>
               ${row[1] ? `
               <div class="spec-cell">
                 <div class="spec-label">${row[1].name}</div>
                 <div class="spec-value">${row[1].value}</div>
               </div>
-              ` : '<div class="spec-cell"></div>'}
+              ` : "<div class=\"spec-cell\"></div>"}
             </div>
-          `).join('')}
+          `).join("")}
         </div>
       </section>
-      ` : ''}
+      ` : ""}
       
-      <!-- Business Value / Features -->
-      <section style="margin-bottom: 12px;">
-        <div class="section-header">
-          <div class="section-bar"></div>
-          <div class="section-title">${isRtl ? "القيمة المضافة" : "ADDED VALUE"}</div>
+      ${product.warrantyMonths ? `
+      <!-- Warranty -->
+      <section class="warranty-section">
+        <div class="warranty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
         </div>
-        <div class="features-grid">
-          ${features.map(feature => `
-            <div class="feature-card">
-              <div class="feature-icon">
-                ${getIconSvg(feature.icon)}
-              </div>
-              <div class="feature-content">
-                <div class="feature-label">${feature.label}</div>
-                <div class="feature-desc">${feature.desc}</div>
-              </div>
-            </div>
-          `).join('')}
+        <div class="warranty-content">
+          <div class="warranty-title">${isRtl ? "الضمان" : "WARRANTY"}</div>
+          <div class="warranty-text">${isRtl 
+            ? `يتم تغطية هذا المنتج بضمان لمدة ${product.warrantyMonths} شهر من تاريخ الشراء.`
+            : `This product is covered by a ${product.warrantyMonths}-month warranty from the date of purchase.`
+          }</div>
         </div>
       </section>
+      ` : ""}
     </div>
     
     <!-- Footer -->
@@ -785,7 +923,7 @@ export function generateBrochureHTML(data: TemplateData): string {
           <div class="social-card">
             ${getIconSvg('linkedin', '#0A66C2')}
             <div class="social-text">middleocean</div>
-          </div>
+</div>
           `}
         </div>
       </div>

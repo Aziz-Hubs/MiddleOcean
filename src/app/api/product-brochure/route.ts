@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
     }
 
     // QR
-    const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.jo"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
+    const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.vercel.app"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
     const qrCodeDataUrl = await QRCode.toDataURL(productUrl, {
       width: 80, margin: 1, color: { dark: "#1e293b", light: "#ffffff" },
     })
@@ -46,13 +46,25 @@ export async function GET(req: NextRequest) {
     // Logo
     let logoBase64 = ""
     try {
-      const logoPath = path.join(process.cwd(), "public", "brand", "logo_test.png")
+      const logoPath = path.join(process.cwd(), "public", "brand", "Brochure_LOGO", "MiddleOcean_LOGO.png")
       if (fs.existsSync(logoPath)) {
         const logoBuffer = fs.readFileSync(logoPath)
         logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
       }
     } catch (e) {
       console.warn("[BROCHURE-PDF] Logo failed to load:", e)
+    }
+
+    // Background image
+    let backgroundBase64 = ""
+    try {
+      const bgPath = path.join(process.cwd(), "public", "misc", "Brochure_Image_background.png")
+      if (fs.existsSync(bgPath)) {
+        const bgBuffer = fs.readFileSync(bgPath)
+        backgroundBase64 = `data:image/png;base64,${bgBuffer.toString("base64")}`
+      }
+    } catch (e) {
+      console.warn("[BROCHURE-PDF] Background failed to load:", e)
     }
 
     // Generate HTML
@@ -62,6 +74,7 @@ export async function GET(req: NextRequest) {
       locale,
       qrCodeDataUrl,
       logoBase64,
+      backgroundImageBase64: backgroundBase64,
     })
 
     // Use @sparticuz/chromium's built-in executablePath() which:
