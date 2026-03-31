@@ -204,7 +204,7 @@ export default async function ProductPage(props: {
       />
 
       {/* Breadcrumb bar — sticky below navbar */}
-      <div className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
+      <div data-breadcrumb-bar className="sticky top-[57px] z-40 border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden">
         <div className="container mx-auto px-6">
           <Breadcrumb>
             <BreadcrumbList>

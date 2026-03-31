@@ -174,6 +174,29 @@ export function StickyHeader({
   categoryAr?: string
 }) {
   const [isVisible, setIsVisible] = useState(false)
+  const [breadcrumbHeight, setBreadcrumbHeight] = useState(44)
+  const stickyTop = 57 + breadcrumbHeight
+
+  useEffect(() => {
+    const breadcrumbBar = document.querySelector('[data-breadcrumb-bar]')
+    
+    if (!breadcrumbBar) return
+    
+    const updateHeight = () => {
+      const rect = breadcrumbBar.getBoundingClientRect()
+      const height = Math.max(44, rect.height)
+      setBreadcrumbHeight(height)
+    }
+    
+    updateHeight()
+    
+    const resizeObserver = new ResizeObserver(updateHeight)
+    resizeObserver.observe(breadcrumbBar)
+    
+    return () => {
+      resizeObserver.disconnect()
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -187,9 +210,10 @@ export function StickyHeader({
   return (
     <div 
       className={cn(
-        "fixed top-[101px] left-0 right-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
+        "fixed left-0 right-0 z-30 bg-background/95 backdrop-blur-md border-b border-border/60 shadow-lg transition-all duration-300 transform print:hidden",
         isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       )}
+      style={{ top: `${stickyTop}px` }}
     >
       <div className="container mx-auto px-6 h-14 flex items-center justify-between gap-4">
         <h3 className="font-bold text-base truncate">{title}</h3>
