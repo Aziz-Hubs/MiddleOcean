@@ -174,7 +174,7 @@ export default function FeatureSteps() {
           </div>
 
           <div className={cn(
-            "relative aspect-[16/10] lg:aspect-square h-full min-h-[250px] md:min-h-[400px] lg:min-h-[600px] overflow-hidden rounded-3xl border border-white/10 bg-black/50 backdrop-blur-3xl",
+            "relative aspect-[16/10] lg:aspect-square h-full min-h-[250px] md:min-h-[400px] lg:min-h-[600px] overflow-hidden rounded-3xl border border-white/10 bg-black/50 backdrop-blur-3xl p-4 md:p-0",
             "order-1 lg:order-2" 
           )}>
             <AnimatePresence mode="wait">
