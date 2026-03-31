@@ -98,6 +98,7 @@ export function ProductSearch({ open, onOpenChange }: ProductSearchProps) {
       )}
     >
       <Command
+        shouldFilter={false}
         className={cn(
           "overflow-hidden",
           locale === "ar" && "font-sans"

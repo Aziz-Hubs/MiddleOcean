@@ -4,5 +4,5 @@ export const sanityClient = createClient({
   projectId: "hn27pyms",
   dataset: "production",
   useCdn: true,
-  apiVersion: "2024-03-14",
+  apiVersion: "2025-02-19",
 });

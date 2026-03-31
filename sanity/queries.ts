@@ -154,8 +154,13 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
 
 }`;
 
-// Search products - English locale priority
-// Searches in both English and Arabic fields for cross-locale support
+// Search products - English locale priority with relevance scoring
+// Uses GROQ score() for intelligent ranking:
+// - Title matches get highest priority (naturally higher due to shorter text)
+// - Description matches add to the score
+// The match operator with "term*" does prefix matching (finds "drill" in "drills")
+// Match is case-insensitive and tokenizes text for word-based search
+// Note: score() does not support dereferencing (->), so category/brand are in filter only
 export const searchProductsQueryEn = `*[_type == "product" && (
   title.en match $searchTerm ||
   title.ar match $searchTerm ||
@@ -164,7 +169,15 @@ export const searchProductsQueryEn = `*[_type == "product" && (
   category->title.en match $searchTerm ||
   category->title.ar match $searchTerm ||
   brand->title match $searchTerm
-)] | order(_createdAt desc) [0...10]{
+)]
+  | score(
+    title.en match $searchTerm,
+    title.ar match $searchTerm,
+    description.en match $searchTerm,
+    description.ar match $searchTerm
+  )
+  | order(_score desc, _createdAt desc)
+  [0...10]{
   _id,
   title,
   description,
@@ -181,8 +194,7 @@ export const searchProductsQueryEn = `*[_type == "product" && (
   warrantyMonths
 }`;
 
-// Search products - Arabic locale priority
-// Searches in both Arabic and English fields for cross-locale support
+// Search products - Arabic locale priority with relevance scoring
 export const searchProductsQueryAr = `*[_type == "product" && (
   title.ar match $searchTerm ||
   title.en match $searchTerm ||
@@ -191,7 +203,15 @@ export const searchProductsQueryAr = `*[_type == "product" && (
   category->title.ar match $searchTerm ||
   category->title.en match $searchTerm ||
   brand->title match $searchTerm
-)] | order(_createdAt desc) [0...10]{
+)]
+  | score(
+    title.ar match $searchTerm,
+    title.en match $searchTerm,
+    description.ar match $searchTerm,
+    description.en match $searchTerm
+  )
+  | order(_score desc, _createdAt desc)
+  [0...10]{
   _id,
   title,
   description,
