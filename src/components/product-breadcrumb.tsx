@@ -31,8 +31,24 @@ export function ProductBreadcrumb({
   const isRtl = locale === "ar"
   const ChevronIcon = isRtl ? ChevronLeft : ChevronRight
   const [isOverFooter, setIsOverFooter] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setIsOverFooter(false)
+      return
+    }
+
     const footer = document.querySelector("[data-footer]")
     if (!footer) return
 
@@ -48,14 +64,14 @@ export function ProductBreadcrumb({
 
     observer.observe(footer)
     return () => observer.disconnect()
-  }, [])
+  }, [isMobile])
 
   return (
     <div
       data-breadcrumb-bar
       className={cn(
         "border-b border-border/40 bg-background/95 backdrop-blur-md py-3 print:hidden z-40",
-        isOverFooter ? "static" : "sticky top-[57px]"
+        isMobile && isOverFooter ? "static" : "sticky top-[57px]"
       )}
     >
       <div className="container mx-auto px-6">

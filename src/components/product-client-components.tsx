@@ -176,6 +176,7 @@ export function StickyHeader({
   const [isVisible, setIsVisible] = useState(false)
   const [breadcrumbHeight, setBreadcrumbHeight] = useState(44)
   const [isOverFooter, setIsOverFooter] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const stickyTop = 57 + breadcrumbHeight
 
   useEffect(() => {
@@ -200,6 +201,21 @@ export function StickyHeader({
   }, [])
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  useEffect(() => {
+    if (!isMobile) {
+      setIsOverFooter(false)
+      return
+    }
+
     const footer = document.querySelector('[data-footer]')
     if (!footer) return
 
@@ -215,7 +231,7 @@ export function StickyHeader({
 
     observer.observe(footer)
     return () => observer.disconnect()
-  }, [])
+  }, [isMobile])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -226,7 +242,7 @@ export function StickyHeader({
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const showHeader = isVisible && !isOverFooter
+  const showHeader = isVisible && !(isMobile && isOverFooter)
 
   return (
     <div 

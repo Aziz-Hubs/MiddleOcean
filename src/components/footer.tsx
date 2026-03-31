@@ -44,7 +44,7 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 	const pathname = usePathname();
 
 	return (
-		<footer className="relative bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-24 pb-12 overflow-hidden print:hidden border-t border-border/40 shadow-lg shadow-black/5">
+		<footer data-footer className="relative bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 pt-24 pb-12 overflow-hidden print:hidden border-t border-border/40 shadow-lg shadow-black/5">
 			<motion.div 
 				className="mx-auto max-w-7xl px-6"
 				variants={containerVariants}
