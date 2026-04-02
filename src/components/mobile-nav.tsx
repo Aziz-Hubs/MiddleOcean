@@ -78,7 +78,9 @@ export function MobileNav({ categories }: { categories: SanityCategory[] }) {
 								{activeSection === "products" && (
 									<div className="flex flex-col mt-2 gap-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
 										{categories.map((cat) => {
-											const Icon = iconMap[cat.icon] || Settings;
+											const Icon = iconMap[cat.icon || ""] || Settings;
+											const title = isRtl ? cat.title?.ar : cat.title?.en;
+											const description = isRtl ? cat.description?.ar : cat.description?.en;
 											return (
 												<LinkItem
 													key={cat._id}
@@ -86,8 +88,8 @@ export function MobileNav({ categories }: { categories: SanityCategory[] }) {
 													className="rounded-xl p-3 active:bg-muted dark:active:bg-muted/50"
 													onClick={() => setOpen(false)}
 													icon={<Icon className="size-5" />}
-													label={isRtl ? cat.title.ar : cat.title.en}
-													description={isRtl ? cat.description.ar : cat.description.en}
+													label={title || ""}
+													description={description || ""}
 												/>
 											);
 										})}

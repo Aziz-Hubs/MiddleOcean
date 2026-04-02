@@ -4,15 +4,16 @@ export interface SanityCategory {
     en: string;
     ar: string;
   };
-  description: {
+  description?: {
     en: string;
     ar: string;
   };
-  icon: string;
+  icon?: string;
   slug: {
     current: string;
   };
   image?: string;
+  brochureImages?: SanityBrochureImage[];
 }
 
 export interface SanityBrochureImage {

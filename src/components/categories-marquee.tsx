@@ -59,9 +59,9 @@ export function CategoriesMarquee({ categories }: CategoriesMarqueeProps) {
           dir="ltr"
         >
           {categories.map((category) => {
-            const Icon = iconMap[category.icon] || Settings
-            const name = category.title[locale as "en" | "ar"]
-            const description = category.description[locale as "en" | "ar"]
+            const Icon = iconMap[category.icon || ""] || Settings
+            const name = category.title?.[locale as "en" | "ar"]
+            const description = category.description?.[locale as "en" | "ar"]
             
             return (
               <Link

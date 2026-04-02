@@ -8,7 +8,7 @@ import Image from "next/image"
 
 interface CategoryHeroProps {
   name: { en: string; ar: string }
-  description: { en: string; ar: string }
+  description?: { en: string; ar: string }
   image?: string
   className?: string
 }
@@ -16,6 +16,8 @@ interface CategoryHeroProps {
 export function CategoryHero({ name, description, image, className }: CategoryHeroProps) {
   const locale = useLocale()
   const isRtl = locale === "ar"
+  const localizedName = name[locale as "en" | "ar"]
+  const localizedDescription = description?.[locale as "en" | "ar"]
 
   return (
     <section className={cn(
@@ -54,7 +56,7 @@ export function CategoryHero({ name, description, image, className }: CategoryHe
               isRtl ? "tracking-normal leading-normal" : "tracking-tighter"
             )}>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 py-1">
-                {name[locale as "en" | "ar"]}
+                {localizedName}
               </span>
             </h1>
 
@@ -64,7 +66,7 @@ export function CategoryHero({ name, description, image, className }: CategoryHe
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-lg leading-relaxed text-zinc-300 md:text-xl lg:text-2xl font-light max-w-2xl"
             >
-              {description[locale as "en" | "ar"]}
+              {localizedDescription}
             </motion.p>
           </motion.div>
         </div>

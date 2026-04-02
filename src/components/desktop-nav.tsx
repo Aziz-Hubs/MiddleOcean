@@ -70,7 +70,9 @@ export function DesktopNav({ categories }: { categories: SanityCategory[] }) {
               <div className="grid grid-cols-2 gap-3 p-4">
                 {categories.length > 0 ? (
                   categories.map((cat) => {
-                    const Icon = iconMap[cat.icon] || Settings
+                    const Icon = iconMap[cat.icon || ""] || Settings
+                    const title = isRtl ? cat.title?.ar : cat.title?.en
+                    const description = isRtl ? cat.description?.ar : cat.description?.en
                     return (
                       <NavigationMenuLink
                         key={cat._id}
@@ -78,10 +80,8 @@ export function DesktopNav({ categories }: { categories: SanityCategory[] }) {
                           <LinkItem
                             {...props}
                             href={`/products/${cat.slug.current}`}
-                            label={isRtl ? cat.title.ar : cat.title.en}
-                            description={
-                              isRtl ? cat.description.ar : cat.description.en
-                            }
+                            label={title || ""}
+                            description={description || ""}
                             icon={<Icon className="size-5" />}
                           />
                         )}

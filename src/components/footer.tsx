@@ -97,16 +97,19 @@ export function Footer({ categories = [] }: { categories?: SanityCategory[] }) {
 							<h3 className="font-bold text-sm uppercase tracking-wider">{t("sections.products")}</h3>
 							<ul className="space-y-2">
 								{categories.length > 0 ? (
-									categories.map((cat) => (
-										<li key={cat._id}>
-											<Link 
-												className="text-muted-foreground hover:text-primary transition-colors text-sm" 
-												href={`/products/${cat.slug.current}`}
-											>
-												{isRtl ? cat.title.ar : cat.title.en}
-											</Link>
-										</li>
-									))
+									categories.map((cat) => {
+										const title = isRtl ? cat.title?.ar : cat.title?.en;
+										return (
+											<li key={cat._id}>
+												<Link 
+													className="text-muted-foreground hover:text-primary transition-colors text-sm" 
+													href={`/products/${cat.slug.current}`}
+												>
+													{title || ""}
+												</Link>
+											</li>
+										);
+									})
 								) : (
 									<li className="text-muted-foreground text-sm">No categories available</li>
 								)}
