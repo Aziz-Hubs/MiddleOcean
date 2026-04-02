@@ -95,7 +95,13 @@ export const productBySlugQuery = `*[_type == "product" && slug.current == $slug
   slug,
   category->{
     title,
-    slug
+    slug,
+    brochureImages[] {
+      _key,
+      title,
+      description,
+      "imageUrl": image.asset->url
+    }
   },
   brand->{
     title,

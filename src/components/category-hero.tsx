@@ -29,7 +29,7 @@ export function CategoryHero({ name, description, image, className }: CategoryHe
         {image && (
           <Image
             src={image}
-            alt={name[locale as "en" | "ar"]}
+            alt={localizedName}
             fill
             sizes="100vw"
             className="object-cover opacity-20 transition-transform duration-1000 group-hover:scale-110"
@@ -60,14 +60,16 @@ export function CategoryHero({ name, description, image, className }: CategoryHe
               </span>
             </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-lg leading-relaxed text-zinc-300 md:text-xl lg:text-2xl font-light max-w-2xl"
-            >
-              {localizedDescription}
-            </motion.p>
+            {localizedDescription && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="text-lg leading-relaxed text-zinc-300 md:text-xl lg:text-2xl font-light max-w-2xl"
+              >
+                {localizedDescription}
+              </motion.p>
+            )}
           </motion.div>
         </div>
       </div>

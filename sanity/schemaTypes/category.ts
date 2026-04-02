@@ -33,6 +33,15 @@ export const category = defineType({
         hotspot: true,
       },
     }),
+    defineField({
+      name: "brochureImages",
+      title: "صور الكتالوج الافتراضية",
+      type: "array",
+      description: "صور الكتالوج الافتراضية للمنتجات في هذا القسم. تستخدم عند عدم وجود صور خاصة بالمنتج في بياناته.",
+      of: [{ type: "brochureImage" }],
+      validation: (Rule) => Rule.max(6),
+      options: { layout: "grid" },
+    }),
   ],
   preview: {
     select: {

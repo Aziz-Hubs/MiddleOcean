@@ -13,6 +13,42 @@ import { optimizeSanityUrl, optimizeLocalImage, PDF_DIMENSIONS } from "./image-u
 const CHROMIUM_PACK_URL =
   "https://github.com/Sparticuz/chromium/releases/download/v143.0.4/chromium-v143.0.4-pack.x64.tar"
 
+type BrochureImage = {
+  imageUrl: string
+  title?: Record<string, string>
+  description?: Record<string, string>
+}
+
+function mergeBrochureImages(
+  productImages: BrochureImage[] | undefined,
+  categoryImages: BrochureImage[] | undefined
+): BrochureImage[] {
+  const product = productImages || []
+  const category = categoryImages || []
+
+  // If product has no images, use all category images (up to 6)
+  if (product.length === 0) {
+    return category.slice(0, 6)
+  }
+
+  // If product has all 6 images, use product images only
+  if (product.length >= 6) {
+    return product.slice(0, 6)
+  }
+
+  // Replace in position: product images override category at same indices
+  const result: BrochureImage[] = (category.length >= 6 ? category.slice(0, 6) : [...category, ...Array(6 - category.length).fill(null)])
+  
+  for (let i = 0; i < product.length && i < 6; i++) {
+    if (product[i]?.imageUrl) {
+      result[i] = product[i]
+    }
+  }
+
+  // Filter out any null placeholders
+  return result.filter((img): img is BrochureImage => img !== null && !!img.imageUrl)
+}
+
 // ── Route Handler ────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -36,6 +72,12 @@ export async function GET(req: NextRequest) {
     if (!productData) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
+
+    // Merge brochure images: product images override category at same positions
+    const mergedBrochureImages = mergeBrochureImages(
+      productData.brochureImages,
+      productData.category?.brochureImages
+    )
 
     // QR Code
     const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://middleocean.vercel.app"}/${locale}/products/${productData.category?.slug?.current || "all"}/${productSlug}`
@@ -80,13 +122,19 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    if (optimizedProduct.brochureImages?.length) {
+    // Optimize merged brochure images
+    if (mergedBrochureImages.length) {
       optimizedProduct = {
         ...optimizedProduct,
-        brochureImages: optimizedProduct.brochureImages.map((img: { imageUrl: string; title?: Record<string, string>; description?: Record<string, string> }) => ({
+        brochureImages: mergedBrochureImages.map((img) => ({
           ...img,
           imageUrl: optimizeSanityUrl(img.imageUrl, PDF_DIMENSIONS.catalog.width)
         }))
+      }
+    } else {
+      optimizedProduct = {
+        ...optimizedProduct,
+        brochureImages: []
       }
     }
 

@@ -265,12 +265,12 @@ export function ProductCategoriesGrid({
 
         {/* ── Desktop: original Bento Grid (hidden below md) ── */}
         <div className="hidden md:block">
-<BentoGrid>
-            {items.map((cat) => {
+          <BentoGrid>
+{items.map((cat) => {
                const name = isRtl ? cat.title?.ar : cat.title?.en
                const description = isRtl ? cat.description?.ar : cat.description?.en
                const Icon = iconMap[cat.icon || ""] || Settings
-               const image = getImage(cat)
+              const image = getImage(cat)
               const className = getLayoutClass(cat.slug.current)
 
               return (

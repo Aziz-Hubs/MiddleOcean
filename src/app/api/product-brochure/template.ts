@@ -15,7 +15,14 @@ interface Product {
   _id: string
   brand?: { title: string }
   media?: { thumbnailUrl: string }
-  category?: { slug?: { current: string } }
+  category?: {
+    slug?: { current: string }
+    brochureImages?: Array<{
+      imageUrl: string
+      title?: Record<string, string>
+      description?: Record<string, string>
+    }>
+  }
   specifications?: Array<{
     name: Record<string, string> | string
     value: Record<string, string> | string
