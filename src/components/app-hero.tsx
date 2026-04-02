@@ -77,7 +77,7 @@ export default function AppHero() {
   return (
     <section 
       dir={isRtl ? "rtl" : "ltr"}
-      className="relative w-full h-[85vh] flex flex-col items-center overflow-hidden pt-0"
+      className="relative w-full min-h-[85vh] flex flex-col items-center pt-0"
     >
       <div className="flex flex-col w-full h-full">
         {/* Top Content Area */}
