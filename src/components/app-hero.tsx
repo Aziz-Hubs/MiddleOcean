@@ -77,7 +77,7 @@ export default function AppHero() {
   return (
     <section 
       dir={isRtl ? "rtl" : "ltr"}
-      className="relative w-full min-h-[80vh] flex flex-col items-center overflow-hidden pt-0"
+      className="relative w-full h-[85vh] flex flex-col items-center overflow-hidden pt-0"
     >
       <div className="flex flex-col w-full h-full">
         {/* Top Content Area */}
@@ -247,7 +247,7 @@ export default function AppHero() {
                   <div
                     key={index}
                     className={cn(
-                      "relative cursor-pointer transition-all duration-500 p-8 flex flex-col group overflow-hidden backdrop-blur-xl border-t min-h-32",
+                      "relative cursor-pointer transition-all duration-500 p-8 flex flex-col group overflow-hidden backdrop-blur-xl border-t h-40",
                       isActive 
                         ? "bg-primary/10 border-t-primary/50 shadow-[inset_0_1px_0_rgba(var(--primary-rgb),0.3),0_0_30px_rgba(var(--primary-rgb),0.1)] flex" 
                         : "bg-card/30 border-t-white/5 hover:bg-white/5 hidden md:flex"
