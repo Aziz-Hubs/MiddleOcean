@@ -15,6 +15,31 @@ export const category = defineType({
       description: "اسم القسم باللغتين العربية والإنجليزية.",
     }),
     defineField({
+      name: "description",
+      title: "الوصف",
+      type: "localeString",
+      description: "وصف القسم باللغتين العربية والإنجليزية.",
+    }),
+    defineField({
+      name: "icon",
+      title: "الأيقونة",
+      type: "string",
+      description: "اسم أيقونة Lucide المستخدمة للقسم (مثال: Printer, Layers, Box).",
+      options: {
+        list: [
+          { title: "Layers", value: "Layers" },
+          { title: "Printer", value: "Printer" },
+          { title: "Box", value: "Box" },
+          { title: "Monitor", value: "Monitor" },
+          { title: "Image", value: "Image" },
+          { title: "Package", value: "Package" },
+          { title: "Settings", value: "Settings" },
+          { title: "Megaphone", value: "Megaphone" },
+          { title: "PenTool", value: "PenTool" },
+        ],
+      },
+    }),
+    defineField({
       name: "slug",
       title: "الرابط",
       type: "slug",

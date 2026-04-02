@@ -257,3 +257,53 @@ export const productNamesForPlaceholderQuery = `*[_type == "product" && defined(
   "en": title.en,
   "ar": title.ar
 }`;
+
+// About Page Query
+export const aboutPageQuery = `*[_type == "aboutPage"][0]{
+  _id,
+  hero {
+    title,
+    subtitle,
+    "image": image.asset->url
+  },
+  history {
+    title,
+    content
+  },
+  missionVision {
+    missionTitle,
+    mission,
+    visionTitle,
+    vision
+  },
+  values {
+    sectionTitle,
+    items[] {
+      _key,
+      title,
+      description,
+      icon
+    }
+  },
+  team {
+    sectionTitle,
+    members[] | order(order asc) {
+      _key,
+      name,
+      role,
+      bio,
+      "photo": photo.asset->url,
+      order
+    }
+  },
+  timeline {
+    sectionTitle,
+    events[] | order(year asc) {
+      _key,
+      year,
+      title,
+      description,
+      isFuture
+    }
+  }
+}`;
