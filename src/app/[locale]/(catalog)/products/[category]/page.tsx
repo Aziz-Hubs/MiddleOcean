@@ -40,10 +40,14 @@ export async function generateMetadata(props: {
   if (!categoryData) return {}
 
   const rawTitle = categoryData.seo?.metaTitle || categoryData.title
-  const title = typeof rawTitle === 'object' ? rawTitle[locale as keyof typeof rawTitle] || rawTitle['en'] : rawTitle || ""
+  const title = rawTitle && typeof rawTitle === 'object' 
+    ? (rawTitle[locale as keyof typeof rawTitle] || rawTitle['en'] || "") 
+    : (typeof rawTitle === 'string' ? rawTitle : "")
   
   const rawDesc = categoryData.seo?.metaDescription || categoryData.description
-  const description = typeof rawDesc === 'object' ? rawDesc[locale as keyof typeof rawDesc] || rawDesc['en'] : rawDesc || ""
+  const description = rawDesc && typeof rawDesc === 'object' 
+    ? (rawDesc[locale as keyof typeof rawDesc] || rawDesc['en'] || "") 
+    : (rawDesc || "")
   const safeDesc = typeof description === 'string' ? description.substring(0, 160) : (isArabic ? "تصفح مجموعتنا من مواد الطباعة الرقمية وحلول الإعلان." : "Browse our collection of digital printing materials and advertising solutions.")
   
   const siteTitle = (isArabic ? "ميدل اوشن للطباعة" : "Middle Ocean Printing");
