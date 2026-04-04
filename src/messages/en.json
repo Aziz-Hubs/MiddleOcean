@@ -444,5 +444,13 @@
     "noResults": "No products found for \"{query}\"",
     "tryDifferent": "Try different keywords or check your spelling",
     "error": "Failed to search. Please try again."
+  },
+  "AboutPage": {
+    "historySubtitle": "Building trust through quality since our founding",
+    "valuesSubtitle": "The principles that guide everything we do",
+    "teamSubtitle": "Meet the people driving our success",
+    "timelineSubtitle": "From humble beginnings to industry leadership",
+    "milestone": "Milestone",
+    "goal": "Future Goal"
   }
 }
