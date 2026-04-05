@@ -108,7 +108,7 @@ export default async function Home(props: {
   }
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
+    <div className="relative flex min-h-screen w-full flex-col overflow-hidden">
       <h1 className="sr-only">
         {isArabic 
           ? "ميدل اوشن للطباعة - حلول متكاملة لمواد الطباعة الرقمية والإعلان" 
