@@ -54,8 +54,8 @@ export default function AppHero() {
       navTitle: t("slide3_navTitle"),
       navDescription: t("slide3_navDescription"),
       image: "/landing_page_assets/hero/premium_materials.png",
-      primaryCta: { label: t("button_shopAcrylics"), href: "/products/acrylic" },
-      secondaryCta: { label: t("button_shopFoam"), href: "/products/foam" },
+      primaryCta: { label: t("button_shopAcrylics"), href: "/products/acrylic-sheets" },
+      secondaryCta: { label: t("button_shopFoam"), href: "/products/foam-sheets" },
     },
   ];
 

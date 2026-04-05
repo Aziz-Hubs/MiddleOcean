@@ -1,4 +1,14 @@
 import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Building2 } from "lucide-react";
 
 interface HeroSectionProps {
   data?: {
@@ -18,7 +28,10 @@ interface HeroSectionProps {
 export function HeroSection({ data, locale }: HeroSectionProps) {
   const isRtl = locale === "ar";
   const title = data?.title?.[locale as "en" | "ar"] || (isRtl ? "من نحن" : "About Us");
-  const subtitle = data?.subtitle?.[locale as "en" | "ar"] || (isRtl ? "شريكك الموثوق في مواد الطباعة الرقمية" : "Your trusted partner in digital printing materials");
+  const subtitle = data?.subtitle?.[locale as "en" | "ar"] || (isRtl
+    ? "شريكك الموثوق في مواد الطباعة الرقمية"
+    : "Your trusted partner in digital printing materials"
+  );
 
   return (
     <section className="relative w-full overflow-hidden bg-background">
@@ -41,20 +54,35 @@ export function HeroSection({ data, locale }: HeroSectionProps) {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 md:px-6 py-24 md:py-32 lg:py-40">
         <div className={cn(
-          "max-w-4xl mx-auto text-center",
+          "max-w-4xl mx-auto",
           isRtl && "rtl"
         )}>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-foreground mb-6">
-            {title}
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            {subtitle}
-          </p>
+          {/* Badge */}
+          <div className="flex justify-center mb-6">
+            <Badge variant="secondary" className="text-xs">
+              <Building2 className="mr-1 h-3 w-3" />
+              {isRtl ? "معلومات عنا" : "Company Info"}
+            </Badge>
+          </div>
+
+          {/* Title Card */}
+          <Card className="border-0 bg-background/60 backdrop-blur-sm shadow-none">
+            <CardHeader className="text-center pb-2">
+              <CardTitle className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter">
+                {title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <CardDescription className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                {subtitle}
+              </CardDescription>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+      {/* Decorative Separator */}
+      <Separator className="absolute bottom-0 left-0 right-0 bg-gradient-to-r from-transparent via-border to-transparent" />
     </section>
   );
 }

@@ -100,7 +100,7 @@ export default async function ProductsPage(props: {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-background pt-4">
+    <div className="flex min-h-screen flex-col pt-4">
       <StickyBreadcrumbContainer>
         <Breadcrumb>
           <BreadcrumbList>

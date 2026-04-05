@@ -28,7 +28,7 @@ export default async function TermsOfServicePage({ params }: PageProps) {
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
-    <div className="relative min-h-screen bg-background pt-24 pb-20 print:bg-white print:pt-0">
+    <div className="relative min-h-screen pt-24 pb-20 print:bg-white print:pt-0">
       {/* Print Only Header */}
       <div className="hidden print:flex flex-col border-b-2 border-primary pb-8 mb-12">
         <div className="flex justify-between items-start">

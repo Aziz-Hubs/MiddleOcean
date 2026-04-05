@@ -12,7 +12,7 @@ export default async function PrivacyPolicyPage({ params }: PageProps) {
 	const siteSettings = await sanityClient.fetch(siteSettingsQuery);
 
 	return (
-		<div className="relative min-h-screen bg-background pt-32 pb-20 overflow-clip">
+		<div className="relative min-h-screen pt-32 pb-20 overflow-clip">
 			{/* Background blobs for premium look */}
 			<div className="absolute top-40 right-0 -z-10 size-96 bg-primary/5 blur-[120px] rounded-full" />
 			<div className="absolute bottom-40 left-0 -z-10 size-96 bg-cyan-500/5 blur-[120px] rounded-full" />

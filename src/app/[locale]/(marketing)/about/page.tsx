@@ -76,7 +76,7 @@ export default async function AboutPage({
   ]);
 
   return (
-    <main className="relative flex min-h-screen w-full flex-col overflow-hidden bg-background">
+    <main className="relative flex min-h-screen w-full flex-col overflow-hidden">
       {/* Hero Section */}
       <HeroSection data={aboutData?.hero} locale={locale} />
 

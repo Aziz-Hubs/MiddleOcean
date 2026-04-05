@@ -135,7 +135,7 @@ export default async function CategoryPage(props: {
   const ChevronIcon = isRtl ? ChevronLeft : ChevronRight
 
   return (
-    <div className="flex min-h-screen flex-col bg-background pt-4">
+    <div className="flex min-h-screen flex-col pt-4">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

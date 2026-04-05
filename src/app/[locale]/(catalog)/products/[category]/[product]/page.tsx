@@ -203,7 +203,7 @@ export default async function ProductPage(props: {
         productTitle={productTitle}
       />
 
-      <div className="relative z-10 bg-background text-foreground min-h-screen overflow-x-hidden print:min-h-0 pt-12 lg:pt-20 print:pt-0 print:bg-white print:text-black">
+      <div className="relative z-10 text-foreground min-h-screen overflow-x-hidden print:min-h-0 pt-12 lg:pt-20 print:pt-0 print:bg-white print:text-black">
         <article className="container mx-auto px-6 py-6 lg:py-10 print:py-0 print:px-0">
 
           {/* Print header */}
