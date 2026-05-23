@@ -260,8 +260,8 @@ export async function POST(request: NextRequest) {
     
     // Send email using Resend - Always in Arabic
     const { error } = await resend.emails.send({
-      from: "Middle Ocean Quotes <onboarding@resend.dev>",
-      to: ["contactabdulazizhasan@gmail.com"],
+      from: "Middle Ocean Quotes <sales@middleocean.jo>",
+      to: ["sales@middleocean.jo"],
       subject: `طلب عرض سعر عاجل: ${sanitizedProductName} (${quantity} وحدة)`,
       html: emailHtml,
       replyTo: sanitizedEmail || undefined,
